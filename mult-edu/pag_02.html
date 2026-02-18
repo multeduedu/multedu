@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Soma Colorida (+) (CDU)</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'OpenDyslexic', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            background-color: #f0f8ff;
+            padding: 20px;
+            box-sizing: border-box;
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        header{
+          display: block;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 700;
+             text-align: center;
+        }
+        p {
+            color: #555;
+            margin-bottom: 30px;
+            text-align: center;
+             max-width: 600px;
+        }
+
+        .game-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 900px; /* Ajustado para 3 caixas */
+        }
+
+        .number-box {
+            border: 2px solid;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            min-width: 250px;
+            background-color: white;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+         /* Aplicando cores específicas pela ordem de aparição dos .number-box */
+         .game-container > .number-box:nth-of-type(1) { border-color: #ff6347; /* Tomato */ }
+         .game-container > .number-box:nth-of-type(2) { border-color: #ffd700; /* Gold */ }
+         .game-container > .number-box:nth-of-type(3) { border-color: #90ee90; /* LightGreen */ }
+
+
+        .selectors-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px; /* Espaço antes da visualização */
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .selector-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .selector-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        /* Estilo para as caixas de seleção (select) */
+        .selector-group select {
+            font-family: 'OpenDyslexic', sans-serif;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5 cuidad;
+            font-size: 1em;
+            cursor: pointer;
+            min-width: 45px;
+             letter-spacing: normal;
+             word-spacing: normal;
+        }
+
+
+        /* Estilo para o símbolo de MAIS (+) */
+        .plus-symbol {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #444;
+            margin: 10px;
+            display: flex;
+            align-self: center;
+        }
+
+        /* Área para a representação visual */
+        .visual-representation {
+            width: 100%;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column; /* Mantém coluna principal */
+            align-items: center;
+            /* Remove gap se não tiver mais a dica embaixo */
+            /* gap: 10px; */
+             box-sizing: border-box;
+             margin-bottom: 15px;
+        }
+
+        /* Container principal para os blocos (horizontal) */
+        .main-blocks-horizontal {
+            display: flex;
+            flex-direction: row; /* BLOCOS LADO A LADO */
+            flex-wrap: wrap; /* Permite que a linha inteira quebre */
+            align-items: flex-start; /* Alinha os grupos no topo da linha */
+            width: 100%;
+            gap: 15px; /* Espaço ENTRE os grupos C, D, U */
+            justify-content: center; /* Centraliza a linha de blocos */
+        }
+
+
+         .main-blocks-horizontal > span { /* Estilo para os rótulos C, D, U dentro da linha horizontal */
+             font-weight: 700;
+             color: #555;
+             font-size: 0.9em;
+             flex-shrink: 0;
+             align-self: center;
+         }
+
+        /* Containers para os blocos individuais (C, D, U) dentro da linha horizontal */
+        .main-blocks-horizontal .hundreds-container,
+        .main-blocks-horizontal .tens-container,
+        .main-blocks-horizontal .units-container {
+             display: flex;
+             flex-direction: row; /* Blocos INDIVIDUAIS lado a lado */
+             flex-wrap: wrap; /* Permite que os blocos individuais quebrem linha dentro do grupo */
+             gap: 3px; /* Espaço ENTRE os blocos individuais */
+             justify-content: center; /* Centraliza blocos dentro do container */
+             align-items: center; /* Centraliza verticalmente blocos no container */
+         }
+
+        /* Estilos para os blocos placeholders */
+        .hundred-block {
+            width: 30px;
+            height: 30px;
+            background-color: #ff6347;
+            border: 1px solid #d4533b;
+        }
+
+        .ten-block {
+            width: 25px;
+            height: 8px;
+            background-color: #ffd700;
+            border: 1px solid #d4b800;
+        }
+
+        .unit-block {
+            width: 8px;
+            height: 8px;
+            background-color: #90ee90;
+            border: 1px solid #78d178;
+        }
+
+        /* REMOVIDOS ESTILOS PARA .units-regroup-hint */
+
+
+        /* Nova área para input do número formado e feedback */
+        .number-check-area {
+            width: 100%;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .number-check-area label {
+            font-size: 1em;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .number-check-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .number-check-area input[type="number"] {
+             font-family: 'OpenDyslexic', sans-serif;
+             padding: 8px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             font-size: 1.1em;
+             width: 100px;
+             text-align: center;
+             -moz-appearance: textfield;
+              letter-spacing: normal;
+              word-spacing: normal;
+         }
+         .number-check-area input[type="number"]::-webkit-outer-spin-button,
+         .number-check-area input[type="number"]::-webkit-inner-spin-button {
+             -webkit-appearance: none;
+             margin: 0;
+         }
+
+         .feedback-icon {
+             font-size: 1.8em;
+             font-weight: 700;
+             min-width: 30px;
+             text-align: center;
+         }
+
+         .feedback-icon.correct {
+             color: green;
+         }
+
+         .feedback-icon.incorrect {
+             color: red;
+         }
+
+
+        /* Container para a caixa de input do resultado total do usuário */
+        .answer-input-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        .answer-input-container label {
+             font-size: 1.1em;
+             font-weight: 700;
+             color: #333;
+         }
+
+         /* Estilo para a caixa de input do resultado total do usuário */
+        .answer-input-container input[type="number"] {
+             font-family: 'OpenDyslexic', sans-serif;
+             padding: 10px;
+             border: 2px solid #007bff;
+             border-radius: 5px;
+             font-size: 1.3em;
+             width: 100%;
+             text-align: center;
+             -moz-appearance: textfield;
+              letter-spacing: normal;
+              word-spacing: normal;
+         }
+         .answer-input-container input[type="number"]::-webkit-outer-spin-button,
+         .answer-input-container input[type="number"]::-webkit-inner-spin-button {
+             -webkit-appearance: none;
+             margin: 0;
+         }
+
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .calculate-button, .reset-button {
+            font-family: 'OpenDyslexic', sans-serif;
+            padding: 12px 25px;
+            font-size: 1.2em;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 700;
+        }
+
+        .calculate-button {
+             background-color: #4CAF50;
+        }
+
+        .calculate-button:hover {
+            background-color: #45a049;
+        }
+
+         .reset-button {
+             background-color: #f44336;
+         }
+
+         .reset-button:hover {
+             background-color: #d32f2f;
+         }
+
+        #result {
+            font-family: 'OpenDyslexic', sans-serif;
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            background-color: #fffacd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee8aa;
+            min-height: 50px;
+            text-align: center;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            white-space: pre-wrap;
+            letter-spacing: 0.05em;
+             word-spacing: 0.1em;
+        }
+
+        .correct {
+             color: green;
+             background-color: #e8f5e9;
+             border-color: #a5d6a7;
+         }
+
+         .incorrect {
+             color: red;
+             background-color: #ffebee;
+             border-color: #ef9a9a;
+         }
+
+
+        /* Estilos responsivos */
+        @media (max-width: 992px) {
+             .game-container {
+                 flex-direction: column;
+                 max-width: 95%;
+             }
+             .number-box {
+                 min-width: 90%;
+                 margin: 10px 0;
+                 padding: 10px;
+             }
+              .plus-symbol {
+                 display: none;
+             }
+            body {
+                 letter-spacing: 0.03em;
+                 word-spacing: 0.08em;
+             }
+            .selectors-wrapper {
+                gap: 10px;
+                 margin-bottom: 10px;
+                 justify-content: center;
+            }
+             .selector-group label { font-size: 0.8em; }
+             .selector-group select {
+                 min-width: 40px;
+                 padding: 6px;
+                 font-size: 0.9em;
+             }
+            /* Ajusta visual-representation sem a dica */
+            .visual-representation { margin-bottom: 10px; gap: 5px; padding-top: 8px;}
+
+
+             .main-blocks-horizontal { gap: 8px; } /* Ajusta gap horizontal */
+             .main-blocks-horizontal > span { font-size: 0.85em;}
+
+
+            /* REMOVIDOS ESTILOS RESPONSIVOS PARA A DICA */
+
+
+            .number-check-area { padding-top: 8px; gap: 6px;}
+            .number-check-area label { font-size: 0.9em; }
+             .number-check-area input[type="number"] {
+                 width: 80px;
+                 padding: 6px;
+                 font-size: 1em;
+             }
+             .feedback-icon { font-size: 1.5em; min-width: 25px;}
+
+            .answer-input-container {
+                 max-width: 90%;
+                 gap: 8px;
+             }
+            .answer-input-container label { font-size: 1em; }
+            .answer-input-container input[type="number"] {
+                 padding: 8px;
+                 font-size: 1.2em;
+             }
+            h1 { font-size: 1.5em; }
+            #result {
+                font-size: 1.2em;
+                letter-spacing: normal;
+                word-spacing: normal;
+            }
+             .button-container {
+                 gap: 10px;
+                 flex-direction: column;
+                 align-items: center;
+             }
+             .calculate-button, .reset-button {
+                 width: 90%;
+                 max-width: 250px;
+                 padding: 10px 20px;
+             }
+
+
+        }
+         /* Regra para telas maiores para garantir que fiquem lado a lado */
+         @media (min-width: 993px) {
+             .game-container {
+                 flex-direction: row;
+                 align-items: flex-start;
+             }
+             .number-box {
+                 margin: 10px;
+             }
+              .plus-symbol {
+                 display: flex;
+                 align-self: center;
+             }
+         }
+
+    </style>
+</head>
+
+<body>
+
+  <header style="margin-bottom: 3rem;">
+    <a href="./atividades.html">
+        <button type="button" class="voltar-main" style="position: absolute; top: 2%; left: 2%;">← Voltar</button>
+    </a>
+</header>
+
+    <h1>Praticando Soma!</h1>
+    <p>Escolha a centena, dezena e unidade para formar os números. Digite o número formado em cada caixa. Depois, digite o resultado total no campo abaixo e clique em Somar!</p>
+
+    <div class="game-container" id="gameContainer">
+        </div>
+
+    <div class="answer-input-container">
+        <label for="userAnswer">Seu resultado total:</label>
+        <input type="number" id="userAnswer" value="">
+    </div>
+
+
+    <div class="button-container">
+         <button class="calculate-button" id="calculateButton">Somar!</button>
+         <button class="reset-button" id="resetButton">Resetar</button>
+    </div>
+
+    <div id="result">O resultado da soma aparecerá aqui!</div>
+
+    <script>
+        const gameContainer = document.getElementById('gameContainer');
+        const calculateButton = document.getElementById('calculateButton');
+        const resetButton = document.getElementById('resetButton');
+        const resultDiv = document.getElementById('result');
+        const userAnswerInput = document.getElementById('userAnswer');
+
+        const numberOfBoxes = 3; // 3 caixas
+        const initialResultText = 'O resultado da soma aparecerá aqui!';
+
+        // Função para criar um grupo de seletores (Centena, Dezena, Unidade)
+        function createSelectorGroup(idPrefix, index, labelText, className) {
+            const groupDiv = document.createElement('div');
+            groupDiv.classList.add('selector-group');
+            const label = document.createElement('label');
+            label.htmlFor = `${idPrefix}-${index}`;
+            label.textContent = labelText;
+
+            const select = document.createElement('select');
+            select.id = `${idPrefix}-${index}`;
+            select.classList.add(className);
+
+            for (let i = 0; i <= 9; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                select.appendChild(option);
+            }
+
+            groupDiv.appendChild(label);
+            groupDiv.appendChild(select);
+            return groupDiv;
+        }
+
+        // Função auxiliar para criar o wrapper dos seletores
+       function createSelectorsWrapper(index) {
+            const selectorsWrapper = document.createElement('div');
+            selectorsWrapper.classList.add('selectors-wrapper');
+
+            const hundredsGroup = createSelectorGroup('hundreds', index, 'Centena', 'hundreds-selector');
+            const tensGroup = createSelectorGroup('tens', index, 'Dezena', 'tens-selector');
+            const unitsGroup = createSelectorGroup('units', index, 'Unidade', 'units-selector');
+
+            selectorsWrapper.appendChild(hundredsGroup);
+            selectorsWrapper.appendChild(tensGroup);
+            selectorsWrapper.appendChild(unitsGroup);
+
+            return selectorsWrapper;
+       }
+
+
+        // Função para criar a área de representação visual dos blocos (Horizontal, SEM DICA)
+        function createVisualRepresentationArea(index) {
+            const visualArea = document.createElement('div');
+            visualArea.classList.add('visual-representation');
+            visualArea.id = `visual-area-${index}`;
+
+             // Container principal para os blocos (horizontal)
+             const mainBlocksHorizontal = document.createElement('div');
+             mainBlocksHorizontal.classList.add('main-blocks-horizontal');
+
+             // Containers individuais para C, D, U (vão dentro do mainBlocksHorizontal)
+             const hundredLabel = document.createElement('span');
+             hundredLabel.textContent = 'C:';
+             const hundredsContainer = document.createElement('div');
+             hundredsContainer.classList.add('hundreds-container');
+             mainBlocksHorizontal.appendChild(hundredLabel);
+             mainBlocksHorizontal.appendChild(hundredsContainer);
+
+             const tensLabel = document.createElement('span');
+             tensLabel.textContent = 'D:';
+             const tensContainer = document.createElement('div');
+             tensContainer.classList.add('tens-container');
+             mainBlocksHorizontal.appendChild(tensLabel);
+             mainBlocksHorizontal.appendChild(tensContainer);
+
+             const unitsLabel = document.createElement('span');
+             unitsLabel.textContent = 'U:';
+             const unitsContainer = document.createElement('div');
+             unitsContainer.classList.add('units-container');
+             mainBlocksHorizontal.appendChild(unitsLabel);
+             mainBlocksHorizontal.appendChild(unitsContainer);
+
+
+             visualArea.appendChild(mainBlocksHorizontal); // Adiciona o container horizontal
+
+             // REMOVIDA A ÁREA PARA DICA: const unitsRegroupHint = document.createElement('div'); ...
+
+
+            return visualArea;
+        }
+
+         // FUNÇÃO updateRegroupHint REMOVIDA
+
+
+        // Função para criar a nova área de input do número formado e feedback (mantida)
+        function createNumberCheckArea(index) {
+            const checkArea = document.createElement('div');
+            checkArea.classList.add('number-check-area');
+
+            const label = document.createElement('label');
+            label.textContent = 'Número formado:';
+
+            const inputWrapper = document.createElement('div');
+            inputWrapper.classList.add('number-check-input-wrapper');
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.id = `formedNumberInput-${index}`;
+            input.min = '0';
+            input.max = '999';
+            input.value = '';
+            input.placeholder = 'Ex: 123';
+            input.addEventListener('input', () => checkFormedNumber(index));
+
+
+            const feedbackIcon = document.createElement('div');
+            feedbackIcon.classList.add('feedback-icon');
+            feedbackIcon.id = `feedback-icon-${index}`;
+            feedbackIcon.textContent = '?';
+
+            inputWrapper.appendChild(input);
+            inputWrapper.appendChild(feedbackIcon);
+
+
+            checkArea.appendChild(label);
+            checkArea.appendChild(inputWrapper);
+
+
+            return checkArea;
+        }
+
+
+        // Função para criar a caixa de número completa (seletores + visual + check) (mantida)
+        function createNumberBox(index) {
+            const box = document.createElement('div');
+            box.classList.add('number-box');
+            box.id = `box-${index}`;
+
+            const selectorsWrapper = createSelectorsWrapper(index);
+            const visualArea = createVisualRepresentationArea(index); // Agora sem a dica
+            const numberCheckArea = createNumberCheckArea(index);
+
+            box.appendChild(selectorsWrapper);
+            box.appendChild(visualArea);
+            box.appendChild(numberCheckArea);
+
+            return box;
+        }
+
+
+         // Função para atualizar a representação visual de uma caixa específica E VERIFICAR O NÚMERO FORMADO (AJUSTADA para remover a chamada à dica)
+         function updateVisualRepresentation(boxIndex) {
+             const hundredsSelect = document.getElementById(`hundreds-${boxIndex}`);
+             const tensSelect = document.getElementById(`tens-${boxIndex}`);
+             const unitsSelect = document.getElementById(`units-${boxIndex}`);
+
+             const hundredsValue = parseInt(hundredsSelect.value, 10);
+             const tensValue = parseInt(tensSelect.value, 10);
+             const unitsValue = parseInt(unitsSelect.value, 10);
+
+             // Seleciona os containers de blocos principais (dentro do container horizontal)
+             const mainBlocksHorizontal = document.querySelector(`#visual-area-${boxIndex} .main-blocks-horizontal`);
+             const hundredsContainer = mainBlocksHorizontal.querySelector('.hundreds-container');
+             const tensContainer = mainBlocksHorizontal.querySelector('.tens-container');
+             const unitsContainer = mainBlocksHorizontal.querySelector('.units-container');
+
+
+             hundredsContainer.innerHTML = '';
+             tensContainer.innerHTML = '';
+             unitsContainer.innerHTML = '';
+
+             for (let i = 0; i < hundredsValue; i++) {
+                 const hundredBlock = document.createElement('div');
+                 hundredBlock.classList.add('hundred-block');
+                 hundredsContainer.appendChild(hundredBlock);
+             }
+
+             for (let i = 0; i < tensValue; i++) {
+                 const tenBlock = document.createElement('div');
+                 tenBlock.classList.add('ten-block');
+                 tensContainer.appendChild(tenBlock);
+             }
+
+             for (let i = 0; i < unitsValue; i++) {
+                 const unitBlock = document.createElement('div');
+                 unitBlock.classList.add('unit-block');
+                 unitsContainer.appendChild(unitBlock);
+             }
+
+             // REMOVIDA A CHAMADA PARA A DICA: updateRegroupHint(boxIndex, unitsValue);
+
+
+             // Após atualizar a visualização, CHAMA A FUNÇÃO DE VERIFICAÇÃO do número formado
+             checkFormedNumber(boxIndex);
+         }
+
+        // Função: Verifica se o número digitado na caixa de input corresponde ao número formado pelos seletores (mantida)
+        function checkFormedNumber(boxIndex) {
+            const hundredsSelect = document.getElementById(`hundreds-${boxIndex}`);
+            const tensSelect = document.getElementById(`tens-${boxIndex}`);
+            const unitsSelect = document.getElementById(`units-${boxIndex}`);
+            const formedNumberInput = document.getElementById(`formedNumberInput-${boxIndex}`);
+            const feedbackIcon = document.getElementById(`feedback-icon-${boxIndex}`);
+
+            const hundredsValue = parseInt(hundredsSelect.value, 10);
+            const tensValue = parseInt(tensSelect.value, 10);
+            const unitsValue = parseInt(unitsSelect.value, 10);
+
+            const correctNumber = (hundredsValue * 100) + (tensValue * 10) + unitsValue;
+            const userAnswerForNumber = formedNumberInput.value.trim() === '' ? null : parseInt(formedNumberInput.value, 10);
+
+
+            feedbackIcon.classList.remove('correct', 'incorrect');
+            feedbackIcon.textContent = userAnswerForNumber === null ? '' : '?';
+
+
+            if (userAnswerForNumber !== null) {
+                 if (isNaN(userAnswerForNumber)) {
+                     feedbackIcon.textContent = '✗';
+                     feedbackIcon.classList.add('incorrect');
+                 } else if (userAnswerForNumber === correctNumber) {
+                    feedbackIcon.textContent = '✓';
+                    feedbackIcon.classList.add('correct');
+                } else {
+                    feedbackIcon.textContent = '✗';
+                    feedbackIcon.classList.add('incorrect');
+                }
+            }
+        }
+
+
+        // --- Inicialização do Jogo ---
+
+        // Cria as 3 caixas E os símbolos '+' entre elas (mantida)
+        for (let i = 0; i < numberOfBoxes; i++) {
+            const numberBox = createNumberBox(i);
+            gameContainer.appendChild(numberBox);
+
+             // updateVisualRepresentation(i) já chama checkFormedNumber
+             updateVisualRepresentation(i);
+
+
+            if (i < numberOfBoxes - 1) {
+                const plusSign = document.createElement('div');
+                plusSign.textContent = '+';
+                plusSign.classList.add('plus-symbol');
+                gameContainer.appendChild(plusSign);
+            }
+        }
+
+        // Adiciona listeners para atualizar a representação visual E VERIFICAR O NÚMERO quando os SELETORES mudam (mantida)
+         for (let i = 0; i < numberOfBoxes; i++) {
+             const hundredsSelect = document.getElementById(`hundreds-${i}`);
+             const tensSelect = document.getElementById(`tens-${i}`);
+             const unitsSelect = document.getElementById(`units-${i}`);
+
+             // Listener chama updateVisualRepresentation, que agora não chama mais updateRegroupHint
+             hundredsSelect.addEventListener('change', () => updateVisualRepresentation(i));
+             tensSelect.addEventListener('change', () => updateVisualRepresentation(i));
+             unitsSelect.addEventListener('change', () => updateVisualRepresentation(i));
+         }
+
+        // Evento de clique no botão para calcular e verificar a resposta do usuário (PARA A SOMA TOTAL) (mantida)
+        calculateButton.addEventListener('click', () => {
+            let totalSum = 0;
+            let numbers = [];
+
+            for (let i = 0; i < numberOfBoxes; i++) {
+                const hundredsSelect = document.getElementById(`hundreds-${i}`);
+                const tensSelect = document.getElementById(`tens-${i}`);
+                const unitsSelect = document.getElementById(`units-${i}`);
+
+                 const hundredsValue = parseInt(hundredsSelect.value, 10);
+                 const tensValue = parseInt(tensSelect.value, 10);
+                 const unitsValue = parseInt(unitsSelect.value, 10);
+
+                const number = (hundredsValue * 100) + (tensValue * 10) + unitsValue;
+                totalSum += number;
+                numbers.push(String(number).padStart(3, '0'));
+            }
+
+             let operationStr = numbers.join(" + ");
+             operationStr += ` = ${totalSum}`;
+
+
+            const userAnswerValue = parseInt(userAnswerInput.value) || 0;
+
+            let comparisonMessage = `\nSua resposta total: ${userAnswerValue}\n`;
+            let resultClass = '';
+
+            if (userAnswerValue === totalSum) {
+                comparisonMessage += "Parabéns! Sua resposta total está CORRETA!";
+                resultClass = 'correct';
+            } else {
+                comparisonMessage += `Que pena! Sua resposta total está INCORRETA.\nO resultado correto é: ${totalSum}`;
+                resultClass = 'incorrect';
+            }
+
+            resultDiv.textContent = operationStr + comparisonMessage;
+            resultDiv.style.display = 'block';
+
+            resultDiv.classList.remove('correct', 'incorrect');
+            resultDiv.classList.add(resultClass);
+        });
+
+        // Função para resetar os seletores CDU, os inputs de NÚMERO FORMADO, o input de resposta TOTAL e os resultados (AJUSTADA para não resetar a dica)
+        function resetGame() {
+            const cduSelects = document.querySelectorAll('.selector-group select');
+            cduSelects.forEach(select => {
+                select.value = '0';
+            });
+
+             for (let i = 0; i < numberOfBoxes; i++) {
+                updateVisualRepresentation(i); // Reseta visualização principal (agora sem a dica) E chama checkFormedNumber
+                document.getElementById(`formedNumberInput-${i}`).value = '';
+                document.getElementById(`feedback-icon-${i}`).textContent = '?';
+                 document.getElementById(`feedback-icon-${i}`).classList.remove('correct', 'incorrect');
+
+                 // REMOVIDO CÓDIGO PARA RESETAR A DICA
+             }
+
+            userAnswerInput.value = '';
+
+            resultDiv.textContent = initialResultText;
+            resultDiv.classList.remove('correct', 'incorrect');
+            resultDiv.style.display = 'block';
+        }
+
+        // Evento de clique no botão para resetar (mantido)
+        resetButton.addEventListener('click', resetGame);
+
+
+        // Mostra o texto inicial no resultado ao carregar a página e limpa os inputs (AJUSTADA para não limpar a dica)
+        resultDiv.textContent = initialResultText;
+        resultDiv.style.display = 'block';
+        userAnswerInput.value = '';
+         for (let i = 0; i < numberOfBoxes; i++) {
+             const formedInput = document.getElementById(`formedNumberInput-${i}`);
+             if (formedInput) formedInput.value = '';
+             const feedback = document.getElementById(`feedback-icon-${i}`);
+             if (feedback) {
+                 feedback.textContent = '?';
+                 feedback.classList.remove('correct', 'incorrect');
+             }
+              // REMOVIDO CÓDIGO PARA OCULTAR/LIMPAR A DICA NO CARREGAMENTO
+         }
+
+
+    </script>
+
+</body>
+</html>

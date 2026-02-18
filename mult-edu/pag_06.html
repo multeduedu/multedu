@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiplicador x 07</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Estilos Gerais */
+    body {
+      background-color: #f8f9fa;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Reset básico */
+
+    .custom-select,
+    .custom-input {
+      width: 70px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .x11-label {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .button-label {
+      font-size: 1rem;
+      font-weight: bold;
+      width: 120px;
+      text-align: center;
+    }
+
+    /* Linhas Centralizadas - Adicionado position:relative */
+    .centered-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      flex-wrap: nowrap;
+      position: relative;
+      /* Necessário para offsetParent e posicionamento da seta */
+      margin-bottom: 20px;
+      /* Adiciona espaçamento inferior */
+
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    /* Ajuste de espaçamento entre caixas de input */
+    .inputRow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      /* Aumentado de 10px para 20px */
+      margin-bottom: 30px;
+      /* Adicionado espaço extra abaixo das caixas de input */
+    }
+
+    /* Container Principal do Jogo */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Video e Seta */
+    .video-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 350px;
+      height: 100px;
+      z-index: 100;
+    }
+
+    .arrow {
+      position: absolute;
+      font-size: 2rem;
+      color: red;
+      animation: bounce 1s infinite;
+      transition: left 0.3s ease, top 0.3s ease;
+      z-index: 50;
+      pointer-events: none;
+      /* Evita interferir com cliques */
+      /* display: none; é controlado por JS */
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Inputs e Radios */
+    .custom-input {
+      width: 80px;
+      font-size: 2rem;
+    }
+
+    .radio-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      justify-content: center;
+    }
+
+    .radio-input-wrapper input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    /* Layout Responsivo Geral */
+    .game-and-side-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    .side-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      align-items: center;
+    }
+
+    /* Caixa de Regras */
+    .rule-box {
+      border: 2px solid #4682b4;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: #e0f2f7;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 95%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+
+    .rule-box h4 {
+      margin-top: 0;
+      color: #1e3a8a;
+      text-align: center;
+    }
+
+    .rule-box p,
+    .rule-box ul {
+      margin: 0;
+      color: #333;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+
+    /* Ajuste de fonte */
+    .rule-box ul {
+      padding-left: 20px;
+    }
+
+    .rule-box li {
+      margin-bottom: 5px;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .video-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0;
+        right: 0;
+        margin-bottom: 20px;
+      }
+
+      .centered-row.mb-4 {
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 15px;
+      }
+
+      .text-center {
+        width: auto;
+        text-align: center;
+      }
+
+      .game-and-side-wrapper {
+        padding: 0 5px;
+      }
+
+      .container {
+        width: 100%;
+        padding: 10px;
+      }
+
+      .rule-box {
+        width: 95%;
+        max-width: none;
+      }
+
+      .custom-select,
+      .custom-input {
+        width: 55px;
+        font-size: 1rem;
+      }
+
+      /* Ajuste mobile */
+      .button-label {
+        width: 100px;
+        font-size: 0.9rem;
+      }
+
+      /* Ajuste mobile */
+      .x11-label {
+        font-size: 1.2rem;
+      }
+
+      /* Ajuste mobile */
+      iframe {
+        width: 100%;
+        height: auto;
+      }
+
+      body>header {
+        margin-bottom: 1rem;
+      }
+
+      /* Menor margem */
+      h1 {
+        font-size: 2rem;
+      }
+
+      /* Menor título */
+    }
+
+    @media (min-width: 769px) {
+      .game-and-side-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 30px;
+        padding: 0 20px;
+      }
+
+      .container {
+        width: 60%;
+        padding: 0;
+      }
+
+      .side-content-wrapper {
+        width: 35%;
+      }
+
+      .rule-box {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header style="margin-bottom: 2rem;">
+    <a href="./atividades.html"><button class="voltar-main">← Voltar</button></a>
+  </header>
+  <br><br>
+  <h1 style="
+    text-align: center;
+    font-size: 3rem; /* Mantido grande, ajustado em media query */
+    font-weight: bold;
+    font-family: 'Indie Flower', cursive;
+    background: linear-gradient(to right, #ff7f50, #ff6347);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 1px 1px 2px #eab359;
+    margin-top: 1rem; margin-bottom: 1rem;">
+    Multiplicação por 07 - Metodologia Trachtenberg
+  </h1>
+
+  <div class="video-container">
+    <iframe width="320" height="180" src="https://www.youtube.com/embed/4uIW08M3xQU?si=akMjzR2ex_zGEDHD" title="Placeholder Video"
+      frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="game-and-side-wrapper">
+
+    <div class="container">
+      <h3 class="mb-4 text-center">Selecione os números e digite valores:</h3>
+      <div class="button-row mb-4"> <button class="btn btn-secondary button-label">5° Dígito</button>
+        <button class="btn btn-secondary button-label">4° Dígito</button>
+        <button class="btn btn-secondary button-label">3° Dígito</button>
+        <button class="btn btn-secondary button-label">2° Dígito</button>
+        <button class="btn btn-secondary button-label">1° Dígito</button>
+      </div>
+
+      <div class="centered-row mb-4" id="selectRow">
+        <div id="arrow" class="arrow" style="display: none;">⬇️</div>
+
+        <select class="form-select bg-danger text-white custom-select" id="select5" disabled>
+          <option value="0" selected>0</option>
+        </select>
+        <select class="form-select bg-warning custom-select" id="select4"></select>
+        <select class="form-select bg-success text-white custom-select" id="select3"></select>
+        <select class="form-select bg-primary text-white custom-select" id="select2"></select>
+        <select class="form-select bg-info text-white custom-select" id="select1"></select>
+        <div class="x11-label">× 7 </div>
+      </div>
+
+      <div class="centered-row mb-4 inputRow">
+        <div class="text-center"><input placeholder="5º" type="text" class="form-control custom-input" maxlength="1"
+            inputmode="numeric" pattern="[0-9]" id="input5" /></div>
+        <div class="text-center">
+          <div class="radio-input-wrapper"><input type="radio" name="digitSelector" id="radioDigit4"> <input
+              placeholder="4º" type="text" class="form-control custom-input" maxlength="1" inputmode="numeric"
+              pattern="[0-9]" id="input4" /></div>
+        </div>
+        <div class="text-center">
+          <div class="radio-input-wrapper"><input type="radio" name="digitSelector" id="radioDigit3"> <input
+              placeholder="3º" type="text" class="form-control custom-input" maxlength="1" inputmode="numeric"
+              pattern="[0-9]" id="input3" /></div>
+        </div>
+        <div class="text-center">
+          <div class="radio-input-wrapper"><input type="radio" name="digitSelector" id="radioDigit2"> <input
+              placeholder="2º" type="text" class="form-control custom-input" maxlength="1" inputmode="numeric"
+              pattern="[0-9]" id="input2" /></div>
+        </div>
+        <div class="text-center">
+          <div class="radio-input-wrapper"><input type="radio" name="digitSelector" id="radioDigit1"> <input
+              placeholder="1º" type="text" class="form-control custom-input" maxlength="1" inputmode="numeric"
+              pattern="[0-9]" id="input1" /></div>
+        </div>
+      </div>
+
+      <div class="mt-4 d-flex justify-content-center gap-3">
+        <button class="btn btn-primary btn-lg" style="min-width: 120px;"
+          onclick="multiplicarNumeroDosSelects()">Conferir</button>
+        <button class="btn btn-secondary btn-lg" style="min-width: 120px;" onclick="limparSelects()">Limpar</button>
+      </div>
+    </div>
+
+    <div class="side-content-wrapper">
+      <div class="rule-box">
+        <h4>(Multiplicação por 7 - Trachtenberg)</h4>
+        <p>Dobre o número e some metade do vizinho; adicione 5 se o número for ímpar.:</p>
+        <ul>
+          <li>1°Digito : Dobrar o numero e somar a + 5 se impar.</li>
+          <li>2° Digito: Dobrar o 2° digito e somar a metade do vizinho e se impar + 5.</li>
+          <li>3° Digito: Dobrar o 3° digito e some metade do vizinho; adicione + 5 se o número for ímpar.</li>
+          <li>4° Digito: Dobrar o 4° digito e some metade do vizinho; adicione + 5 se o numero for ímpar.</li>
+          <li>5° Digito: Metade do vizinho;</li>
+        </ul>
+        <p><strong>Metade do vizinho (arredondado para baixo):</strong></p>
+        <ul>
+          <li>Considere a metade do vizinho:</li>
+          <li>1 = 0</li>
+          <li>2 = 1</li>
+          <li>3 = 1</li>
+          <li>4 = 2</li>
+          <li>5 = 2</li>
+          <li>6 = 3</li>
+          <li>7 = 3</li>
+          <li>8 = 4</li>
+          <li>9 = 4</li>
+          <li>0 = 0</li>
+          <li>Exemplo: Para o dígito 7, a metade do vizinho (3) é 3.</li>
+        </ul>
+        <p><em>Nota: O vizinho do dígito mais à direita é 0. O 5º dígito do resultado é a metade do 4º dígito original +
+            carry do passo anterior.</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <audio id="sound1" src="https://cdn.pixabay.com/audio/2022/03/15/audio_7f92e6f0bdb.mp3"></audio>
+  <audio id="sound2" src="https://cdn.pixabay.com/audio/2022/03/03/audio_95f2764d7e.mp3"></audio>
+  <audio id="sound3" src="https://cdn.pixabay.com/audio/2021/09/01/audio_3e4fe70987.mp3"></audio>
+  <audio id="sound4" src="https://cdn.pixabay.com/audio/2022/02/24/audio_d50e6f0bdb.mp3"></audio>
+
+  <script>
+    // --- Funções Utilitárias ---
+    function getElement(id) {
+      const el = document.getElementById(id);
+      if (!el) console.error(`Elemento não encontrado: #${id}`);
+      return el;
+    }
+
+    // --- Inicialização ---
+    function setupSelects() {
+      for (let i = 1; i <= 4; i++) {
+        const select = getElement(`select${i}`);
+        if (select) {
+          select.innerHTML = '';
+          for (let j = 0; j <= 9; j++) {
+            const option = document.createElement("option");
+            option.value = j; option.textContent = j;
+            select.appendChild(option);
+          }
+          select.value = '0';
+        }
+      }
+      const select5 = getElement('select5');
+      if (select5) select5.value = '0';
+    }
+
+    function setupInputs() {
+      document.querySelectorAll('.custom-input').forEach(input => {
+        input.addEventListener('input', () => {
+          input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
+        });
+        // Adiciona IDs dinamicamente se não existirem (baseado no placeholder)
+        if (!input.id) {
+          const placeholder = input.getAttribute('placeholder');
+          const digitMatch = placeholder ? placeholder.match(/(\d)/) : null;
+          if (digitMatch) {
+            input.id = `input${digitMatch[1]}`;
+          }
+        }
+      });
+
+      // Adiciona IDs aos radios dinamicamente se não existirem
+      document.querySelectorAll('.radio-input-wrapper input[type="radio"]').forEach(radio => {
+        if (!radio.id) {
+          const input = radio.nextElementSibling; // Assume input é o próximo irmão
+          const inputId = input ? input.id : null;
+          const digitMatch = inputId ? inputId.match(/(\d)/) : null;
+          if (digitMatch) {
+            radio.id = `radioDigit${digitMatch[1]}`;
+          }
+        }
+      });
+    }
+
+    // --- Lógica da Seta ---
+    const arrowState = { timer: null }; // Para controlar o timeout da seta
+
+    function positionArrow(targetElement, arrowElement, arrowContainer) {
+      clearTimeout(arrowState.timer); // Cancela timeout anterior se houver
+
+      if (!targetElement || !arrowElement || !arrowContainer) return;
+
+      const targetRect = targetElement.getBoundingClientRect();
+      const containerRect = arrowContainer.getBoundingClientRect();
+      const arrowHeight = arrowElement.offsetHeight || 32; // Usa um fallback se offsetHeight for 0
+      const arrowWidth = arrowElement.offsetWidth || 32; // Usa um fallback
+      const targetWidth = targetRect.width;
+
+      // Cálculo da posição da seta 10px acima e centralizada no alvo
+      const targetArrowLeftViewport = targetRect.left + (targetWidth / 2) - (arrowWidth / 2);
+      const offsetX = targetArrowLeftViewport - containerRect.left;
+
+      const targetArrowTopViewport = targetRect.top - arrowHeight - 10;
+      const offsetY = targetArrowTopViewport - containerRect.top;
+
+      arrowElement.style.left = `${offsetX}px`;
+      arrowElement.style.top = `${offsetY}px`;
+      arrowElement.style.display = 'block'; // Mostra a seta
+
+      // Agenda para esconder a seta
+      arrowState.timer = setTimeout(() => {
+        arrowElement.style.display = 'none';
+        arrowState.timer = null;
+      }, 5000);
+    }
+
+
+    // --- Funções Principais ---
+
+    // Função para som + popup + seta (apontando para SELECTS)
+    function mostrarAjuda(numero) {
+      const som = document.getElementById(`sound${numero}`);
+      if (som) som.play();
+
+      // Regras específicas para cada passo
+      const mensagens = {
+        1: "Dobrar o 1° dígito se par. Se for ímpar, adicione +5 ao resultado.",
+        2: "Dobrar o 2° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+        3: "Dobrar o 3° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+        4: "Dobrar o 4° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+        5: "Metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+      };
+
+      // Exibe a mensagem correspondente ao número do dígito
+      Swal.fire({
+        title: `Ajuda: ${numero}° Dígito`,
+        text: mensagens[numero] || "Regra não definida para este dígito.",
+        icon: 'info',
+        confirmButtonText: 'Entendi!',
+        confirmButtonColor: '#3085d6'
+      });
+
+      // Posiciona a seta no seletor correspondente
+      const arrow = document.getElementById("arrow");
+      const targetSelect = document.getElementById(`select${numero}`);
+      const arrowContainer = document.querySelector(".centered-row.mb-4");
+
+      if (targetSelect && arrow && arrowContainer) {
+        const targetRect = targetSelect.getBoundingClientRect();
+        const containerRect = arrowContainer.getBoundingClientRect();
+
+        const offsetX = targetRect.left - containerRect.left + (targetRect.width / 2) - (arrow.offsetWidth / 2);
+        const offsetY = targetRect.top - containerRect.top - arrow.offsetHeight - 10;
+
+        arrow.style.left = `${offsetX}px`;
+        arrow.style.top = `${offsetY}px`;
+        arrow.style.display = "block";
+
+        // Agenda para esconder a seta após 5 segundos
+        clearTimeout(arrowState.timer);
+        arrowState.timer = setTimeout(() => {
+          arrow.style.display = "none";
+          arrowState.timer = null;
+        }, 5000);
+      }
+    }
+
+    // Comparação com resultado × 7 
+    function multiplicarNumeroDosSelects() {
+      const selectsValues = [];
+      for (let i = 5; i >= 1; i--) {
+        selectsValues.push(getElement(`select${i}`)?.value?.trim() ?? '0');
+      }
+      const inputsValues = [];
+      for (let i = 5; i >= 1; i--) {
+        inputsValues.push(getElement(`input${i}`)?.value?.trim() ?? '');
+      }
+
+      const numeroOriginal = selectsValues.join('');
+      const numeroDigitado = inputsValues.join('');
+
+      if (inputsValues.every(val => val === '')) {
+        Swal.fire('⚠️ Aviso', 'Por favor, preencha pelo menos um campo de resposta.', 'warning');
+        return;
+      }
+
+      const numeroConvertido = Number(numeroOriginal);
+      if (isNaN(numeroConvertido)) {
+        Swal.fire('Erro', 'Valor inválido nos seletores.', 'error');
+        return;
+      }
+
+      const resultadoCorreto = String(numeroConvertido * 7);
+
+      // Remove zeros à esquerda para comparação
+      const numeroDigitadoSemZeros = numeroDigitado.replace(/^0+/, '') || '0';
+      const resultadoCorretoSemZeros = resultadoCorreto.replace(/^0+/, '') || '0';
+
+      const displayOriginal = numeroOriginal.replace(/^0+/, '') || '0';
+      if (numeroDigitadoSemZeros === resultadoCorretoSemZeros) {
+        Swal.fire('✅ Acertou!', `A multiplicação de ${displayOriginal} × 7 é: ${resultadoCorreto}`, 'success');
+      } else {
+        Swal.fire('❌ Errou!', `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${displayOriginal} × 7 é: ${resultadoCorreto}`, 'error');
+      }
+    }
+
+    // Limpar selects e inputs
+    function limparSelects() {
+      for (let i = 1; i <= 5; i++) {
+        const selectEl = getElement(`select${i}`); if (selectEl) selectEl.value = '0';
+        const inputEl = getElement(`input${i}`); if (inputEl) inputEl.value = '';
+      }
+      document.querySelectorAll('input[name="digitSelector"]').forEach(radio => { radio.checked = false; });
+      const arrow = getElement('arrow'); if (arrow) arrow.style.display = 'none';
+      clearTimeout(arrowState.timer); // Limpa timeout da seta
+      arrowState.timer = null;
+      Swal.fire('🧹 Limpo!', 'Todos os valores foram limpos.', 'info');
+    }
+
+    // --- Configuração de Event Listeners ---
+    function setupEventListeners() {
+      // Botões de Ajuda
+      const helpButtons = document.querySelectorAll('.button-row .button-label');
+      helpButtons.forEach((button, index) => {
+        const digitNumber = 5 - index;
+        button.onclick = () => mostrarAjuda(digitNumber);
+      });
+
+      // Botões de Rádio (apontando para INPUTS)
+      const radioButtons = document.querySelectorAll('input[name="digitSelector"]');
+      radioButtons.forEach((radio) => {
+        radio.addEventListener('change', () => {
+          if (radio.checked) {
+            const digitNum = radio.id.replace('radioDigit', '');
+            const targetInput = getElement(`input${digitNum}`);
+            const arrow = getElement("arrow");
+            const arrowContainer = getElement('selectRow'); // Onde a seta vive
+
+            positionArrow(targetInput, arrow, arrowContainer); // Usa a função helper
+          }
+        });
+      });
+    }
+
+    // --- Execução no Carregamento do DOM ---
+    document.addEventListener('DOMContentLoaded', () => {
+      setupSelects();
+      setupInputs(); // Garante que inputs e radios tenham IDs
+      setupEventListeners();
+    });
+
+  </script>
+
+</body>
+
+</html>

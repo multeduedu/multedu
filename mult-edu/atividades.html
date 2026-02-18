@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Importando Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Importando o Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+  <!-- Referenciando o arquivo CSS -->
+  <link rel="stylesheet" href="./css/style.css">
+
+  <title>Atividades</title>
+
+  <style>
+    .carousel-item {
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      color: white;
+    }
+
+    .carousel-caption {
+      background-color: rgba(0, 0, 0, 0.589);
+      padding: 40px;
+      border-radius: 10px;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      padding: 10px;
+    }
+
+    .carousel-indicators [data-bs-target] {
+      background-color: #fff;
+    }
+
+    h1 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .carousel-item {
+        height: 250px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      .carousel-caption {
+        padding: 10px 15px;
+        bottom: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: auto;
+        max-width: 90%;
+        margin: 0 auto;
+        border-radius: 8px;
+      }
+
+      .carousel-caption h5 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+
+      .carousel-caption p {
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+      }
+
+      .carousel-caption .btn {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header id="title-pag1">
+    <!-- NAVIGATION BAR -->
+    <nav
+      class="container-fluid-pag1 navbar navbar-expand-lg navbar-dark d-flex justify-content-between align-items-center">
+      <!-- Logo com título -->
+      <a href="#" style="text-decoration: none;">
+        <h1 class="multedu-index" style="color: #000000; font-size: 2rem; font-weight: bold; margin-left: 19%; margin-top: 15%;">
+          Mult<span style="color:#eab359;">Edu</span></h1>
+      </a>
+
+
+
+      <!-- Toggler button for mobile view -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01"
+        aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar content -->
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav flex-grow-1 justify-content-center mt-3">
+          <li class="nav-item">
+            <p style="font-size: 2rem; font-weight: bold;">Escolha a atividade</p>
+          </li>
+        </ul>
+        <!-- Botões alinhados à direita -->
+        <ul class="navbar-nav me-3">
+
+          <li class="nav-item">
+            <a class="navigation-bar nav-link" href="./index.html">
+              <button class="btn-pause btn btn-light" type="button">
+                <i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- NAVIGATION BAR -->
+  </header>
+
+  <main class="container">
+
+    <!-- Carrossel 1 -->
+    <h1>Multiplicação pela metodologia Trachtenberg</h1>
+    <div id="carousel1" class="carousel slide mb-5">
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="4" aria-label="Slide 5"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="6" aria-label="Slide 7"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="7" aria-label="Slide 8"></button>
+        <button type="button" data-bs-target="#carousel1" data-bs-slide-to="8" aria-label="Slide 9"></button>
+
+      </div>
+
+      <!-- Slides -->
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('./img/pag01_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 11</h5>
+            <a href="pag_01.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag05_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 6</h5>
+            <a href="pag_05.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag06_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 7</h5>
+            <a href="pag_06.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag07_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 5</h5>
+            <a href="pag_07.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag04_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 2</h5>
+            <a href="pag_04.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag09_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 8</h5>
+            <a href="pag_09.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag08_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 9</h5>
+            <a href="pag_08.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag10_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 4</h5>
+            <a href="pag_10.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag11_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Multiplicação por 3</h5>
+            <a href="pag_11.html" class="btn btn-light btn-lg">Iniciar 🚀</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel1" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel1" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
+    </div>
+
+    <!-- Carrossel 2 -->
+    <h1>Soma e Subtração</h1>
+    <div id="carousel2" class="carousel slide mb-5">
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carousel2" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carousel2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      </div>
+
+      <!-- Slides -->
+      <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('./img/pag02_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Soma</h5>
+            <a href="pag_02.html" class="btn btn-light">Iniciar 🚀</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('./img/pag03_img.png');">
+          <div class="carousel-caption">
+            <h5 style="font-size: 2rem;">Subtração</h5>
+            <a href="pag_03.html" class="btn btn-light">Iniciar 🚀</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
+    </div>
+
+  </main>
+
+
+
+  <!-- Importando o JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Link do JavaScript -->
+  <script src="script.js"></script>
+</body>
+
+</html>

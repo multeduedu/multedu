@@ -1,0 +1,470 @@
+@charset "UTF-8";
+
+
+/*================================ PÁGINA INICIAL ==============================================*/
+
+
+/*=========== SEÇÃO DE TAGS ===============*/
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+/*=========== SEÇÃO DE CLASSES ===============*/
+
+/* Navegation bar*/
+
+
+
+.container-fluid {
+  background-color: #0000009a;
+}
+
+.navigation-bar {
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+}
+
+/* Navegation bar*/
+
+.row-index {
+  margin-top: 8%;
+}
+
+.container-cabecalho {
+  background-color: #eab259d8;
+  display: flex;
+  margin: 20% 15%;
+  flex-direction: column;
+  justify-content: center;
+  height: 60vh;
+  width: 600px;
+  border-radius: 30px;
+}
+
+.content {
+  text-align: left;
+  /* Centraliza o texto */
+  color: black;
+  padding: 1rem;
+  /* Adiciona espaçamento interno */
+  width: 90%;
+  /* Garante que o conteúdo ocupe toda a largura disponível */
+  box-sizing: border-box;
+  /* Garante que o padding seja incluído na largura total */
+}
+
+.d-flex {
+  justify-content: space-evenly;
+}
+
+/* Ajustes específicos para dispositivos móveis */
+@media (max-width: 767px) {
+  .container-cabecalho {
+    margin-left: 0;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    /* Margem à esquerda para dispositivos móveis */
+    padding-right: 1rem;
+    /* Margem à direita para dispositivos móveis */
+    height: auto;
+    /* Ajusta a altura para dispositivos móveis */
+  }
+
+  .content-cabecalho {
+    margin-top: 5%;
+    padding: 0.5rem;
+    margin-top: 0%;
+    /* Ajuste no padding para telas menores */
+
+  }
+}
+
+
+.botao-cabecalho {
+  text-decoration: none;
+  /* Remove o sublinhado do link */
+  display: inline-block;
+  /* Garantir que o link e o botão tenham o mesmo tamanho */
+  border-radius: 30px;
+  width: 200px;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.847);
+  color: #fff;
+  font-weight: bolder;
+}
+
+.botao-cabecalho:hover {
+
+  background-color: rgb(51, 49, 49);
+
+}
+
+.botao-cabecalho button {
+  display: block;
+  /* Faz o botão ocupar toda a largura disponível dentro do link */
+}
+
+.footer-index {
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+
+
+/*=========== SEÇÃO DE IDS ===============*/
+
+#title-main {
+  background-image: url("../img/Home_Capa.jpg");
+  background-size: cover;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+  background-position: center center;
+}
+
+#subtitle {
+  height: 80vh;
+  background-color: rgb(255, 255, 255);
+
+}
+
+
+/*================================== LOGIN E CADASTRO  ==============================================*/
+
+/*=========== SEÇÃO DE CLASSES ===============*/
+
+.voltar-main {
+  background-color: #eab259d8;
+  padding: 8px 12px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border: none;
+  margin: 2% 2%;
+  z-index: 1;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
+.voltar-main:hover {
+  background-color: #daa959;
+}
+
+.action-button {
+  margin: 1% 2%;
+  background-color: #eab259d8;
+  padding: 1%;
+  border-radius: 20px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #daa959;
+  color: #fff;
+}
+
+
+/*=========== SEÇÃO DE IDS ===============*/
+
+#rodape-login-cadastro {
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
+}
+
+/*==================================== PÁGINA 1  ================================================*/
+
+
+/*=========== SEÇÃO DE CLASSES ===============*/
+
+.conteudo-pag1 {
+  margin-top: 0px;
+}
+
+.button_title-pag1 {
+  justify-content: flex-end;
+}
+
+.container-fluid-pag1 {
+  background-color: #ffffff68;
+
+}
+
+.navbar-toggler-icon {
+  background-color: #00000015;
+  /* Cor preta */
+}
+
+.escolha-carro {
+  margin: 4% 2%;
+  padding: 0px 0px;
+}
+
+/* Estilo para os botões dos carros */
+.btn-carros {
+  width: 100%;
+  /* O botão irá ocupar toda a largura do contêiner */
+  padding: 10%;
+  /* Remove o padding do botão */
+  border: none;
+  /* Remove a borda do botão */
+  margin-top: 10%;
+  /* Adiciona espaço entre os botões */
+  display: block;
+  /* Garante que o botão seja exibido como um bloco */
+  border: solid 1px;
+  box-shadow: 0 0 7px black;
+}
+
+.btn-carros:hover {
+  border: solid 3px;
+}
+
+/* Estilo para as imagens dentro dos botões */
+.img-carros img {
+  width: 100%;
+  /* A imagem vai se ajustar ao tamanho do botão */
+  height: auto;
+  /* Garante que a imagem mantenha a proporção */
+  object-fit: cover;
+  /* Garante que a imagem preencha o botão sem distorcer */
+
+}
+
+/* Responsividade: ajustes para dispositivos móveis */
+@media (max-width: 768px) {
+
+  /* Centraliza a coluna de carros em telas pequenas */
+  .escolha-carro {
+    text-align: center;
+    padding: 0 10px;
+    margin: 15px 0px;
+    /* Adiciona algum espaço nas laterais */
+  }
+
+  /* Garante que as imagens dentro dos botões não ultrapassem o limite da tela */
+  .img-carros {
+    display: block;
+    margin: auto;
+    margin-bottom: 15px;
+    /* Adiciona espaço entre os botões no mobile */
+    width: 90%;
+    /* Garante que os botões e as imagens ocupem 100% da largura disponível */
+  }
+}
+
+/* Para telas pequenas, a largura da coluna será 100% */
+@media (max-width: 576px) {
+  .escolha-carro {
+    width: 100%;
+    padding: 0 15px;
+    margin: 15px 0px;
+    /* Ajusta o padding em telas pequenas */
+    /* Adiciona uma margem à direita em dispositivos móveis */
+  }
+}
+
+.legenda-video {
+  margin: 6% 0% 4%;
+}
+
+/* Responsividade para o vídeo */
+.video-pag1 {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* Proporção 16:9 */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  /* Limita o vídeo à largura máxima da coluna */
+}
+
+.video-pag1 iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+
+/* Ajustes específicos para dispositivos móveis */
+@media (max-width: 768px) {
+
+  /* Ajusta a posição da legenda para centralizar em telas pequenas */
+  .legenda-video {
+    text-align: center;
+    margin-bottom: 20px;
+    /* Espaçamento do título para o vídeo */
+  }
+
+  /* Ajustes no vídeo para garantir que não ultrapasse a largura da tela */
+  .video-pag1 {
+    padding-bottom: 56.25%;
+    /* Proporção 16:9 para telas pequenas */
+
+    margin-bottom: 5%;
+  }
+}
+
+.comecar-pag1 {
+  font-size: 1.5rem;
+  border: none;
+  margin-bottom: 30px;
+  border-radius: 30px;
+  background-color: #eab359;
+}
+
+.comecar-pag1:hover {
+  cursor: pointer;
+  background-color: #daa959;
+  color: #fff;
+}
+
+
+
+
+/*=========== SEÇÃO DE IDS ===============*/
+
+#title-pag1 {
+  background-color: #f0f0f0;
+}
+
+#explicacao-pag1 {
+  height: 89vh;
+  padding-bottom: 20%;
+}
+
+/*==================================== SOBRE NÓS  ================================================*/
+
+
+/*========= SEÇÃO DE CLASSES ===============*/
+
+.btn-voltar-sobre {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #000000;
+
+  color: white;
+  padding: 8px 12px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+
+}
+
+.btn-voltar-sobre:hover {
+  background-color: #3d3d3d;
+  cursor: pointer;
+}
+
+.sobre-nos {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 6% 3%;
+  background-color: #eab359;
+}
+
+.cnt1-sobre {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.sub-cnt1-sobre {
+  text-align: justify;
+}
+
+.img-text-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.img-text-wrapper.left {
+  flex-direction: row;
+}
+
+.img-text-wrapper.right {
+  flex-direction: row-reverse;
+}
+
+.sobre-img {
+  width: 15%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.logo-sobre{
+  width: 20%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.text-content {
+  text-align: justify;
+}
+
+.text-content h1,
+.text-content h2,
+.text-content h3 {
+  text-align: center;
+  margin-top: 0;
+}
+
+/* Responsivo: em telas pequenas, imagem vai pra cima */
+@media (max-width: 768px) {
+  .img-text-wrapper {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  .text-content {
+    text-align: justify;
+  }
+
+  .sobre-img {
+    margin: 0 auto;
+    width: 40%;
+    height: auto;
+  }
+
+  .logo-sobre{
+    width: 70%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+}
+
+
+
+
+
+
+
+
+/*=========== SEÇÃO DE IDS ===============*/
