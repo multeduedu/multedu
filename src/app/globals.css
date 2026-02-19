@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+
+  --color-primary: #eab359;
+  --color-primary-hover: #daa959;
+   --color-primary-transparent: rgba(234, 179, 89, 0.25);
+  --color-dark: #000000;
+  --color-dark-hover: #3d3d3d;
+  --color-navbar-bg: #0000009a;
+  --color-text-white: #ffffff;
+  --color-footer-bg: #ffffff;
+  --color-container-bg: #ffffff68;
+  --color-toggler-bg: #00000015;
+  --color-title-bg: #f0f0f0;
+  --color-btn-dark-hover: rgb(51, 49, 49);
+}
+
+:root {
+  --color-primary: #eab359;
+  --color-primary-hover: #daa959;
+  --color-primary-transparent: rgba(234, 179, 89, 0.8);
+  --color-dark: #000000;
+  --color-dark-hover: #3d3d3d;
+  --color-navbar-bg: #0000009a;
+  --color-text-white: #ffffff;
+  --color-footer-bg: #ffffff;
+  --color-container-bg: #ffffff68;
+  --color-toggler-bg: #00000015;
+  --color-title-bg: #f0f0f0;
+  --color-btn-dark-hover: rgb(51, 49, 49);
+}
+
+/* ===================== */
+/* DARK MODE */
+/* ===================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
+  }
+  
+  @theme {
+    --color-background: #0a0a0a;
+    --color-foreground: #ededed;
+  }
+}
+
+/* ===================== */
+/* BODY GLOBAL */
+/* ===================== */
+body {
+  margin: 0;
+  padding: 0;
+}
