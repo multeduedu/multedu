@@ -1,271 +1,122 @@
 "use client";
 
+import { signUp } from "@/actions/auth";
 import Link from "next/link";
-import { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
-
-interface Errors {
-    nome?: string;
-    sobrenome?: string;
-    email?: string;
-    senha?: string;
-    confirmarSenha?: string;
-}
+import { useFormState } from "react-dom";
+import { useState } from "react"; // Adicionado para gerenciar o estado de sucesso
 
 export default function CadastroPage() {
-    const [formData, setFormData] = useState({
-        nome: "",
-        sobrenome: "",
-        email: "",
-        senha: "",
-        confirmarSenha: "",
-    });
+  const [isSuccess, setIsSuccess] = useState(false); // Novo estado para o alerta
+  
+  // O useFormState gerencia os erros vindos da Server Action
+  const [state, formAction] = useFormState(handleSubmit, { error: null });
 
-    const [errors, setErrors] = useState<Errors>({});
+  async function handleSubmit(prevState: any, formData: FormData) {
+    const nome = formData.get("nome") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmarSenha = formData.get("confirmarSenha") as string;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
+    // Validações de segurança no lado do cliente (OpSec)
+    if (!nome || nome.length < 2) return { error: "Por favor, digite seu nome." };
+    if (!email || !email.includes("@")) return { error: "E-mail inválido." };
+    if (password !== confirmarSenha) {
+      return { error: "As senhas não coincidem. Digite novamente." };
+    }
+    if (password.length < 6) {
+      return { error: "A senha deve ter pelo menos 6 caracteres." };
+    }
 
-    const validate = () => {
-        const newErrors: Errors = {};
+    // Chama a função de cadastro que você criou no Supabase
+    const result = await signUp(formData);
 
-        if (!formData.nome.trim()) {
-            newErrors.nome = "Digite seu nome.";
-        } else if (formData.nome.length < 2) {
-            newErrors.nome = "O nome deve ter no mínimo 2 caracteres.";
-        }
+    if (result.success) {
+      setIsSuccess(true); // Ativa a mensagem de sucesso
+      
+      // Aguarda 3 segundos para que a criança veja o feedback antes do redirecionamento
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
+      
+      return { error: null };
+    }
 
-        if (!formData.sobrenome.trim()) {
-            newErrors.sobrenome = "Digite seu sobrenome.";
-        } else if (formData.sobrenome.length < 2) {
-            newErrors.sobrenome = "O sobrenome deve ter no mínimo 2 caracteres.";
-        }
+    return { error: result.error || "Erro ao tentar cadastrar." };
+  }
 
-        if (!formData.email.trim()) {
-            newErrors.email = "Digite seu email.";
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = "Digite um email válido.";
-        }
+  return (
+    <main className="min-h-screen w-screen flex font-sans">
+      {/* LADO DA IMAGEM (Desktop) */}
+      <section className="hidden md:block md:w-1/2 h-screen">
+        <img src="/login.avif" alt="Estudante" className="w-full h-full object-cover" />
+      </section>
 
-        if (!formData.senha.trim()) {
-            newErrors.senha = "Crie uma senha.";
-        } else if (formData.senha.length < 6) {
-            newErrors.senha = "A senha deve ter no mínimo 6 caracteres.";
-        }
+      {/* LADO DO FORMULÁRIO */}
+      <section className="w-full md:w-1/2 min-h-screen flex items-center justify-center bg-white relative px-6 py-12">
+        <Link href="/" className="absolute top-6 left-6 text-3xl text-gray-400 hover:text-[var(--color-primary)] transition-colors">
+          <FiArrowLeft />
+        </Link>
 
-        if (!formData.confirmarSenha.trim()) {
-            newErrors.confirmarSenha = "Confirme sua senha.";
-        } else if (formData.senha !== formData.confirmarSenha) {
-            newErrors.confirmarSenha = "As senhas não coincidem.";
-        }
+        <div className="w-full max-w-md">
+          <header className="mb-8 text-center md:text-left">
+            <h1 className="text-3xl font-bold">
+              Mult<span className="text-[var(--color-primary)]">Edu</span>
+            </h1>
+            <p className="text-gray-500 mt-2">Crie sua conta para começar a aprender!</p>
+          </header>
 
-        return newErrors;
-    };
+          <form action={formAction} className="flex flex-col gap-5">
+            
+            {/* ALERTA DE SUCESSO LÚDICO */}
+            {isSuccess && (
+              <div className="p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-md animate-bounce shadow-sm">
+                <p className="font-bold text-lg">Eba! Conta criada! 🎉</p>
+                <p className="text-sm">Estamos te levando para o portal de matemática...</p>
+              </div>
+            )}
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">Nome</label>
+              <input name="nome" type="text" placeholder="Seu nome" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+            </div>
 
-        const validationErrors = validate();
-        setErrors(validationErrors);
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium text-gray-700">E-mail</label>
+              <input name="email" type="email" placeholder="email@exemplo.com" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+            </div>
 
-        if (Object.keys(validationErrors).length === 0) {
-            console.log("Cadastro enviado:", formData);
-        }
-    };
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-gray-700">Senha</label>
+                <input name="password" type="password" placeholder="******" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium text-gray-700">Confirmar Senha</label>
+                <input name="confirmarSenha" type="password" placeholder="******" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+              </div>
+            </div>
 
-    return (
-        <main className="min-h-screen w-screen flex">
-
-            {/* IMAGEM */}
-            <section
-                aria-hidden="true"
-                className="hidden md:block md:w-1/2 h-screen"
+            <button 
+              type="submit" 
+              disabled={isSuccess} // Desabilita o botão após o sucesso
+              className={`mt-4 ${isSuccess ? 'bg-gray-400' : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'} text-white font-bold py-3 rounded-lg transition-all shadow-md active:scale-95`}
             >
-                <img
-                    src="/login.avif"
-                    alt=""
-                    className="w-full h-full object-cover"
-                />
-            </section>
+              {isSuccess ? "Cadastrado!" : "Criar minha conta"}
+            </button>
 
-            {/* FORM */}
-            <section className="w-full md:w-1/2 min-h-screen md:h-screen flex items-center justify-center bg-white relative px-6 py-16 md:py-0">
+            {state?.error && (
+              <p className="text-center text-red-500 text-sm font-bold bg-red-50 p-3 rounded-md border border-red-100">
+                {state.error}
+              </p>
+            )}
+          </form>
 
-                {/* Botão voltar */}
-                <Link
-                    href="/"
-                    className="absolute top-6 left-6 flex items-center gap-2 text-3xl text-gray-500 hover:text-[var(--color-primary)] transition-colors"
-                >
-                    <FiArrowLeft aria-hidden="true" />
-                </Link>
-
-                <div className="w-full max-w-md md:max-w-lg">
-
-                    <header className="mb-6 text-center lg:mt-10  md:text-left mt-12 md:mt-0">
-                        <h1 className="text-2xl font-bold">
-                            Mult<span className="text-[var(--color-primary)]">Edu</span>
-                        </h1>
-                        <p className="text-sm text-gray-500 mt-1">
-                            Crie sua conta
-                        </p>
-                    </header>
-
-                    <form
-                        onSubmit={handleSubmit}
-                        className="flex flex-col gap-6 md:gap-4"
-                        noValidate
-                    >
-
-                        {/* Nome + Sobrenome */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-4">
-
-                            {/* Nome */}
-                            <div className="flex flex-col gap-1">
-                                <label htmlFor="nome" className="text-sm text-gray-600">
-                                    Nome
-                                </label>
-                                <input
-                                    id="nome"
-                                    name="nome"
-                                    type="text"
-                                    placeholder="Digite seu nome"
-                                    value={formData.nome}
-                                    onChange={handleChange}
-                                    aria-invalid={!!errors.nome}
-                                    aria-describedby="nome-error"
-                                    className={`border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.nome ? "border-red-500" : "border-gray-300"
-                                        }`}
-                                />
-                                {errors.nome && (
-                                    <span id="nome-error" className="text-xs text-red-500">
-                                        {errors.nome}
-                                    </span>
-                                )}
-                            </div>
-
-                            {/* Sobrenome */}
-                            <div className="flex flex-col gap-1">
-                                <label htmlFor="sobrenome" className="text-sm text-gray-600">
-                                    Sobrenome
-                                </label>
-                                <input
-                                    id="sobrenome"
-                                    name="sobrenome"
-                                    type="text"
-                                    placeholder="Digite seu sobrenome"
-                                    value={formData.sobrenome}
-                                    onChange={handleChange}
-                                    aria-invalid={!!errors.sobrenome}
-                                    aria-describedby="sobrenome-error"
-                                    className={`border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.sobrenome ? "border-red-500" : "border-gray-300"
-                                        }`}
-                                />
-                                {errors.sobrenome && (
-                                    <span id="sobrenome-error" className="text-xs text-red-500">
-                                        {errors.sobrenome}
-                                    </span>
-                                )}
-                            </div>
-
-                        </div>
-
-                        {/* Email */}
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="email" className="text-sm text-gray-600">
-                                Email
-                            </label>
-                            <input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="Digite seu email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                aria-invalid={!!errors.email}
-                                aria-describedby="email-error"
-                                className={`border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.email ? "border-red-500" : "border-gray-300"
-                                    }`}
-                            />
-                            {errors.email && (
-                                <span id="email-error" className="text-xs text-red-500">
-                                    {errors.email}
-                                </span>
-                            )}
-                        </div>
-
-                        {/* Senha */}
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="senha" className="text-sm text-gray-600">
-                                Senha
-                            </label>
-                            <input
-                                id="senha"
-                                name="senha"
-                                type="password"
-                                placeholder="Crie uma senha"
-                                value={formData.senha}
-                                onChange={handleChange}
-                                aria-invalid={!!errors.senha}
-                                aria-describedby="senha-error"
-                                className={`border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.senha ? "border-red-500" : "border-gray-300"
-                                    }`}
-                            />
-                            {errors.senha && (
-                                <span id="senha-error" className="text-xs text-red-500">
-                                    {errors.senha}
-                                </span>
-                            )}
-                        </div>
-
-                        {/* Confirmar Senha */}
-                        <div className="flex flex-col gap-1">
-                            <label htmlFor="confirmarSenha" className="text-sm text-gray-600">
-                                Confirmar senha
-                            </label>
-                            <input
-                                id="confirmarSenha"
-                                name="confirmarSenha"
-                                type="password"
-                                placeholder="Confirme sua senha"
-                                value={formData.confirmarSenha}
-                                onChange={handleChange}
-                                aria-invalid={!!errors.confirmarSenha}
-                                aria-describedby="confirmarSenha-error"
-                                className={`border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.confirmarSenha ? "border-red-500" : "border-gray-300"
-                                    }`}
-                            />
-                            {errors.confirmarSenha && (
-                                <span id="confirmarSenha-error" className="text-xs text-red-500">
-                                    {errors.confirmarSenha}
-                                </span>
-                            )}
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="mt-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-medium py-2.5 rounded-md text-sm transition-colors cursor-pointer"
-                        >
-                            Criar conta
-                        </button>
-
-                    </form>
-
-                    <div className="mt-4 text-sm text-gray-600 pb-8">
-                        Já possui conta?{" "}
-                        <Link
-                            href="/login"
-                            className="text-[var(--color-primary)] font-medium hover:opacity-80"
-                        >
-                            Entrar
-                        </Link>
-                    </div>
-
-                </div>
-            </section>
-        </main>
-    );
+          <footer className="mt-8 text-center text-sm text-gray-600">
+            Já tem uma conta? <Link href="/login" className="text-[var(--color-primary)] font-bold hover:underline">Entrar</Link>
+          </footer>
+        </div>
+      </section>
+    </main>
+  );
 }
