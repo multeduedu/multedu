@@ -73,8 +73,6 @@ export const activities: Activity[] = [
     href: "/atividades/multiplicacao-3",
     type: "multiplicacao",
   },
-
-  // Soma e Subtração
   {
     id: "10",
     title: "Soma",

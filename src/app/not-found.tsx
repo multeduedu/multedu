@@ -14,7 +14,6 @@ export default function NotFound() {
         max-w-lg text-center shadow-xl
         "
       >
-        {/* Ícone */}
         <div className="text-[var(--color-primary)] text-6xl md:text-7xl mb-4 flex justify-center">
           <FiFrown />
         </div>

@@ -48,17 +48,14 @@ export default function CadastroPage() {
   return (
     <main className="h-screen w-screen flex overflow-hidden font-sans relative">
 
-      {/* Toggle */}
       <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
 
-      {/* IMAGEM */}
       <section aria-hidden="true" className="hidden md:block w-1/2 h-full">
         <img src="/login.avif" alt="" className="w-full h-full object-cover" />
       </section>
 
-      {/* FORMULÁRIO */}
       <section
         className="
           w-full md:w-1/2 h-full
@@ -95,7 +92,6 @@ export default function CadastroPage() {
 
           <form action={formAction} className="flex flex-col gap-4">
 
-            {/* Sucesso */}
             {isSuccess && (
               <p className="
                 text-center text-green-600 text-xs font-bold
@@ -106,7 +102,6 @@ export default function CadastroPage() {
               </p>
             )}
 
-            {/* Nome */}
             <div className="flex flex-col gap-1">
               <label htmlFor="nome" className="text-sm text-[var(--color-text-secondary)]">
                 Nome
@@ -129,7 +124,6 @@ export default function CadastroPage() {
               />
             </div>
 
-            {/* Email */}
             <div className="flex flex-col gap-1">
               <label htmlFor="email" className="text-sm text-[var(--color-text-secondary)]">
                 Email
@@ -152,7 +146,6 @@ export default function CadastroPage() {
               />
             </div>
 
-            {/* Senhas */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <div className="flex flex-col gap-1">

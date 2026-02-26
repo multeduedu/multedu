@@ -17,19 +17,16 @@ export default function NossoMetodo() {
         relative
       "
     >
-      {/* Toggle */}
       <div className="absolute top-6 right-6">
         <ThemeToggle />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20">
 
-        {/* Voltar */}
         <VoltarHomeButton href="/">
           Voltar para Home
         </VoltarHomeButton>
 
-        {/* HERO */}
         <section className="text-center mb-20">
           <span className="text-[var(--color-primary)] font-bold text-xs tracking-widest uppercase mb-3 block">
             Nosso Método
@@ -47,7 +44,6 @@ export default function NossoMetodo() {
           </p>
         </section>
 
-        {/* CARDS */}
         <section className="flex flex-col gap-12">
 
           <div className="max-w-4xl mx-auto w-full">

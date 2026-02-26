@@ -116,19 +116,16 @@ export default function ContatoPage() {
         relative
       "
     >
-      {/* Toggle - mesmo padrão do Sobre */}
       <div className="absolute top-6 right-6">
         <ThemeToggle />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20">
 
-        {/* Botão Voltar - mesmo padrão do Sobre */}
         <VoltarHomeButton href="/">
           Voltar para Home
         </VoltarHomeButton>
 
-        {/* HERO */}
         <header className="max-w-3xl mx-auto text-center mb-20">
           <span className="text-[var(--color-primary)] font-bold text-xs tracking-widest uppercase mb-3 block">
             Contato
@@ -144,10 +141,8 @@ export default function ContatoPage() {
           </p>
         </header>
 
-        {/* CONTEÚDO */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-          {/* Coluna esquerda */}
           <section className="flex flex-col gap-4">
             {[
               { icon: <FiPhone size={20} />, title: "Telefone", value: "+55 (11) 99999-9999" },
@@ -180,7 +175,6 @@ export default function ContatoPage() {
             ))}
           </section>
 
-          {/* Formulário */}
           <section
             className="
               bg-[var(--color-card)]

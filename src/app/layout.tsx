@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: "Plataforma educativa para crianças do ensino fundamental. Aprender matemática de forma interativa e divertida!",
     type: "website",
     locale: "pt_BR",
-    url: "https://multedu.com.br", // SUBSTITUIR DEPOIS PELO DOMINIO REAL
+    url: "https://multedu.com.br",
   },
 };
 

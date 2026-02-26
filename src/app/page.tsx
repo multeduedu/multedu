@@ -15,13 +15,11 @@ export default function Home() {
       id="title-main"
       className="bg-[url('/Home_Capa.avif')] bg-cover bg-center relative text-white h-screen overflow-hidden"
     >
-      {/* NAVIGATION BAR */}
       <nav className="bg-[var(--color-navbar)] backdrop-blur-md px-6 py-3 flex items-center justify-between relative z-20">
         <Link href="/" className="text-2xl font-bold">
           Mult<span className="text-[var(--color-primary)]">Edu</span>
         </Link>
 
-        {/* Desktop Menu */}
         <ul className="hidden md:flex gap-10 items-center">
           <li>
             <Link
@@ -57,7 +55,6 @@ export default function Home() {
           </li>
         </ul>
 
-        {/* Mobile Button */}
         <button
           className="md:hidden text-3xl z-30 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -66,7 +63,6 @@ export default function Home() {
           {menuOpen ? <FiX /> : <FiMenu />}
         </button>
 
-        {/* Mobile Menu */}
         <ul
           className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-navbar)]
           backdrop-blur-md
@@ -114,7 +110,6 @@ export default function Home() {
         </ul>
       </nav>
 
-      {/* HERO */}
       <div className="flex items-center justify-start min-h-[calc(100vh-72px)] px-4 md:px-12">
         <div className="bg-[var(--color-primary)]/50 backdrop-blur-md flex flex-col justify-center items-center md:items-start p-6 rounded-[30px] w-full max-w-lg lg:ml-16">
           <h1 className="text-4xl md:text-5xl font-semibold text-black text-center md:text-left">

@@ -30,17 +30,14 @@ export default function LoginPage() {
   return (
     <main className="h-screen w-screen flex overflow-hidden font-sans relative">
 
-      {/* Toggle */}
       <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
 
-      {/* IMAGEM */}
       <section aria-hidden="true" className="hidden md:block w-1/2 h-full">
         <img src="/login.avif" alt="" className="w-full h-full object-cover" />
       </section>
 
-      {/* FORMULÁRIO */}
       <section className="
         w-full md:w-1/2 h-full
         flex items-center justify-center

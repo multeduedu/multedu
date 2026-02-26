@@ -24,22 +24,18 @@ export default function SobrePage() {
         relative
       "
     >
-      {/* Toggle */}
       <div className="absolute top-6 right-6">
         <ThemeToggle />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20">
 
-        {/* Botão Voltar */}
         <VoltarHomeButton href="/">
           Voltar para Home
         </VoltarHomeButton>
 
-        {/* HERO */}
         <section className="flex flex-col md:flex-row items-center gap-10 mb-20">
 
-          {/* Texto */}
           <div className="max-w-2xl">
             <span className="text-[var(--color-primary)] font-bold text-xs tracking-widest uppercase mb-3 block">
               Sobre
@@ -58,7 +54,6 @@ export default function SobrePage() {
             </p>
           </div>
 
-          {/* Logo */}
           <div className="md:ml-4 flex justify-center">
             <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6 shadow-sm transition-colors">
               <Image
@@ -73,7 +68,6 @@ export default function SobrePage() {
           </div>
         </section>
 
-        {/* Cards */}
         <section className="grid md:grid-cols-2 gap-8">
 
           <InfoCard
