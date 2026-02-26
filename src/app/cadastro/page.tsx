@@ -1,16 +1,15 @@
 "use client";
 
 import { signUp } from "@/actions/auth";
+import { useActionState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
-import { useFormState } from "react-dom";
-import { useState } from "react"; // Adicionado para gerenciar o estado de sucesso
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function CadastroPage() {
-  const [isSuccess, setIsSuccess] = useState(false); // Novo estado para o alerta
-  
-  // O useFormState gerencia os erros vindos da Server Action
-  const [state, formAction] = useFormState(handleSubmit, { error: null });
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [state, formAction] = useActionState(handleSubmit, { error: null });
 
   async function handleSubmit(prevState: any, formData: FormData) {
     const nome = formData.get("nome") as string;
@@ -18,27 +17,28 @@ export default function CadastroPage() {
     const password = formData.get("password") as string;
     const confirmarSenha = formData.get("confirmarSenha") as string;
 
-    // Validações de segurança no lado do cliente (OpSec)
-    if (!nome || nome.length < 2) return { error: "Por favor, digite seu nome." };
-    if (!email || !email.includes("@")) return { error: "E-mail inválido." };
-    if (password !== confirmarSenha) {
-      return { error: "As senhas não coincidem. Digite novamente." };
-    }
-    if (password.length < 6) {
-      return { error: "A senha deve ter pelo menos 6 caracteres." };
-    }
+    if (!nome || nome.length < 2)
+      return { error: "Digite seu nome corretamente." };
 
-    // Chama a função de cadastro que você criou no Supabase
+    if (!email || !email.includes("@"))
+      return { error: "E-mail inválido." };
+
+    if (!password || !confirmarSenha)
+      return { error: "Preencha todos os campos." };
+
+    if (password !== confirmarSenha)
+      return { error: "As senhas não coincidem." };
+
+    if (password.length < 6)
+      return { error: "A senha deve ter pelo menos 6 caracteres." };
+
     const result = await signUp(formData);
 
     if (result.success) {
-      setIsSuccess(true); // Ativa a mensagem de sucesso
-      
-      // Aguarda 3 segundos para que a criança veja o feedback antes do redirecionamento
+      setIsSuccess(true);
       setTimeout(() => {
         window.location.href = "/login";
-      }, 3000);
-      
+      }, 2000);
       return { error: null };
     }
 
@@ -46,75 +46,200 @@ export default function CadastroPage() {
   }
 
   return (
-    <main className="min-h-screen w-screen flex font-sans">
-      {/* LADO DA IMAGEM (Desktop) */}
-      <section className="hidden md:block md:w-1/2 h-screen">
-        <img src="/login.avif" alt="Estudante" className="w-full h-full object-cover" />
+    <main className="h-screen w-screen flex overflow-hidden font-sans relative">
+
+      {/* Toggle */}
+      <div className="absolute top-6 right-6 z-10">
+        <ThemeToggle />
+      </div>
+
+      {/* IMAGEM */}
+      <section aria-hidden="true" className="hidden md:block w-1/2 h-full">
+        <img src="/login.avif" alt="" className="w-full h-full object-cover" />
       </section>
 
-      {/* LADO DO FORMULÁRIO */}
-      <section className="w-full md:w-1/2 min-h-screen flex items-center justify-center bg-white relative px-6 py-12">
-        <Link href="/" className="absolute top-6 left-6 text-3xl text-gray-400 hover:text-[var(--color-primary)] transition-colors">
-          <FiArrowLeft />
+      {/* FORMULÁRIO */}
+      <section
+        className="
+          w-full md:w-1/2 h-full
+          flex items-center justify-center
+          bg-[var(--color-background)]
+          text-[var(--color-text-primary)]
+          transition-colors
+          relative px-6
+        "
+      >
+        <Link
+          href="/"
+          className="
+            absolute top-6 left-6
+            flex items-center gap-2 text-3xl
+            text-[var(--color-text-secondary)]
+            hover:text-[var(--color-primary)]
+            transition-colors
+          "
+        >
+          <FiArrowLeft aria-hidden="true" />
         </Link>
 
-        <div className="w-full max-w-md">
-          <header className="mb-8 text-center md:text-left">
-            <h1 className="text-3xl font-bold">
+        <div className="w-full max-w-md md:max-w-lg">
+
+          <header className="mb-6 text-center md:text-left">
+            <h1 className="text-2xl font-bold">
               Mult<span className="text-[var(--color-primary)]">Edu</span>
             </h1>
-            <p className="text-gray-500 mt-2">Crie sua conta para começar a aprender!</p>
+            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+              Crie sua conta para começar a estudar!
+            </p>
           </header>
 
-          <form action={formAction} className="flex flex-col gap-5">
-            
-            {/* ALERTA DE SUCESSO LÚDICO */}
+          <form action={formAction} className="flex flex-col gap-4">
+
+            {/* Sucesso */}
             {isSuccess && (
-              <div className="p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-md animate-bounce shadow-sm">
-                <p className="font-bold text-lg">Eba! Conta criada! 🎉</p>
-                <p className="text-sm">Estamos te levando para o portal de matemática...</p>
-              </div>
+              <p className="
+                text-center text-green-600 text-xs font-bold
+                bg-green-50 dark:bg-green-900/20
+                p-2 rounded-md border border-green-200
+              ">
+                Conta criada com sucesso! Redirecionando...
+              </p>
             )}
 
+            {/* Nome */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Nome</label>
-              <input name="nome" type="text" placeholder="Seu nome" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+              <label htmlFor="nome" className="text-sm text-[var(--color-text-secondary)]">
+                Nome
+              </label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                placeholder="Digite seu nome"
+                className="
+                  bg-[var(--color-input)]
+                  border border-[var(--color-border)]
+                  text-[var(--color-text-primary)]
+                  rounded-md px-3 py-2 text-sm
+                  outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  transition-colors
+                "
+                required
+              />
             </div>
 
+            {/* Email */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">E-mail</label>
-              <input name="email" type="email" placeholder="email@exemplo.com" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+              <label htmlFor="email" className="text-sm text-[var(--color-text-secondary)]">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Digite seu email"
+                className="
+                  bg-[var(--color-input)]
+                  border border-[var(--color-border)]
+                  text-[var(--color-text-primary)]
+                  rounded-md px-3 py-2 text-sm
+                  outline-none
+                  focus:ring-2 focus:ring-[var(--color-primary)]
+                  transition-colors
+                "
+                required
+              />
             </div>
 
+            {/* Senhas */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-700">Senha</label>
-                <input name="password" type="password" placeholder="******" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+                <label htmlFor="password" className="text-sm text-[var(--color-text-secondary)]">
+                  Senha
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="******"
+                  className="
+                    bg-[var(--color-input)]
+                    border border-[var(--color-border)]
+                    text-[var(--color-text-primary)]
+                    rounded-md px-3 py-2 text-sm
+                    outline-none
+                    focus:ring-2 focus:ring-[var(--color-primary)]
+                    transition-colors
+                  "
+                  required
+                />
               </div>
+
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-700">Confirmar Senha</label>
-                <input name="confirmarSenha" type="password" placeholder="******" className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" required />
+                <label htmlFor="confirmarSenha" className="text-sm text-[var(--color-text-secondary)]">
+                  Confirmar Senha
+                </label>
+                <input
+                  id="confirmarSenha"
+                  name="confirmarSenha"
+                  type="password"
+                  placeholder="******"
+                  className="
+                    bg-[var(--color-input)]
+                    border border-[var(--color-border)]
+                    text-[var(--color-text-primary)]
+                    rounded-md px-3 py-2 text-sm
+                    outline-none
+                    focus:ring-2 focus:ring-[var(--color-primary)]
+                    transition-colors
+                  "
+                  required
+                />
               </div>
             </div>
 
-            <button 
-              type="submit" 
-              disabled={isSuccess} // Desabilita o botão após o sucesso
-              className={`mt-4 ${isSuccess ? 'bg-gray-400' : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'} text-white font-bold py-3 rounded-lg transition-all shadow-md active:scale-95`}
+            <button
+              type="submit"
+              disabled={isSuccess}
+              className="
+                mt-3
+                bg-[var(--color-primary)]
+                hover:bg-[var(--color-primary-hover)]
+                text-white
+                font-medium py-2.5
+                rounded-md text-sm
+                transition-all
+                shadow-md
+                active:scale-95
+                cursor-pointer
+                disabled:opacity-70
+              "
             >
-              {isSuccess ? "Cadastrado!" : "Criar minha conta"}
+              Criar minha conta
             </button>
 
             {state?.error && (
-              <p className="text-center text-red-500 text-sm font-bold bg-red-50 p-3 rounded-md border border-red-100">
+              <p className="
+                text-center text-red-500 text-xs font-bold
+                bg-red-50 dark:bg-red-900/20
+                p-2 rounded-md border border-red-200
+              ">
                 {state.error}
               </p>
             )}
           </form>
 
-          <footer className="mt-8 text-center text-sm text-gray-600">
-            Já tem uma conta? <Link href="/login" className="text-[var(--color-primary)] font-bold hover:underline">Entrar</Link>
-          </footer>
+          <div className="mt-6 text-sm text-[var(--color-text-secondary)]">
+            Já tem conta?{" "}
+            <Link
+              href="/login"
+              className="text-[var(--color-primary)] font-medium hover:underline"
+            >
+              Entrar agora
+            </Link>
+          </div>
         </div>
       </section>
     </main>

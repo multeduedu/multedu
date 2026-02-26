@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FiMenu, FiX, FiLogIn } from "react-icons/fi";
-import DarkButton from "@/components/DarkButton";
+import { FiMenu, FiX, FiUser } from "react-icons/fi";
+import DarkButton from "@/components/ui/DarkButton";
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,10 +13,10 @@ export default function Home() {
   return (
     <header
       id="title-main"
-      className="bg-[url('/Home_Capa.avif')] bg-cover bg-center relative text-[var(--color-text-white)] h-screen overflow-hidden"
+      className="bg-[url('/Home_Capa.avif')] bg-cover bg-center relative text-white h-screen overflow-hidden"
     >
       {/* NAVIGATION BAR */}
-      <nav className="bg-[var(--color-navbar-bg)] px-6 py-3 flex items-center justify-between relative z-20">
+      <nav className="bg-[var(--color-navbar)] backdrop-blur-md px-6 py-3 flex items-center justify-between relative z-20">
         <Link href="/" className="text-2xl font-bold">
           Mult<span className="text-[var(--color-primary)]">Edu</span>
         </Link>
@@ -52,14 +52,14 @@ export default function Home() {
 
           <li>
             <Link href="/login" aria-label="Entrar">
-              <FiLogIn className="text-[var(--color-primary)] text-2xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
+              <FiUser className="text-[var(--color-primary)] text-2xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
             </Link>
           </li>
         </ul>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Button */}
         <button
-          className="md:hidden text-3xl z-30"
+          className="md:hidden text-3xl z-30 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Abrir menu"
         >
@@ -68,11 +68,13 @@ export default function Home() {
 
         {/* Mobile Menu */}
         <ul
-          className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-navbar-bg)]
-          flex flex-col items-center gap-6 p-6 transition-all duration-300 ${menuOpen
+          className={`md:hidden absolute top-full left-0 w-full bg-[var(--color-navbar)]
+          backdrop-blur-md
+          flex flex-col items-center gap-6 p-6 transition-all duration-300 ${
+            menuOpen
               ? "max-h-screen opacity-100"
               : "max-h-0 opacity-0 overflow-hidden"
-            }`}
+          }`}
         >
           <li>
             <Link
@@ -105,12 +107,8 @@ export default function Home() {
           </li>
 
           <li>
-            <Link
-              href="/login"
-              onClick={handleCloseMenu}
-              aria-label="Entrar"
-            >
-              <FiLogIn className="text-[var(--color-primary)] text-3xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
+            <Link href="/login" onClick={handleCloseMenu}>
+              <FiUser className="text-[var(--color-primary)] text-3xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
             </Link>
           </li>
         </ul>
@@ -118,23 +116,21 @@ export default function Home() {
 
       {/* HERO */}
       <div className="flex items-center justify-start min-h-[calc(100vh-72px)] px-4 md:px-12">
-        <div className="bg-[var(--color-primary-transparent)] flex flex-col justify-center items-center md:items-start p-6 rounded-[30px] w-full max-w-lg lg:ml-16">
-          <h1 className="text-4xl md:text-5xl font-semibold text-[var(--color-dark)] text-center md:text-left">
+        <div className="bg-[var(--color-primary)]/50 backdrop-blur-md flex flex-col justify-center items-center md:items-start p-6 rounded-[30px] w-full max-w-lg lg:ml-16">
+          <h1 className="text-4xl md:text-5xl font-semibold text-black text-center md:text-left">
             Aprender{" "}
-            <span className="font-extrabold drop-shadow-sm">
+            <span className="font-extrabold">
               matemática
             </span>{" "}
             pode ser{" "}
-            <span className="font-extrabold drop-shadow-sm">
+            <span className="font-extrabold">
               divertido!
             </span>
           </h1>
 
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <DarkButton href="/sobre">Conheça</DarkButton>
-              <DarkButton href="/cadastro">Experimente</DarkButton>
-            </div>
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-6">
+            <DarkButton href="/sobre">Conheça</DarkButton>
+            <DarkButton href="/cadastro">Experimente</DarkButton>
           </div>
         </div>
       </div>
