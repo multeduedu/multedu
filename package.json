@@ -25,9 +25,9 @@
     "typescript": "^5"
   }
 }
-{
-npm install prisma @prisma/client
-npx prisma init
-/prisma/schema.prisma
-.env
+</
+npm install prisma @prisma/client>
+</npx prisma init>
+<//prisma/schema.prisma
+.env>
 }
