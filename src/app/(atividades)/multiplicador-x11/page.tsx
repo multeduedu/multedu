@@ -23,7 +23,7 @@ export default function Page() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--color-background)] text-[var(--color-text-primary)]">
       <header className="w-full">
-        <div className="mx-auto max-w-6xl px-4 pt-4 flex items-center justify-between gap-4">
+        <div className="mx-auto max-w-6xl px-2 sm:px-4 pt-4 flex items-center justify-between gap-4">
           <BackButton href="/dashboard" />
 
           <div className="w-[180px]">
@@ -32,7 +32,7 @@ export default function Page() {
         </div>
       </header>
 
-      <main id="conteudo" className="mx-auto max-w-6xl px-4 pb-10 pt-6">
+      <main id="conteudo" className="mx-auto max-w-6xl px-2 sm:px-4 pb-10 pt-6">
         <h1
           className={`${indie.className} text-center font-bold leading-tight
           text-3xl sm:text-4xl lg:text-5xl`}
@@ -53,7 +53,7 @@ export default function Page() {
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px] items-start">
           <section
             className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]
-            shadow-sm p-4 sm:p-6"
+            shadow-sm p-3 sm:p-6 mx-auto w-full"
             aria-label="Treino de multiplicação por 11"
           >
             <MultiplicadorX11 />
@@ -61,14 +61,14 @@ export default function Page() {
 
           <aside
             className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]
-            shadow-sm p-4 sm:p-6"
+            shadow-sm p-3 sm:p-6 w-full mx-auto"
             aria-label="Vídeo de apoio"
           >
             <h2 className="text-lg font-bold mb-3">Vídeo de apoio</h2>
 
-            <div className="aspect-video w-full overflow-hidden rounded-xl border border-[var(--color-border)]">
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--color-border)]">
               <iframe
-                className="h-full w-full"
+                className="absolute inset-0 h-full w-full"
                 src="https://www.youtube.com/embed/geMzGlJzUkc?si=EBkL_Y6FLpdqZswk"
                 title="Multiplicação por 11 - Metodologia Trachtenberg (YouTube)"
                 loading="lazy"

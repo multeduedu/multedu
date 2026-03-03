@@ -209,15 +209,14 @@ export default function MultiplicadorX11() {
           Selecione os números e digite os dígitos do resultado:
         </h3>
 
-        {/* Ajuda por dígito (pode quebrar, mas com scroll horizontal suave) */}
         <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
-          <div className="mx-auto flex flex-nowrap justify-center gap-2 sm:gap-4 min-w-max px-1 py-1">
+          <div className="mx-auto flex flex-nowrap justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-1">
             {[5, 4, 3, 2, 1].map((n) => (
               <button
                 key={n}
                 type="button"
                 onClick={() => mostrarAjuda(n as DigitIndex)}
-                className="shrink-0 cursor-pointer rounded-lg px-4 py-2 font-bold
+                className="shrink-0 cursor-pointer rounded-lg px-1.5 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-base font-bold
                 bg-[var(--color-button-dark)] text-white
                 hover:bg-[var(--color-button-dark-hover)]
                 border border-[var(--color-border)]
@@ -229,77 +228,76 @@ export default function MultiplicadorX11() {
           </div>
         </div>
 
-        {/* Linha dos selects + seta */}
-        <div
-          ref={rowRef}
-          className="relative flex flex-nowrap items-center justify-center gap-2 sm:gap-4 mb-6 pt-10"
-          aria-label="Seletores de dígitos do número"
-        >
-          {/* seta (não sobrepõe os botões) */}
+        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
           <div
-            ref={arrowRef}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-2 transition-opacity duration-300"
-            style={{ opacity: 0, transform: "translateX(-50%)" }}
+            ref={rowRef}
+            className="relative flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 pt-10 pb-2 min-w-max px-2"
+            aria-label="Seletores de dígitos do número"
           >
-            <span className="text-3xl">⬇️</span>
-          </div>
-
-          {/* select5 (fixo) */}
-          <select
-            ref={(el) => {
-              selectRefs.current.select5 = el
-            }}
-            disabled
-            value={selects[0]}
-            onChange={(e) => setSelect(0, e.target.value)}
-            className="cursor-pointer h-10 sm:h-11 w-[60px] sm:w-[76px] rounded-lg text-center font-bold text-lg
-            bg-red-600 text-white
-            border border-[var(--color-border)]
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]
-            disabled:opacity-80"
-            aria-label="5º dígito do número (fixo)"
-          >
-            <option value="0">0</option>
-          </select>
-
-          {[
-            { id: "select4", idx: 1, bg: "bg-yellow-400 text-black" },
-            { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
-            { id: "select2", idx: 3, bg: "bg-blue-600 text-white" },
-            { id: "select1", idx: 4, bg: "bg-cyan-500 text-white" },
-          ].map((s) => (
-            <select
-              key={s.id}
-              ref={(el) => {
-                selectRefs.current[s.id] = el
-              }}
-              value={selects[s.idx]}
-              onChange={(e) => setSelect(s.idx, e.target.value)}
-              className={`cursor-pointer h-10 sm:h-11 w-[60px] sm:w-[76px] rounded-lg text-center font-bold text-lg
-              ${s.bg}
-              border border-[var(--color-border)]
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]`}
-              aria-label={`${s.id.replace("select", "")}º dígito do número`}
+            <div
+              ref={arrowRef}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-2 transition-opacity duration-300"
+              style={{ opacity: 0, transform: "translateX(-50%)" }}
             >
-              {digits.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          ))}
+              <span className="text-3xl">⬇️</span>
+            </div>
 
-          <span className="ml-1 font-bold text-lg sm:text-xl" aria-label="multiplicado por 11">
-            ×11
-          </span>
+            <select
+              ref={(el) => {
+                selectRefs.current.select5 = el
+              }}
+              disabled
+              value={selects[0]}
+              onChange={(e) => setSelect(0, e.target.value)}
+              className="cursor-pointer h-8 sm:h-11 w-[42px] sm:w-[76px] rounded-lg text-center font-bold text-sm sm:text-lg
+              bg-red-600 text-white
+              border border-[var(--color-border)]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]
+              disabled:opacity-80"
+              aria-label="5º dígito do número (fixo)"
+            >
+              <option value="0">0</option>
+            </select>
+
+            {[
+              { id: "select4", idx: 1, bg: "bg-yellow-400 text-black" },
+              { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
+              { id: "select2", idx: 3, bg: "bg-blue-600 text-white" },
+              { id: "select1", idx: 4, bg: "bg-cyan-500 text-white" },
+            ].map((s) => (
+              <select
+                key={s.id}
+                ref={(el) => {
+                  selectRefs.current[s.id] = el
+                }}
+                value={selects[s.idx]}
+                onChange={(e) => setSelect(s.idx, e.target.value)}
+                className={`cursor-pointer h-8 sm:h-11 w-[42px] sm:w-[76px] rounded-lg text-center font-bold text-sm sm:text-lg
+                ${s.bg}
+                border border-[var(--color-border)]
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]`}
+                aria-label={`${s.id.replace("select", "")}º dígito do número`}
+              >
+                {digits.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            ))}
+
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 11">
+              ×11
+            </span>
+          </div>
         </div>
 
-        {/* Inputs do resultado (sempre lado a lado e cabendo no mobile) */}
-        <fieldset className="mb-6">
-          <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
+        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
+          <fieldset>
+            <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
 
-          <div className="flex w-full flex-nowrap items-center justify-center gap-2 sm:gap-4">
+            <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2">
             <DigitInput
               label="5º dígito do resultado"
               placeholder="5º"
@@ -347,17 +345,17 @@ export default function MultiplicadorX11() {
               onSound={() => clickSound.play()}
             />
 
-            <DigitInput
-              label="1º dígito do resultado"
-              placeholder="1º"
-              value={inputs[4]}
-              onChange={(v) => setInput(4, v)}
-              onSound={() => clickSound.play()}
-            />
-          </div>
-        </fieldset>
+              <DigitInput
+                label="1º dígito do resultado"
+                placeholder="1º"
+                value={inputs[4]}
+                onChange={(v) => setInput(4, v)}
+                onSound={() => clickSound.play()}
+              />
+            </div>
+          </fieldset>
+        </div>
 
-        {/* Ações */}
         <div className="flex flex-col sm:flex-row items-stretch justify-center gap-3">
           <button
             type="button"
@@ -409,8 +407,8 @@ function DigitInput(props: {
         inputMode="numeric"
         pattern="[0-9]*"
         maxLength={1}
-        className="cursor-pointer h-12 sm:h-14 w-[60px] sm:w-[84px]
-        rounded-xl text-center text-xl sm:text-2xl font-extrabold
+        className="cursor-pointer h-11 sm:h-14 w-[50px] sm:w-[84px]
+        rounded-xl text-center text-lg sm:text-2xl font-extrabold
         bg-[var(--color-surface)] text-[var(--color-text-primary)]
         border border-[var(--color-border)]
         focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
@@ -433,13 +431,13 @@ function RadioDigitInput(props: {
     <div className="flex flex-col items-center gap-2 shrink-0">
       <span className="sr-only">{props.label}</span>
 
-      <div className="flex items-center justify-center gap-1 sm:gap-2">
+      <div className="flex items-center justify-center gap-0.5">
         <input
           type="radio"
           name="digitSelector"
           checked={props.checked}
           onChange={props.onRadio}
-          className="cursor-pointer h-5 w-5 accent-[var(--color-primary)]
+          className="cursor-pointer h-3.5 w-3.5 sm:h-5 sm:w-5 accent-[var(--color-primary)]
           focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           aria-label={`Selecionar ${props.label}`}
         />
@@ -452,8 +450,8 @@ function RadioDigitInput(props: {
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={1}
-          className="cursor-pointer h-12 sm:h-14 w-[64px] sm:w-[84px]
-          rounded-xl text-center text-xl sm:text-2xl font-extrabold
+          className="cursor-pointer h-11 sm:h-14 w-[50px] sm:w-[84px]
+          rounded-xl text-center text-lg sm:text-2xl font-extrabold
           bg-[var(--color-surface)] text-[var(--color-text-primary)]
           border border-[var(--color-border)]
           focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
