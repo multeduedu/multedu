@@ -9,7 +9,7 @@ import { FiMenu, FiX } from "react-icons/fi"
 
 export default function DashboardPage() {
   const [filter, setFilter] = useState("all")
-  const [sidebarOpen, setSidebarOpen] = useState(false) // toggle mobile
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const user: User | null = {
     id: "1",
