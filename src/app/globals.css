@@ -1,14 +1,11 @@
 @import "tailwindcss";
 
-/* ===================== */
-/* LIGHT THEME (DEFAULT) */
-/* ===================== */
-
 :root {
   --color-background: #f5f5f5;
   --color-background-secondary: #000000;
   --color-surface: #ffffff;
   --color-card: #ffffff;
+  --color-card-hover: #fdfafa;
   --color-border: #e5e5e5;
 
   --color-navbar: rgba(0, 0, 0, 0.75);
@@ -43,10 +40,6 @@
   --color-primary: #eab359;
   --color-primary-hover: #f2c777;
 }
-
-/* ===================== */
-/* GLOBAL */
-/* ===================== */
 
 body {
   margin: 0;
