@@ -1,51 +1,39 @@
-# MULTEDU - Plataforma de Ensino de Matemática para Crianças
+# 🚀 MULTEDU - Plataforma de Ensino de Matemática para Crianças
 
-Bem-vindo ao **MULTEDU**, a plataforma inovadora que ensina matemática para crianças utilizando a metodologia de **Trachtenberg** de uma forma lúdica e interativa. Nossa missão é tornar o aprendizado de matemática divertido e eficaz, usando dicas, vídeos explicativos e exercícios práticos que incentivam o desenvolvimento cognitivo e a paixão pela matemática.
+Bem-vindo ao **MULTEDU**, a plataforma inovadora que ensina matemática para crianças utilizando a metodologia de **Trachtenberg** de uma forma lúdica, interativa e gamificada. 
 
-## O que é o MULTEDU?
+## 🌟 O que é o MULTEDU?
 
-O **MULTEDU** é uma plataforma web criada para ensinar conceitos matemáticos fundamentais às crianças com base na famosa **Método de Trachtenberg**. Esse método de cálculo mental rápido e eficiente é transformado em uma experiência divertida e cativante, com foco no desenvolvimento das habilidades de multiplicação, adição, subtração e divisão de forma intuitiva e criativa.
+O **MULTEDU** transforma o cálculo mental rápido em uma experiência cativante. Focamos no desenvolvimento de habilidades matemáticas intuitivas, utilizando uma interface moderna e um sistema de progressão que incentiva o aluno a aprender praticando.
 
-### Características da Plataforma
+## ✨ Novidades da Versão (Branch: develop)
 
-- **Metodologia de Trachtenberg**: Utiliza técnicas rápidas e simples de cálculo mental que são ensinadas de forma lúdica e divertida.
-  
-- **Aprendizado Interativo**: Jogos, quizzes, e desafios que fazem o aprendizado mais interessante e prático.
-  
-- **Vídeos Explicativos**: Aulas em vídeo com explicações claras e visuais que tornam conceitos complexos fáceis de entender.
-  
-- **Dicas e Truques**: Dicas práticas para melhorar as habilidades matemáticas das crianças, apresentadas de maneira divertida.
+Esta versão traz a fundação tecnológica da plataforma totalmente integrada:
 
-- **Interface Amigável**: Design colorido e fácil de navegar, projetado especialmente para crianças, tornando o aprendizado mais acessível.
+- **Sessão do Aluno**: Identificação real do estudante via Supabase Auth [cite: 23-14-51].
+- **Gamificação (XP)**: Sistema de experiência dinâmico onde cada atividade iniciada ou concluída soma pontos ao perfil do aluno [cite: 23-14-51].
+- **Infraestrutura Supabase**: Persistência de dados na tabela `profiles` (Nome, XP, Nível Atual) [cite: 14-28-11].
+- **Segurança de Dados (OpSec)**: Implementação de Row Level Security (RLS) para garantir que cada aluno acesse apenas seu próprio progresso [cite: 14-32-12].
+- **Avatares Personalizados**: Integração com DiceBear para geração de robôs dinâmicos baseados no perfil do usuário [cite: 12-11-54].
 
-## Como Funciona?
+## 🛠️ Tecnologias Utilizadas
 
-### 1. **Cadastro e Perfil**
+- **Frontend**: Next.js 15+ (App Router), Tailwind CSS e TypeScript [cite: 05-48-02].
+- **Backend/Banco de Dados**: Supabase (PostgreSQL) com políticas de RLS [cite: 14-28-11, 14-32-12].
+- **Estado/Server Actions**: Gerenciamento de autenticação e progresso via Server Actions nativas do Next.js [cite: 23-14-51].
 
-Os alunos começam criando um perfil na plataforma, onde podem acompanhar seu progresso, receber recomendações de conteúdos e fazer exercícios baseados no seu nível de aprendizado.
+## 🚀 Como Funciona?
 
-### 2. **Módulos de Ensino**
+### 1. Cadastro e Perfil Real
+Diferente de versões anteriores, o aluno agora cria uma conta real. Ao se cadastrar, um perfil é gerado automaticamente no banco de dados com 0 XP e o nível inicial "Regra do 11" [cite: 14-28-11, 23-14-51].
 
-A plataforma é dividida em módulos, cada um focado em uma área específica da matemática. Cada módulo contém:
+### 2. Jornada de Aprendizado
+O aluno navega pelo Dashboard dinâmico que exibe seu nome real e seu robô personalizado [cite: 12-16-25]. Ao clicar em "Iniciar" em uma atividade como a **Multiplicação por 11**, o sistema registra o engajamento no servidor [cite: 23-14-51].
 
-- **Teoria e Exemplos**: Explicações claras sobre os conceitos da metodologia de Trachtenberg.
-- **Atividades Interativas**: Exercícios que ajudam a fixar o conteúdo e praticar os cálculos.
-- **Vídeos Didáticos**: Aulas visuais que detalham os passos da metodologia.
-  
-### 3. **Feedback e Recompensas**
+### 3. Sistema de Recompensas
+O feedback é imediato: o XP acumulado é refletido na Sidebar, permitindo que o aluno visualize sua evolução em tempo real através da integração entre o Client e o Supabase [cite: 12-16-25, 14-32-12].
 
-O sistema oferece feedback imediato durante os exercícios, ajudando a corrigir erros e reforçar os acertos. Além disso, recompensas como medalhas e pontos são conquistadas à medida que o aluno avança, tornando o aprendizado mais motivador.
+---
 
-### 4. **Acompanhamento dos Pais e Educadores**
-
-Pais e educadores têm a opção de criar contas para acompanhar o progresso do aluno. A plataforma oferece relatórios detalhados sobre o desempenho, permitindo que os adultos se envolvam no processo de aprendizagem.
-
-## Benefícios do MULTEDU
-
-- **Desenvolvimento Cognitivo**: Ao praticar os cálculos mentais de forma divertida, as crianças desenvolvem habilidades matemáticas mais rápidas e precisas.
-  
-- **Estimula a Curiosidade**: O uso de jogos e atividades interativas mantém as crianças engajadas e curiosas para aprender mais.
-
-- **Método Eficaz**: A metodologia de Trachtenberg é uma das mais eficazes para ensinar cálculos rápidos, sendo ideal para crianças de todas as idades.
-
-- **Acessibilidade**: A plataforma pode ser acessada de qualquer dispositivo com conexão à internet, permitindo que o aprendizado aconteça em qualquer lugar e a qualquer hora.
+## 👨‍💻 Desenvolvimento (Branch develop)
+As atualizações de infraestrutura e segurança nesta branch foram implementadas por **figueiredoelizeu**.
