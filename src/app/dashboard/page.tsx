@@ -1,21 +1,48 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Sidebar from "../../components/sections/dashboard/SideBar"
 import ActivityCard from "../../components/sections/dashboard/ActivityCard"
 import { activities } from "@/data/activities"
 import { User } from "@/types/user"
-import { FiMenu, FiX } from "react-icons/fi"
+import { FiMenu } from "react-icons/fi"
+import { supabase } from "@/lib/supabase"
 
 export default function DashboardPage() {
   const [filter, setFilter] = useState("all")
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
 
-  const user: User | null = {
-    id: "1",
-    name: "Eduardo Vernizzi",
-    email: "edu@email.com",
-  }
+  useEffect(() => {
+    async function fetchUserData() {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      
+      if (authUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('nome, xp')
+          .eq('id', authUser.id)
+          .single()
+
+        if (profile) {
+          const userData: User = {
+            id: authUser.id,
+            name: profile.nome,
+            email: authUser.email || "",
+            xp: profile.xp,
+            user_metadata: authUser.user_metadata
+          }
+          
+          setUser(userData)
+          
+          const firstName = profile.nome.split(' ')[0]
+          document.title = `MultEdu | ${firstName}`
+        }
+      }
+    }
+
+    fetchUserData()
+  }, [])
 
   const filteredActivities =
     filter === "all"
@@ -24,7 +51,6 @@ export default function DashboardPage() {
 
   return (
     <div className="h-screen flex overflow-hidden">
-
       <Sidebar
         user={user}
         filter={filter}
@@ -68,3 +94,6 @@ export default function DashboardPage() {
     </div>
   )
 }
+
+
+

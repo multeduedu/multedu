@@ -19,17 +19,15 @@ export default function LoginPage() {
 
     const result = await signIn(formData);
 
-    if (result.success) {
-      window.location.href = "/";
-      return { error: null };
+    if (result?.error) {
+      return { error: result.error };
     }
 
-    return { error: result.error || "E-mail ou senha incorretos." };
+    return { error: null };
   }
 
   return (
     <main className="h-screen w-screen flex overflow-hidden font-sans relative">
-
       <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
@@ -60,7 +58,6 @@ export default function LoginPage() {
         </Link>
 
         <div className="w-full max-w-md md:max-w-lg">
-
           <header className="mb-6 text-center md:text-left">
             <h1 className="text-2xl font-bold">
               Mult<span className="text-[var(--color-primary)]">Edu</span>
@@ -71,7 +68,6 @@ export default function LoginPage() {
           </header>
 
           <form action={formAction} className="flex flex-col gap-4">
-
             <div className="flex flex-col gap-1">
               <label htmlFor="email" className="text-sm text-[var(--color-text-secondary)]">
                 Email
