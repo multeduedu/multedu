@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Swal from "sweetalert2"
 import { useSound } from "@/hooks/useSound"
-import { addExperience } from "@/actions/auth"
+import { addCoins } from "@/actions/auth"
+import { CoinAnimation } from "@/components/ui/CoinAnimation"
 
 type DigitIndex = 1 | 2 | 3 | 4 | 5
 
@@ -40,6 +41,7 @@ export default function MultiplicadorX11() {
   const [radio, setRadio] = useState<DigitIndex | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [solvedQuestions, setSolvedQuestions] = useState<Set<string>>(new Set())
+  const [showCoinAnimation, setShowCoinAnimation] = useState(false)
 
   const rowRef = useRef<HTMLDivElement | null>(null)
   const arrowRef = useRef<HTMLDivElement | null>(null)
@@ -79,6 +81,16 @@ export default function MultiplicadorX11() {
       window.removeEventListener('unload', handleUnload)
     }
   }, [isProcessing])
+
+  useEffect(() => {
+    if (showCoinAnimation) {
+      const timer = setTimeout(() => {
+        setShowCoinAnimation(false)
+      }, 3000)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [showCoinAnimation])
 
   function setSelect(pos: number, value: string) {
     setSelects((prev) => {
@@ -198,22 +210,49 @@ export default function MultiplicadorX11() {
 
       if (a === b) {
         if (solvedQuestions.has(questionKey)) {
+          Swal.fire({
+            ...swalBase,
+            title: "✅ Acertou!",
+            text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+            icon: "success",
+            confirmButtonText: "Boa!",
+          })
         } else {
           try {
-            await addExperience(10)
+            await addCoins(10)
             setSolvedQuestions(prev => new Set([...prev, questionKey]))
+            
+            setShowCoinAnimation(true)
+            
+            Swal.fire({
+              ...swalBase,
+              title: "✅ Acertou!",
+              html: `
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                  <div style="font-size: 18px;">A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}</div>
+                  <div style="display: flex; align-items: center; gap: 8px; background: linear-gradient(to right, #fef3c7, #fde68a); padding: 8px 16px; border-radius: 20px; border: 1px solid #fbbf24; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                      <span style="font-size: 14px; font-weight: bold; color: #78350f;">$</span>
+                    </div>
+                    <span style="font-size: 18px; font-weight: bold; color: #a16207;">+10 moedas!</span>
+                  </div>
+                </div>
+              `,
+              icon: "success",
+              confirmButtonText: "Boa!",
+            })
+            
           } catch (error) {
-            console.error("Erro ao adicionar XP:", error)
+            console.error("Erro ao adicionar moedas:", error)
+            Swal.fire({
+              ...swalBase,
+              title: "✅ Acertou!",
+              text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+              icon: "success",
+              confirmButtonText: "Boa!",
+            })
           }
         }
-        
-        Swal.fire({
-          ...swalBase,
-          title: "✅ Acertou!",
-          text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-          icon: "success",
-          confirmButtonText: "Boa!",
-        })
       } else {
         Swal.fire({
           ...swalBase,
@@ -433,6 +472,13 @@ export default function MultiplicadorX11() {
           <span className="font-mono">{getNumeroOriginal()}</span>
         </div>
       </div>
+      
+      {showCoinAnimation && (
+        <CoinAnimation 
+          amount={10} 
+          onComplete={() => setShowCoinAnimation(false)} 
+        />
+      )}
     </div>
   )
 }

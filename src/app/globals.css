@@ -49,3 +49,50 @@ body {
   color: var(--color-text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Animações para moedas */
+@keyframes coin-float {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) rotate(180deg) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-80px) rotate(540deg) scale(1.1);
+  }
+  100% {
+    transform: translateY(-120px) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(20px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-10px) scale(0.95);
+  }
+}
+
+.animate-coin-float {
+  animation: coin-float 1.5s ease-out forwards;
+}
+
+.animate-fade-up {
+  animation: fade-up 2s ease-out forwards;
+}
