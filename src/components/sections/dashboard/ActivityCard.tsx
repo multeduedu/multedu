@@ -3,7 +3,6 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Activity } from "@/data/activities"
-import { addExperience } from "@/actions/auth"
 
 type Props = {
   activity: Activity
@@ -13,17 +12,7 @@ export default function ActivityCard({ activity }: Props) {
   const router = useRouter()
 
   const handleStartActivity = async () => {
-    try {
-      
-      await addExperience(10)
-      
-      
-      router.push(activity.href)
-    } catch (error) {
-      console.error("Erro ao registrar XP:", error)
-      
-      router.push(activity.href)
-    }
+    router.push(activity.href)
   }
 
   return (

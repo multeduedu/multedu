@@ -102,11 +102,21 @@ export async function signOut() {
 }
 
 export async function addExperience(amount: number) {
+  if (!amount || amount <= 0) {
+    return { error: "Valor de XP inválido" }
+  }
+
+  if (amount > 100) {
+    return { error: "Valor de XP muito alto" }
+  }
+  
   const supabase = await createSupabaseServerClient()
   
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return { error: "Usuário não autenticado" };
+  if (!user) {
+    return { error: "Usuário não autenticado" }
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -114,13 +124,17 @@ export async function addExperience(amount: number) {
     .eq('id', user.id)
     .single();
 
-  const newXP = (profile?.xp || 0) + amount;
+  const currentXP = profile?.xp || 0
+  const newXP = currentXP + amount;
 
   const { error } = await supabase
     .from('profiles')
     .update({ xp: newXP })
     .eq('id', user.id);
 
-  if (error) return { error: error.message };
+  if (error) {
+    return { error: error.message }
+  }
+  
   return { success: true, newXP };
 }
