@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image"
 import { FiLogOut, FiX } from "react-icons/fi"
@@ -56,7 +56,7 @@ export default function Sidebar({ user, filter, setFilter, isOpen = false, onClo
 }
 
 function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onClose">) {
-  const firstName = user?.name ? user.name.split(' ')[0] : "Estudante"
+  const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : "Estudante"
   const robotStyle = user?.user_metadata?.avatar_style || 'bottts'
   const robotAvatar = `https://api.dicebear.com/7.x/${robotStyle}/svg?seed=${user?.email || 'default'}`
 
@@ -84,11 +84,13 @@ function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onC
             />
           </div>
           <div className="text-center">
-            <p className="font-semibold text-lg">Olá, {firstName}! 👋</p>
+            <h2 className="font-semibold text-lg text-[var(--color-text-primary)]">
+              Olá, {firstName}! 👋
+            </h2>
             
             <div className="mt-2 flex items-center justify-center gap-1 bg-[var(--color-primary)]/10 px-3 py-1 rounded-full border border-[var(--color-primary)]/20">
               <span className="text-xs font-bold text-[var(--color-primary)]">
-                {user?.xp || 0} XP
+                {user?.xp ?? 0} XP
               </span>
             </div>
           </div>

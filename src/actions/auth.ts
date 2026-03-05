@@ -1,12 +1,39 @@
 'use server'
 
-import { supabase } from '@/lib/supabase'
+import { createServerClient } from '@supabase/ssr'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
+
+async function createSupabaseServerClient() {
+  const cookieStore = await cookies()
+
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          } catch {
+          }
+        },
+      },
+    }
+  )
+}
 
 export async function signUp(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const nome = formData.get('nome') as string
+
+  const supabase = await createSupabaseServerClient()
 
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -36,7 +63,6 @@ export async function signUp(formData: FormData) {
     if (profileError) return { error: profileError.message }
   }
 
-  // Correção: Após criar a conta, envia para o login para validar o acesso real
   redirect('/login')
 }
 
@@ -44,12 +70,14 @@ export async function signIn(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
+  const supabase = await createSupabaseServerClient()
+
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   })
 
-  if (error) return { error: error.message }
+  if (error) return { error: "E-mail ou senha incorretos." }
 
   if (data?.user) {
     redirect('/dashboard')
@@ -57,6 +85,8 @@ export async function signIn(formData: FormData) {
 }
 
 export async function updateStudentRobot(robotStyle: string) {
+  const supabase = await createSupabaseServerClient()
+  
   const { data, error } = await supabase.auth.updateUser({
     data: { avatar_style: robotStyle }
   })
@@ -66,11 +96,14 @@ export async function updateStudentRobot(robotStyle: string) {
 }
 
 export async function signOut() {
+  const supabase = await createSupabaseServerClient()
   await supabase.auth.signOut()
   redirect('/login')
 }
 
 export async function addExperience(amount: number) {
+  const supabase = await createSupabaseServerClient()
+  
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) return { error: "Usuário não autenticado" };
