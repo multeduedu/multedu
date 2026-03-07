@@ -101,12 +101,22 @@ export async function signOut() {
   redirect('/login')
 }
 
-export async function addExperience(amount: number) {
+export async function addCoins(amount: number) {
+  if (!amount || amount <= 0) {
+    return { error: "Valor de moedas inválido" }
+  }
+
+  if (amount > 100) {
+    return { error: "Valor de moedas muito alto" }
+  }
+  
   const supabase = await createSupabaseServerClient()
   
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return { error: "Usuário não autenticado" };
+  if (!user) {
+    return { error: "Usuário não autenticado" }
+  }
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -114,13 +124,17 @@ export async function addExperience(amount: number) {
     .eq('id', user.id)
     .single();
 
-  const newXP = (profile?.xp || 0) + amount;
+  const currentCoins = profile?.xp || 0
+  const newCoins = currentCoins + amount;
 
   const { error } = await supabase
     .from('profiles')
-    .update({ xp: newXP })
+    .update({ xp: newCoins })
     .eq('id', user.id);
 
-  if (error) return { error: error.message };
-  return { success: true, newXP };
+  if (error) {
+    return { error: error.message }
+  }
+  
+  return { success: true, newCoins };
 }
