@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Swal from "sweetalert2"
 import { useSound } from "@/hooks/useSound"
-import type { MultiplicadorData } from "../../../data/multiplicadores";
-import type { DigitIndex } from "../../../data/multiplicadores"
+import type { MultiplicadorData } from "../../../../data/multiplicadores";
+import type { DigitIndex } from "../../../../data/multiplicadores"
 
 //const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 type Props = {

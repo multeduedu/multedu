@@ -3,26 +3,43 @@ import { Indie_Flower } from "next/font/google"
 import ThemeToggle from "@/components/ui/ThemeToggle"
 import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
-import { DadosMultiplicadores } from "../../../data/multiplicadores";
+import { DadosMultiplicadores } from "../../../../data/multiplicadores"
 
-const dados = DadosMultiplicadores!.find(m => m.multiplicador === 6)
+//const dados = DadosMultiplicadores!.find(m => m.multiplicador === 6)
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
 export const metadata: Metadata = {
-  title: `Multiplicação por ${dados!.multiplicador} (Trachtenberg) | Treino`,
+  title: `Multiplicação por {dados!.multiplicador} (Trachtenberg) | Treino`,
   description:
-    `Treine multiplicação por ${dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
+    `Treine multiplicação por {dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
   robots: { index: true, follow: true },
   openGraph: {
-    title: `Multiplicação por ${dados!.multiplicador} (Trachtenberg) | Treino`,
+    title: `Multiplicação por {dados!.multiplicador} (Trachtenberg) | Treino`,
     description:
-      `Treine multiplicação por ${dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
+      `Treine multiplicação por {dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
     type: "website",
   },
 }
 
-export default function Page() {
+export default async function Page({ params }: { params: { numero: string } }) {
+  const resolvedParams = await params
+  const multiplicador = Number(resolvedParams.numero)
+
+
+  let dados = DadosMultiplicadores.find(
+    (m) => m.multiplicador === multiplicador
+  )
+
+  console.log("params:", resolvedParams)
+  console.log("numero:", resolvedParams.numero)
+
+  if(!dados){
+    dados = DadosMultiplicadores.find(
+    (m) => m.multiplicador === 11
+  )
+  }
+  
   return (
     <div className="min-h-screen overflow-x-hidden bg-[var(--color-background)] text-[var(--color-text-primary)]">
       <header className="w-full">
