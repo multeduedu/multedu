@@ -6,7 +6,7 @@ import { useSound } from "@/hooks/useSound"
 import { DadosMultiplicadores } from "./DadosMultiplicadores";
 import type { DigitIndex } from "./DadosMultiplicadores"
 
-const dados = DadosMultiplicadores.find(m => m.multiplicador === 11)
+const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 
 function onlyOneDigit(v: string) {
   return v.replace(/\D/g, "").slice(0, 1)
