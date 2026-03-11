@@ -3,7 +3,7 @@ import { Indie_Flower } from "next/font/google"
 import ThemeToggle from "@/components/ui/ThemeToggle"
 import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
-import { DadosMultiplicadores } from "./DadosMultiplicadores";
+import { DadosMultiplicadores } from "../../../data/multiplicadores";
 
 const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 
@@ -72,7 +72,7 @@ export default function Page() {
             <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--color-border)]">
               <iframe
                 className="absolute inset-0 h-full w-full"
-                src="https://www.youtube.com/embed/geMzGlJzUkc?si=EBkL_Y6FLpdqZswk"
+                src={dados?.videoUrl}
                 title={`Multiplicação por ${dados!.multiplicador} - Metodologia Trachtenberg (YouTube)`}
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

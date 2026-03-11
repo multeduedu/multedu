@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Swal from "sweetalert2"
 import { useSound } from "@/hooks/useSound"
-import { DadosMultiplicadores } from "./DadosMultiplicadores";
-import type { DigitIndex } from "./DadosMultiplicadores"
+import { DadosMultiplicadores } from "../../../data/multiplicadores";
+import type { DigitIndex } from "../../../data/multiplicadores"
 
 const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 
@@ -24,7 +24,7 @@ const swalBase = {
   },
 } as const
 
-export default function MultiplicadorX11() {
+export default function Multiplicador() {
   const clickSound = useSound("/sounds/click-button.mp3")
   const actionSound = useSound("/sounds/button-305770.mp3")
 
@@ -154,7 +154,7 @@ export default function MultiplicadorX11() {
       return
     }
 
-    const resultadoCorreto = String(numeroConvertido * 11)
+    const resultadoCorreto = String(numeroConvertido * Number(dados!.multiplicador))
 
     const a = normalizeNumberString(numeroDigitado)
     const b = normalizeNumberString(resultadoCorreto)
@@ -163,7 +163,7 @@ export default function MultiplicadorX11() {
       Swal.fire({
         ...swalBase,
         title: "✅ Acertou!",
-        text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+        text: `A multiplicação de ${numeroOriginal} × ${dados!.multiplicador} é: ${resultadoCorreto}`,
         icon: "success",
         confirmButtonText: "Boa!",
       })
@@ -171,7 +171,7 @@ export default function MultiplicadorX11() {
       Swal.fire({
         ...swalBase,
         title: "❌ Errou!",
-        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × ${dados!.multiplicador} é: ${resultadoCorreto}`,
         icon: "error",
         confirmButtonText: "Entendi",
       })
@@ -196,7 +196,7 @@ export default function MultiplicadorX11() {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="sr-only">Treino de multiplicação por 11</h2>
+      <h2 className="sr-only">Treino de multiplicação por {dados!.multiplicador}</h2>
 
       <div className="w-full">
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
@@ -281,8 +281,8 @@ export default function MultiplicadorX11() {
               </select>
             ))}
 
-            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 11">
-              ×11
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label={`multiplicado por ${dados!.multiplicador}`}>
+            X {dados!.multiplicador}
             </span>
           </div>
         </div>
