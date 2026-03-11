@@ -3,10 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Swal from "sweetalert2"
 import { useSound } from "@/hooks/useSound"
-import { DadosMultiplicadores } from "../../../data/multiplicadores";
+import type { MultiplicadorData } from "../../../data/multiplicadores";
 import type { DigitIndex } from "../../../data/multiplicadores"
 
-const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
+//const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
+type Props = {
+  dadosMult: MultiplicadorData;
+};
 
 function onlyOneDigit(v: string) {
   return v.replace(/\D/g, "").slice(0, 1)
@@ -24,7 +27,7 @@ const swalBase = {
   },
 } as const
 
-export default function Multiplicador() {
+export default function Multiplicador( { dadosMult } : Props ) {
   const clickSound = useSound("/sounds/click-button.mp3")
   const actionSound = useSound("/sounds/button-305770.mp3")
 
@@ -117,7 +120,7 @@ export default function Multiplicador() {
     await Swal.fire({
       ...swalBase,
       title: `Ajuda: ${digit}º dígito do resultado`,
-      text: dados?.helpText[digit],
+      text: dadosMult?.helpText[digit],
       icon: "info",
       confirmButtonText: "Entendi!",
     })
@@ -154,7 +157,7 @@ export default function Multiplicador() {
       return
     }
 
-    const resultadoCorreto = String(numeroConvertido * Number(dados!.multiplicador))
+    const resultadoCorreto = String(numeroConvertido * Number(dadosMult!.multiplicador))
 
     const a = normalizeNumberString(numeroDigitado)
     const b = normalizeNumberString(resultadoCorreto)
@@ -163,7 +166,7 @@ export default function Multiplicador() {
       Swal.fire({
         ...swalBase,
         title: "✅ Acertou!",
-        text: `A multiplicação de ${numeroOriginal} × ${dados!.multiplicador} é: ${resultadoCorreto}`,
+        text: `A multiplicação de ${numeroOriginal} × ${dadosMult!.multiplicador} é: ${resultadoCorreto}`,
         icon: "success",
         confirmButtonText: "Boa!",
       })
@@ -171,7 +174,7 @@ export default function Multiplicador() {
       Swal.fire({
         ...swalBase,
         title: "❌ Errou!",
-        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × ${dados!.multiplicador} é: ${resultadoCorreto}`,
+        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × ${dadosMult!.multiplicador} é: ${resultadoCorreto}`,
         icon: "error",
         confirmButtonText: "Entendi",
       })
@@ -196,7 +199,7 @@ export default function Multiplicador() {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="sr-only">Treino de multiplicação por {dados!.multiplicador}</h2>
+      <h2 className="sr-only">Treino de multiplicação por {dadosMult!.multiplicador}</h2>
 
       <div className="w-full">
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
@@ -281,8 +284,8 @@ export default function Multiplicador() {
               </select>
             ))}
 
-            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label={`multiplicado por ${dados!.multiplicador}`}>
-            X {dados!.multiplicador}
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label={`multiplicado por ${dadosMult!.multiplicador}`}>
+            X {dadosMult!.multiplicador}
             </span>
           </div>
         </div>

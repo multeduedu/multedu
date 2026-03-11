@@ -5,7 +5,7 @@ import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
 import { DadosMultiplicadores } from "../../../data/multiplicadores";
 
-const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
+const dados = DadosMultiplicadores!.find(m => m.multiplicador === 6)
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
@@ -59,7 +59,7 @@ export default function Page() {
             shadow-sm p-3 sm:p-6 mx-auto w-full"
             aria-label={`Treino de multiplicação por ${dados!.multiplicador}`}
           >
-            <Multiplicador />
+            <Multiplicador dadosMult={dados!}/>
           </section>
 
           <aside
