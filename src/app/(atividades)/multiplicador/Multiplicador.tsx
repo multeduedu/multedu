@@ -117,7 +117,7 @@ export default function MultiplicadorX11() {
     await Swal.fire({
       ...swalBase,
       title: `Ajuda: ${digit}º dígito do resultado`,
-       
+      text: dados?.helpText[digit],
       icon: "info",
       confirmButtonText: "Entendi!",
     })

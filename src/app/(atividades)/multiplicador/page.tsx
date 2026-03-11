@@ -3,18 +3,21 @@ import { Indie_Flower } from "next/font/google"
 import ThemeToggle from "@/components/ui/ThemeToggle"
 import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
+import { DadosMultiplicadores } from "./DadosMultiplicadores";
+
+const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
 export const metadata: Metadata = {
-  title: "Multiplicação por 11 (Trachtenberg) | Treino",
+  title: `Multiplicação por ${dados!.multiplicador} (Trachtenberg) | Treino`,
   description:
-    "Treine multiplicação por 11 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
+    `Treine multiplicação por ${dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Multiplicação por 11 (Trachtenberg) | Treino",
+    title: `Multiplicação por ${dados!.multiplicador} (Trachtenberg) | Treino`,
     description:
-      "Treine multiplicação por 11 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
+      `Treine multiplicação por ${dados!.multiplicador} usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.`,
     type: "website",
   },
 }
@@ -43,7 +46,7 @@ export default function Page() {
             textShadow: "1px 1px 2px var(--color-primary)",
           }}
         >
-          Multiplicação por 11 – Metodologia Trachtenberg
+          Multiplicação por {dados!.multiplicador} – Metodologia Trachtenberg
         </h1>
 
         <p className="mt-4 text-center text-[var(--color-text-secondary)]">
@@ -54,7 +57,7 @@ export default function Page() {
           <section
             className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]
             shadow-sm p-3 sm:p-6 mx-auto w-full"
-            aria-label="Treino de multiplicação por 11"
+            aria-label={`Treino de multiplicação por ${dados!.multiplicador}`}
           >
             <Multiplicador />
           </section>
@@ -70,7 +73,7 @@ export default function Page() {
               <iframe
                 className="absolute inset-0 h-full w-full"
                 src="https://www.youtube.com/embed/geMzGlJzUkc?si=EBkL_Y6FLpdqZswk"
-                title="Multiplicação por 11 - Metodologia Trachtenberg (YouTube)"
+                title={`Multiplicação por ${dados!.multiplicador} - Metodologia Trachtenberg (YouTube)`}
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
