@@ -4,6 +4,7 @@ import ThemeToggle from "@/components/ui/ThemeToggle"
 import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
 import { DadosMultiplicadores } from "../../../../data/multiplicadores"
+import VideoPlayer from "./VideoPlayer"
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
@@ -28,9 +29,6 @@ export default async function Page({ params }: { params: { numero: string } }) {
   let dados = DadosMultiplicadores.find(
     (m) => m.multiplicador === multiplicador
   )
-
-  console.log("params:", resolvedParams)
-  console.log("numero:", resolvedParams.numero)
 
   if(!dados){
     dados = DadosMultiplicadores.find(
@@ -85,15 +83,13 @@ export default async function Page({ params }: { params: { numero: string } }) {
             <h2 className="text-lg font-bold mb-3">Vídeo de apoio</h2>
 
             <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[var(--color-border)]">
-              <iframe
-                className="absolute inset-0 h-full w-full"
-                src={dados?.videoUrl}
-                title={`Multiplicação por ${dados!.multiplicador} - Metodologia Trachtenberg (YouTube)`}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              <VideoPlayer videoId={dados?.videoUrl}/>
             </div>
+
+            <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
+              Dica: assista e volte para praticar digitando cada dígito do resultado.
+            </p>
+
             <div hidden={!dados?.regraMetade} className="relative aspect-video w-full overflow-x-hidden rounded-xl border border-[var(--color-border)]">
               
               <h2 className="text-lg font-bold mb-3">Como calcular a metade do vizinho?</h2>
@@ -107,9 +103,7 @@ export default async function Page({ params }: { params: { numero: string } }) {
               </ul>
             </div>
 
-            <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
-              Dica: assista e volte para praticar digitando cada dígito do resultado.
-            </p>
+            
           </aside>
         </div>
       </main>

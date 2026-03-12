@@ -118,7 +118,7 @@ helpText:{
 multiplicador: 11,
 descricao: "",
 regraMetade: false,
-videoUrl: "https://www.youtube.com/watch?v=geMzGlJzUkc",
+videoUrl: "geMzGlJzUkc",
 helpText:{
 1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
 2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",

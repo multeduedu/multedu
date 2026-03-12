@@ -6,7 +6,6 @@ import { useSound } from "@/hooks/useSound"
 import type { MultiplicadorData } from "../../../../data/multiplicadores";
 import type { DigitIndex } from "../../../../data/multiplicadores"
 
-//const dados = DadosMultiplicadores.find(m => m.multiplicador === 2)
 type Props = {
   dadosMult: MultiplicadorData;
 };
@@ -247,8 +246,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
               disabled
               value={selects[0]}
               onChange={(e) => setSelect(0, e.target.value)}
-              className="cursor-pointer h-8 sm:h-11 w-[42px] sm:w-[76px] rounded-lg text-center font-bold text-sm sm:text-lg
-              bg-red-600 text-white
+              className="cursor-not-allowed h-8 sm:h-11 w-[42px] sm:w-[76px] rounded-lg text-center font-bold text-sm sm:text-lg
+              bg-gray-400 text-white
               border border-[var(--color-border)]
               focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]
               disabled:opacity-80"
