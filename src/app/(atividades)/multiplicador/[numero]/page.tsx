@@ -5,8 +5,6 @@ import Multiplicador from "./Multiplicador"
 import BackButton from "@/components/ui/BackButton"
 import { DadosMultiplicadores } from "../../../../data/multiplicadores"
 
-//const dados = DadosMultiplicadores!.find(m => m.multiplicador === 6)
-
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
 export const metadata: Metadata = {
@@ -95,6 +93,18 @@ export default async function Page({ params }: { params: { numero: string } }) {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
+            </div>
+            <div hidden={!dados?.regraMetade} className="relative aspect-video w-full overflow-x-hidden rounded-xl border border-[var(--color-border)]">
+              
+              <h2 className="text-lg font-bold mb-3">Como calcular a metade do vizinho?</h2>
+              <p>Desconsidere os números após a vírgula. Exemplo: 3 divido 2 é igual a 1,5; considere apenas o 1. A seguir uma lista de referência: </p>
+              <ul>
+                <li>1 = 0 </li>
+                <li>3 = 1</li>
+                <li>5 = 2</li>
+                <li>7 = 3</li>
+                <li>9 = 4</li>
+              </ul>
             </div>
 
             <p className="mt-3 text-sm text-[var(--color-text-secondary)]">
