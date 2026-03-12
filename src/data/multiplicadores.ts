@@ -10,19 +10,57 @@ export interface MultiplicadorData {
 
 export const DadosMultiplicadores: MultiplicadorData[] = [
 {
-multiplicador: 11,
+multiplicador: 2,
 descricao: "",
 regraMetade: false,
-videoUrl: "https://www.youtube.com/watch?v=geMzGlJzUkc",
+videoUrl: "https://www.youtube.com/watch?v=XPylUHjQgxg",
 helpText:{
-1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
-2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
-3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa."
+1: "Dobrar o 1º valor e colocar na caixa.",
+2: "Dobrar o 2º valor e colocar na caixa.",
+3: "Dobrar o 3º valor e colocar na caixa.",
+4: "Dobrar o 4º valor e colocar na caixa.",
+5: "Dobrar o 5º valor e colocar na caixa."
 }
 },
-
+{
+multiplicador: 3,
+descricao: "A multiplicação por 3 é semelhante à por 8, exceto que agora pegamos a metade do vizinho e, se for ímpar, acionamos +5.",
+regraMetade: false,
+videoUrl: "https://www.youtube.com/watch?v=9rsbrrk8gSI",
+helpText:{
+1: "Subtraia por -10 e dobre o valor e, se for ímpar, adicione +5.",
+2: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+3: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+4: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+5: "No último dígito, pegue metade do vizinho e subtraia por -2."
+}
+},
+{
+multiplicador: 4,
+descricao: "A multiplicação por 4 é semeslhante à por 9, exceto que agora pegamos a metade do vizinho.",
+regraMetade: false,
+videoUrl: "https://www.youtube.com/watch?",
+helpText:{
+1: "Subtraia por -10 e, se ímpar, adicione +5.",
+2: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+3: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+4: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+5: "No último dígito, pegue metade do vizinho e subtraia por -1."
+}
+},
+{
+multiplicador: 5,
+descricao: "Se for ímpar adicionamos 5 e mais metade do vizinho.",
+regraMetade: true,
+videoUrl: "https://www.youtube.com/watch?v=t5Tj47vdn9Y",
+helpText:{
+1: "Se for par o número é 0, se ímpar o número é 5.",
+2: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+3: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+4: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+5: "Se ímpar somamos +5 e adicionamos metade do vizinho."
+}
+},
 {
 multiplicador: 6,
 descricao: "",
@@ -50,32 +88,43 @@ helpText:{
 5: "Metade do vizinho à direita. Se for ímpar, adicione +5."
 }
 },
-
 {
-multiplicador: 5,
-descricao: "Se for ímpar adicionamos 5 e mais metade do vizinho.",
-regraMetade: true,
-videoUrl: "https://www.youtube.com/watch?v=t5Tj47vdn9Y",
+multiplicador: 8,
+descricao: "A multiplicação por 8 é semelhante à por 9, exceto que há duplicação.",
+regraMetade: false,
+videoUrl: "https://www.youtube.com/watch?v=Mlfwvv-kFu4",
 helpText:{
-1: "Se for par o número é 0, se ímpar o número é 5.",
-2: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-3: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-4: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-5: "Se ímpar somamos +5 e adicionamos metade do vizinho."
+1: "Subtraia por -10 e dobre.",
+2: "Substraia por -9 e dobre o valor. Em seguida, adicione o vizinho e, se for maior que 9, coloque um ponto e adicione +1 ao vizinho.",
+3: "Substraia por -9 e dobre o valor. Em seguida, adicione o vizinho e, se for maior que 9, coloque um ponto e adicione +1 ao vizinho.",
+4: "Substraia por -9 e dobre o valor. Em seguida, adicione o vizinho e, se for maior que 9, coloque um ponto e adicione +1 ao vizinho.",
+5: "Subtraia por -2 do vizinho e, se o ponto estiver selecionado, adicione +1."
 }
 },
-
 {
-multiplicador: 2,
+multiplicador: 9,
+descricao: "O primeiro dígito subtraimos por -10. Já os demais subtraimos por -9 e, no último dígito, olhamos para o vizinho para saber se subtraimos por -1.",
+regraMetade: false,
+videoUrl: "https://www.youtube.com/watch?v=UpXQoi_9kCs",
+helpText:{
+1: "Subtraia por -10.",
+2: "Subtraia por -9 e adicione ao vizinho.",
+3: "Subtraia por -9 e adicione ao vizinho.",
+4: "Subtraia por -9 e adicione ao vizinho.",
+5: "Subtrair por -1 ao vizinho."
+}
+},
+{
+multiplicador: 11,
 descricao: "",
 regraMetade: false,
-videoUrl: "https://www.youtube.com/watch?v=XPylUHjQgxg",
+videoUrl: "https://www.youtube.com/watch?v=geMzGlJzUkc",
 helpText:{
-1: "Dobrar o 1º valor e colocar na caixa.",
-2: "Dobrar o 2º valor e colocar na caixa.",
-3: "Dobrar o 3º valor e colocar na caixa.",
-4: "Dobrar o 4º valor e colocar na caixa.",
-5: "Dobrar o 5º valor e colocar na caixa."
+1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
+2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
+3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
+4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
+5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa."
 }
 }
 ]
