@@ -119,7 +119,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
     await Swal.fire({
       ...swalBase,
       title: `Ajuda: ${digit}º dígito do resultado`,
-      text: dadosMult?.helpText[digit],
+      text: dadosMult.helpText[digit],
       icon: "info",
       confirmButtonText: "Entendi!",
     })
@@ -156,7 +156,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
       return
     }
 
-    const resultadoCorreto = String(numeroConvertido * Number(dadosMult!.multiplicador))
+    const resultadoCorreto = String(numeroConvertido * Number(dadosMult.multiplicador))
 
     const a = normalizeNumberString(numeroDigitado)
     const b = normalizeNumberString(resultadoCorreto)
@@ -165,7 +165,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
       Swal.fire({
         ...swalBase,
         title: "✅ Acertou!",
-        text: `A multiplicação de ${numeroOriginal} × ${dadosMult!.multiplicador} é: ${resultadoCorreto}`,
+        text: `A multiplicação de ${numeroOriginal} × ${dadosMult.multiplicador} é: ${resultadoCorreto}`,
         icon: "success",
         confirmButtonText: "Boa!",
       })
@@ -173,11 +173,22 @@ export default function Multiplicador( { dadosMult } : Props ) {
       Swal.fire({
         ...swalBase,
         title: "❌ Errou!",
-        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × ${dadosMult!.multiplicador} é: ${resultadoCorreto}`,
+        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × ${dadosMult.multiplicador} é: ${resultadoCorreto}`,
         icon: "error",
         confirmButtonText: "Entendi",
       })
     }
+  }
+
+  function pegarNumAleatorio(){
+    setSelects(prev =>{
+      const next = [... prev]
+      next[0] = "0"
+      for(let i = 1; i < next.length; i++){
+        next[i] = String(Math.floor(Math.random()*10))
+      }
+      return next
+    })
   }
 
   function limpar() {
@@ -198,7 +209,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="sr-only">Treino de multiplicação por {dadosMult!.multiplicador}</h2>
+      <h2 className="sr-only">Treino de multiplicação por {dadosMult.multiplicador}</h2>
 
       <div className="w-full">
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
@@ -257,7 +268,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
             </select>
 
             {[
-              { id: "select4", idx: 1, bg: "bg-yellow-400 text-black" },
+              { id: "select4", idx: 1, bg: "bg-yellow-400 text-white" },
               { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
               { id: "select2", idx: 3, bg: "bg-blue-600 text-white" },
               { id: "select1", idx: 4, bg: "bg-cyan-500 text-white" },
@@ -283,8 +294,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
               </select>
             ))}
 
-            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label={`multiplicado por ${dadosMult!.multiplicador}`}>
-            X {dadosMult!.multiplicador}
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label={`multiplicado por ${dadosMult.multiplicador}`}>
+            X {dadosMult.multiplicador}
             </span>
           </div>
         </div>
@@ -373,6 +384,18 @@ export default function Multiplicador( { dadosMult } : Props ) {
             focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           >
             Limpar
+          </button>
+
+          <button
+            type="button"
+            onClick={pegarNumAleatorio}
+            className="cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
+            bg-[var(--color-surface)] text-[var(--color-text-primary)]
+            border border-[var(--color-border)]
+            hover:bg-[var(--color-card)]
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+          >
+            Aleatório
           </button>
         </div>
 
