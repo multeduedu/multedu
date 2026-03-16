@@ -480,7 +480,7 @@ function DigitInput(props: {
             onChange={props.radio?.onChange}
             disabled={!props.radio}
             className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5
-            accent-[var(--color-primary)]
+            cursor-pointer accent-[var(--color-primary)]
             disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={`Selecionar ${props.label}`}
           />
@@ -495,7 +495,7 @@ function DigitInput(props: {
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={1}
-          className="cursor-pointer h-11 sm:h-14 w-full
+          className="cursor-text h-11 sm:h-14 w-full
           rounded-xl text-center text-lg sm:text-2xl font-extrabold
           bg-[var(--color-surface)] text-[var(--color-text-primary)]
           border border-[var(--color-border)]
