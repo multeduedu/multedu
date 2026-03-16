@@ -250,10 +250,10 @@ export default function Multiplicador( { dadosMult } : Props ) {
             </select>
 
             {[
-              { id: "select4", idx: 1, bg: "bg-yellow-400 text-white" },
+              { id: "select4", idx: 1, bg: "bg-green-600 text-white" },
               { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
-              { id: "select2", idx: 3, bg: "bg-blue-600 text-white" },
-              { id: "select1", idx: 4, bg: "bg-cyan-500 text-white" },
+              { id: "select2", idx: 3, bg: "bg-green-600 text-white" },
+              { id: "select1", idx: 4, bg: "bg-green-600 text-white" },
             ].map((s) => (
               <select
                 key={s.id}
@@ -380,7 +380,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
                   <button
                     key={d}
                     onClick={()=>setHelpDigit(d as DigitIndex)}
-                    className={`flex-1 py-2 text-sm font-bold
+                    className={`cursor-pointer flex-1 py-2 text-sm font-bold
                     border-r border-[var(--color-border)]
                     ${helpDigit===d ? "bg-[var(--color-primary)] text-white" : ""}`}
                   >
@@ -390,7 +390,6 @@ export default function Multiplicador( { dadosMult } : Props ) {
 
               </div>
 
-              {/* Conteúdo */}
               <div className="p-4 text-[var(--color-text-secondary)] min-h-[120px]">
 
                 {helpDigit === null ? (

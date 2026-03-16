@@ -69,11 +69,11 @@ export default async function Page({ params }: PageProps) {
             textShadow: "1px 1px 2px var(--color-primary)",
           }}
         >
-          Multiplicação por {dados.multiplicador} – Metodologia Trachtenberg
+          Multiplicação por {dados.multiplicador} 
         </h1>
 
         <p className="mt-4 text-center text-[var(--color-text-secondary)]">
-          Selecione os dígitos do número, siga as dicas por dígito e digite o resultado.
+          Utilizaremos a Metodologia de Trachtenberg para aprender a multiplicar. Antes de resolver os exercícios, assista o vídeo de apoio à direita. Após assistir o vídeo, tente resolver a conta utilizando as instruções da caixa "Passo a passo para resolver".
         </p>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_380px] items-start">
