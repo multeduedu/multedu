@@ -33,6 +33,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
   const [selects, setSelects] = useState<string[]>(["0", "0", "0", "0", "0"]) // [s5,s4,s3,s2,s1]
   const [inputs, setInputs] = useState<string[]>(["", "", "", "", ""]) // [i5,i4,i3,i2,i1]
   const [radio, setRadio] = useState<DigitIndex | null>(null)
+  const [helpDigit, setHelpDigit] = useState<DigitIndex | null>(null)
+  const [helpOpen, setHelpOpen] = useState(true)
 
   const rowRef = useRef<HTMLDivElement | null>(null)
   const arrowRef = useRef<HTMLDivElement | null>(null)
@@ -112,17 +114,16 @@ export default function Multiplicador( { dadosMult } : Props ) {
     }, 4500)
   }
 
-  async function mostrarAjuda(digit: DigitIndex) {
+  function abrirAjuda(digit : DigitIndex){
+    setHelpOpen(true)
+    setHelpDigit(digit)
+
+  }
+
+   function mostrarAjuda(digit: DigitIndex) {
     clickSound.play()
     setRadio(digit)
-
-    await Swal.fire({
-      ...swalBase,
-      title: `Ajuda: ${digit}º dígito do resultado`,
-      text: dadosMult.helpText[digit],
-      icon: "info",
-      confirmButtonText: "Entendi!",
-    })
+    abrirAjuda(digit)
 
     showArrowForDigit(digit)
   }
@@ -215,26 +216,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
           Selecione os números e digite os dígitos do resultado:
         </h3>
-
-        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
-          <div className="mx-auto flex flex-nowrap justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-1">
-            {[5, 4, 3, 2, 1].map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => mostrarAjuda(n as DigitIndex)}
-                className="shrink-0 cursor-pointer rounded-lg px-1.5 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-base font-bold
-                bg-[var(--color-button-dark)] text-white
-                hover:bg-[var(--color-button-dark-hover)]
-                border border-[var(--color-border)]
-                focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
-              >
-                {n}º Dígito
-              </button>
-            ))}
-          </div>
-        </div>
-
+        
         <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
           <div
             ref={rowRef}
@@ -311,6 +293,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
               value={inputs[0]}
               onChange={(v) => setInput(0, v)}
               onSound={() => clickSound.play()}
+              onFocus={() => abrirAjuda(5)}
+
             />
 
             <RadioDigitInput
@@ -324,6 +308,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
               value={inputs[1]}
               onChange={(v) => setInput(1, v)}
               onSound={() => clickSound.play()}
+              onFocus={() => abrirAjuda(4)}
+
             />
 
             <RadioDigitInput
@@ -337,7 +323,8 @@ export default function Multiplicador( { dadosMult } : Props ) {
               value={inputs[2]}
               onChange={(v) => setInput(2, v)}
               onSound={() => clickSound.play()}
-            />
+              onFocus={() => abrirAjuda(3)}
+              />
 
             <RadioDigitInput
               label="2º dígito do resultado"
@@ -350,6 +337,7 @@ export default function Multiplicador( { dadosMult } : Props ) {
               value={inputs[3]}
               onChange={(v) => setInput(3, v)}
               onSound={() => clickSound.play()}
+              onFocus={() => abrirAjuda(2)}
             />
 
               <DigitInput
@@ -358,10 +346,71 @@ export default function Multiplicador( { dadosMult } : Props ) {
                 value={inputs[4]}
                 onChange={(v) => setInput(4, v)}
                 onSound={() => clickSound.play()}
+                onFocus={() => abrirAjuda(1)}
               />
             </div>
           </fieldset>
         </div>
+
+
+      <div className="mt-8 w-full max-w-xl mx-auto">
+
+        <div className="border border-[var(--color-border)] rounded-xl overflow-hidden">
+
+          <div className="flex justify-between items-center px-4 py-2 bg-[var(--color-surface)]">
+
+            <span className="font-bold">
+              Passo a passo para resolver
+            </span>
+
+            <button
+              onClick={() => setHelpOpen(!helpOpen)}
+              className="text-sm font-bold cursor-pointer"
+            >
+              {helpOpen ? "-" : "+"}
+            </button>
+
+          </div>
+
+          {helpOpen && (
+            <>
+              <div className="flex border-t border-[var(--color-border)]">
+
+                {[5,4,3,2,1].map((d)=>(
+                  <button
+                    key={d}
+                    onClick={()=>setHelpDigit(d as DigitIndex)}
+                    className={`flex-1 py-2 text-sm font-bold
+                    border-r border-[var(--color-border)]
+                    ${helpDigit===d ? "bg-[var(--color-primary)] text-white" : ""}`}
+                  >
+                    {d}º dígito
+                  </button>
+                ))}
+
+              </div>
+
+              {/* Conteúdo */}
+              <div className="p-4 text-[var(--color-text-secondary)] min-h-[120px]">
+
+                {helpDigit === null ? (
+                  <span className="italic">
+                    Clique na primeira caixa de texto para começar.
+                  </span>
+                ) : (
+                  dadosMult.helpText[helpDigit]
+                )}
+
+              </div>
+
+            </>
+          )}
+
+        </div>
+
+      </div>
+
+
 
         <div className="flex flex-col sm:flex-row items-stretch justify-center gap-3">
           <button
@@ -404,6 +453,9 @@ export default function Multiplicador( { dadosMult } : Props ) {
           <span className="font-mono">{getNumeroOriginal()}</span>
         </div>
       </div>
+
+
+
     </div>
   )
 }
@@ -414,6 +466,7 @@ function DigitInput(props: {
   value: string
   onChange: (value: string) => void
   onSound?: () => void
+  onFocus?: () => void
 }) {
   return (
     <div className="flex flex-col items-center gap-2 shrink-0">
@@ -422,6 +475,7 @@ function DigitInput(props: {
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
         onClick={() => props.onSound?.()}
+        onFocus={props.onFocus}
         placeholder={props.placeholder}
         inputMode="numeric"
         pattern="[0-9]*"
@@ -445,6 +499,7 @@ function RadioDigitInput(props: {
   value: string
   onChange: (value: string) => void
   onSound?: () => void
+  onFocus: () => void
 }) {
   return (
     <div className="flex flex-col items-center gap-2 shrink-0">
@@ -465,6 +520,7 @@ function RadioDigitInput(props: {
           value={props.value}
           onChange={(e) => props.onChange(e.target.value)}
           onClick={() => props.onSound?.()}
+          onFocus={props.onFocus}
           placeholder={props.placeholder}
           inputMode="numeric"
           pattern="[0-9]*"
@@ -477,6 +533,8 @@ function RadioDigitInput(props: {
           aria-label={props.label}
         />
       </div>
+
+
     </div>
   )
 }
