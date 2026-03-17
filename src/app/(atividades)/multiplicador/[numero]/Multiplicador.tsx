@@ -232,7 +232,7 @@ export default function Multiplicador({ dadosMult }: Props) {
             <div
               ref={rowRef}
               className="relative grid grid-cols-[repeat(5,160px)_auto] sm:grid-cols-[repeat(5,76px)_auto]
-      grid-rows-2 gap-0.5 sm:gap-4 items-center justify-center
+      grid-rows-2 gap-0.5 sm:gap-1 items-center justify-center
       min-w-max px-2 py-4"
               aria-label="Operação de multiplicação"
             >
@@ -246,7 +246,6 @@ export default function Multiplicador({ dadosMult }: Props) {
                 <span className="text-3xl">⬇️</span>
               </div>
 
-              {/* SELECT 5º */}
               <select
                 ref={(el) => {
                   selectRefs.current.select5 = el;
@@ -255,7 +254,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={selects[0]}
                 onChange={(e) => setSelect(0, e.target.value)}
                 className="cursor-not-allowed h-8 sm:h-11 rounded-lg text-center font-bold text-sm sm:text-lg
-        bg-gray-400 text-white border border-[var(--color-border)]"
+               bg-gray-400 text-white border border-[var(--color-border)]"
               >
                 <option value="0">0</option>
               </select>
@@ -274,7 +273,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                   }}
                   value={selects[s.idx]}
                   onChange={(e) => setSelect(s.idx, e.target.value)}
-                  className={`cursor-pointer h-8 sm:h-11 rounded-lg text-center font-bold text-sm sm:text-lg
+                  className={`cursor-pointer h-8 sm:h-11 rounded-lg text-center font-bold text-lg sm:text-lg
           ${s.bg} border border-[var(--color-border)]`}
                 >
                   {digits.map((d) => (
@@ -466,12 +465,19 @@ function DigitInput(props: {
     onChange: () => void;
   };
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
-    <div className="flex flex-col items-center gap-2 w-full">
+    <div
+      onClick={() => inputRef.current?.focus()}
+      className="cursor-text flex flex-col items-center gap-1 w-full border-2 
+      border-[var(--color-border)] rounded-xl overflow-hidden
+      
+    focus-within:border-[var(--color-primary)]
+    focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
       <span className="sr-only">{props.label}</span>
 
-      <div className="flex items-start justify-center gap-1 w-full ">
-        {/* espaço fixo para radio */}
+      <div className="flex items-center justify-center gap-1 w-full ">
         <div className="w-5 flex justify-center">
           <input
             type="radio"
@@ -479,7 +485,7 @@ function DigitInput(props: {
             checked={props.radio?.checked ?? false}
             onChange={props.radio?.onChange}
             disabled={!props.radio}
-            className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5
+            className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 m-1
             cursor-pointer accent-[var(--color-primary)]
             disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label={`Selecionar ${props.label}`}
@@ -487,6 +493,7 @@ function DigitInput(props: {
         </div>
 
         <input
+          ref={inputRef}
           value={props.value}
           onChange={(e) => props.onChange(e.target.value)}
           onClick={() => props.onSound?.()}
@@ -495,12 +502,11 @@ function DigitInput(props: {
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={1}
-          className="cursor-text h-11 sm:h-14 w-full
-          rounded-xl text-center text-lg sm:text-2xl font-extrabold
+          className="cursor-text h-11 sm:h-14 w-8
+          text-center text-lg sm:text-2xl font-extrabold
           bg-[var(--color-surface)] text-[var(--color-text-primary)]
-          border border-[var(--color-border)]
-          focus:outline-none focus-visible:ring-2
-          focus-visible:ring-[var(--color-primary)]"
+          focus-within:border-none   focus:outline-none focus-within:ring-0 focus-within:ring-0"
+
           aria-label={props.label}
         />
       </div>
