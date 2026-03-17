@@ -117,16 +117,10 @@ export default function Multiplicador({ dadosMult }: Props) {
     }, 4500);
   }
 
-  function abrirAjuda(digit: DigitIndex) {
-    setHelpOpen(true);
-    setHelpDigit(digit);
-  }
-
   function mostrarAjuda(digit: DigitIndex) {
     clickSound.play();
     setRadio(digit);
-    abrirAjuda(digit);
-
+    setHelpDigit(digit);
     showArrowForDigit(digit);
   }
 
@@ -236,7 +230,6 @@ export default function Multiplicador({ dadosMult }: Props) {
       min-w-max px-2 py-4"
               aria-label="Operação de multiplicação"
             >
-              {/* SETA */}
               <div
                 ref={arrowRef}
                 aria-hidden="true"
@@ -259,7 +252,6 @@ export default function Multiplicador({ dadosMult }: Props) {
                 <option value="0">0</option>
               </select>
 
-              {/* SELECTS 4º–1º */}
               {[
                 { id: "select4", idx: 1, bg: "bg-green-600 text-white" },
                 { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
@@ -284,7 +276,6 @@ export default function Multiplicador({ dadosMult }: Props) {
                 </select>
               ))}
 
-              {/* MULTIPLICADOR */}
               <span
                 className="font-bold text-sm sm:text-xl text-center"
                 aria-label={`multiplicado por ${dadosMult.multiplicador}`}
@@ -294,15 +285,13 @@ export default function Multiplicador({ dadosMult }: Props) {
 
               <div className="col-span-full border-b-3 border-black"></div>
 
-              {/* INPUTS RESULTADO */}
-
               <DigitInput
                 label="5º dígito do resultado"
                 placeholder="5º"
                 value={inputs[0]}
                 onChange={(v) => setInput(0, v)}
                 onSound={() => clickSound.play()}
-                onFocus={() => abrirAjuda(5)}
+                onFocus={() => mostrarAjuda(5)}
               />
 
               <DigitInput
@@ -311,7 +300,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={inputs[1]}
                 onChange={(v) => setInput(1, v)}
                 onSound={() => clickSound.play()}
-                onFocus={() => abrirAjuda(4)}
+                onFocus={() => mostrarAjuda(4)}
                 radio={{
                   checked: radio === 4,
                   onChange: () => {
@@ -327,7 +316,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={inputs[2]}
                 onChange={(v) => setInput(2, v)}
                 onSound={() => clickSound.play()}
-                onFocus={() => abrirAjuda(3)}
+                onFocus={() => mostrarAjuda(3)}
                 radio={{
                   checked: radio === 3,
                   onChange: () => {
@@ -343,7 +332,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={inputs[3]}
                 onChange={(v) => setInput(3, v)}
                 onSound={() => clickSound.play()}
-                onFocus={() => abrirAjuda(2)}
+                onFocus={() => mostrarAjuda(2)}
                 radio={{
                   checked: radio === 2,
                   onChange: () => {
@@ -359,11 +348,9 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={inputs[4]}
                 onChange={(v) => setInput(4, v)}
                 onSound={() => clickSound.play()}
-                onFocus={() => abrirAjuda(1)}
+                onFocus={() => mostrarAjuda(1)}
               />
-
-              {/* célula vazia abaixo do multiplicador */}
-              <div></div>
+              <div>{/* célula vazia abaixo do multiplicador */}</div>
             </div>
           </fieldset>
         </div>{" "}
