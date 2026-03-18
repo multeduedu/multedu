@@ -215,7 +215,7 @@ export default function Multiplicador({ dadosMult }: Props) {
         Treino de multiplicação por {dadosMult.multiplicador}
       </h2>
 
-      <div className="w-full">
+      <div className="w-full flex  flex-col gap-2">
         <h3 className="text-base mb-4">
           Selecione os números e digite os dígitos do resultado:
         </h3>
@@ -226,8 +226,8 @@ export default function Multiplicador({ dadosMult }: Props) {
             <div
               ref={rowRef}
               className="relative grid grid-cols-[repeat(5,160px)_auto] sm:grid-cols-[repeat(5,76px)_auto]
-      grid-rows-2 gap-0.5 sm:gap-1 items-center justify-center
-      min-w-max px-2 py-4"
+              grid-rows-2 gap-0.5 sm:gap-1 items-center justify-center
+              min-w-max px-2 py-4"
               aria-label="Operação de multiplicação"
             >
               <div
@@ -353,8 +353,8 @@ export default function Multiplicador({ dadosMult }: Props) {
               <div>{/* célula vazia abaixo do multiplicador */}</div>
             </div>
           </fieldset>
-        </div>{" "}
-        <div className="mt-8 w-full max-w-xl mx-auto">
+        </div>
+        <div className="mt-8 w-full mx-auto">
           <div className="border border-[var(--color-border)] rounded-xl overflow-hidden">
             <div className="flex justify-between items-center px-4 py-2 bg-[var(--color-surface)]">
               <span className="font-bold">Passo a passo para resolver</span>
@@ -452,16 +452,12 @@ function DigitInput(props: {
     onChange: () => void;
   };
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div
-      onClick={() => inputRef.current?.focus()}
-      className="cursor-text flex flex-col items-center gap-1 w-full border-2 
+      className="flex flex-col items-center gap-1 w-full border-2 
       border-[var(--color-border)] rounded-xl overflow-hidden
-      
-    focus-within:border-[var(--color-primary)]
-    focus-within:ring-2 focus-within:ring-[var(--color-primary)]">
+      ">
       <span className="sr-only">{props.label}</span>
 
       <div className="flex items-center justify-center gap-1 w-full ">
@@ -480,7 +476,6 @@ function DigitInput(props: {
         </div>
 
         <input
-          ref={inputRef}
           value={props.value}
           onChange={(e) => props.onChange(e.target.value)}
           onClick={() => props.onSound?.()}
@@ -489,10 +484,10 @@ function DigitInput(props: {
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={1}
-          className="cursor-text h-11 sm:h-14 w-8
-          text-center text-lg sm:text-2xl font-extrabold
-          bg-[var(--color-surface)] text-[var(--color-text-primary)]
-          focus-within:border-none   focus:outline-none focus-within:ring-0 focus-within:ring-0"
+          className="cursor-text h-9 sm:h-14 w-8 my-1
+          text-center text-lg sm:text-2xl font-extrabold border-b-3
+          bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-200
+          focus-within:border-[var(--color-primary)]   focus:outline-none focus-within:ring-0 focus-within:ring-0"
 
           aria-label={props.label}
         />
