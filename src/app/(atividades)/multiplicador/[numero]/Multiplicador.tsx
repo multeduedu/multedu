@@ -119,7 +119,6 @@ export default function Multiplicador({ dadosMult }: Props) {
 
   function mostrarAjuda(digit: DigitIndex) {
     clickSound.play();
-    setRadio(digit);
     setHelpDigit(digit);
     showArrowForDigit(digit);
   }
@@ -208,6 +207,69 @@ export default function Multiplicador({ dadosMult }: Props) {
       confirmButtonText: "Ok",
     });
   }
+
+function DigitInput(props: {
+  label: string;
+  placeholder: string;
+  value: string;
+  onChange: (value: string) => void;
+  onSound?: () => void;
+  onFocus?: () => void;
+
+  radio?: {
+    checked: boolean;
+    value: DigitIndex;
+    onClick: (value: number | null) => void;
+  }
+}) {
+
+  return (
+    <div
+      className="flex flex-col items-center gap-1 w-full border-2 
+      border-[var(--color-border)] rounded-xl overflow-hidden
+      ">
+      <span className="sr-only">{props.label}</span>
+
+      <div className="flex items-center justify-center gap-1 w-full ">
+        <div className="w-5 flex justify-center">
+          <input
+            type="radio"
+            name="digitSelector"
+            checked={props.radio?.checked ?? false}
+            onClick={() => {
+              const v = props.radio!.value
+              setRadio((prev) => (prev === v ? null : v))
+            }}
+            readOnly
+            disabled={!props.radio}
+            className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 m-1
+            cursor-pointer accent-[var(--color-primary)]
+            disabled:opacity-40 disabled:cursor-not-allowed"
+            aria-label={`Selecionar ${props.label}`}
+          />
+        </div>
+
+        <input
+          value={props.value}
+          onChange={(e) => props.onChange(e.target.value)}
+          onClick={() => props.onSound?.()}
+          onFocus={props.onFocus}
+          placeholder={props.placeholder}
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength={1}
+          className="cursor-text h-9 sm:h-14 w-8 my-1
+          text-center text-lg sm:text-2xl font-extrabold border-b-3
+          bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-200
+          focus-within:border-[var(--color-primary)]   focus:outline-none focus-within:ring-0 focus-within:ring-0"
+
+          aria-label={props.label}
+        />
+      </div>
+    </div>
+  );
+}
+
 
   return (
     <div className="flex flex-col items-center">
@@ -303,7 +365,8 @@ export default function Multiplicador({ dadosMult }: Props) {
                 onFocus={() => mostrarAjuda(4)}
                 radio={{
                   checked: radio === 4,
-                  onChange: () => {
+                  value: 4,
+                  onClick: () => {
                     clickSound.play();
                     setRadio(4);
                   },
@@ -319,7 +382,8 @@ export default function Multiplicador({ dadosMult }: Props) {
                 onFocus={() => mostrarAjuda(3)}
                 radio={{
                   checked: radio === 3,
-                  onChange: () => {
+                  value: 3,
+                  onClick: () => {
                     clickSound.play();
                     setRadio(3);
                   },
@@ -335,8 +399,8 @@ export default function Multiplicador({ dadosMult }: Props) {
                 onFocus={() => mostrarAjuda(2)}
                 radio={{
                   checked: radio === 2,
-                  onChange: () => {
-                    clickSound.play();
+                  value: 2,
+                  onClick: () => {
                     setRadio(2);
                   },
                 }}
@@ -439,59 +503,4 @@ export default function Multiplicador({ dadosMult }: Props) {
     </div>
   );
 }
-function DigitInput(props: {
-  label: string;
-  placeholder: string;
-  value: string;
-  onChange: (value: string) => void;
-  onSound?: () => void;
-  onFocus?: () => void;
 
-  radio?: {
-    checked: boolean;
-    onChange: () => void;
-  };
-}) {
-
-  return (
-    <div
-      className="flex flex-col items-center gap-1 w-full border-2 
-      border-[var(--color-border)] rounded-xl overflow-hidden
-      ">
-      <span className="sr-only">{props.label}</span>
-
-      <div className="flex items-center justify-center gap-1 w-full ">
-        <div className="w-5 flex justify-center">
-          <input
-            type="radio"
-            name="digitSelector"
-            checked={props.radio?.checked ?? false}
-            onChange={props.radio?.onChange}
-            disabled={!props.radio}
-            className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 m-1
-            cursor-pointer accent-[var(--color-primary)]
-            disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label={`Selecionar ${props.label}`}
-          />
-        </div>
-
-        <input
-          value={props.value}
-          onChange={(e) => props.onChange(e.target.value)}
-          onClick={() => props.onSound?.()}
-          onFocus={props.onFocus}
-          placeholder={props.placeholder}
-          inputMode="numeric"
-          pattern="[0-9]*"
-          maxLength={1}
-          className="cursor-text h-9 sm:h-14 w-8 my-1
-          text-center text-lg sm:text-2xl font-extrabold border-b-3
-          bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-200
-          focus-within:border-[var(--color-primary)]   focus:outline-none focus-within:ring-0 focus-within:ring-0"
-
-          aria-label={props.label}
-        />
-      </div>
-    </div>
-  );
-}
