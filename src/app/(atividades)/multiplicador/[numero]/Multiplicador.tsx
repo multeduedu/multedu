@@ -260,7 +260,7 @@ function DigitInput(props: {
           maxLength={1}
           className="cursor-text h-9 sm:h-14 w-8 my-1
           text-center text-lg sm:text-2xl font-extrabold border-b-3
-          bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-200
+          bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-100
           focus-within:border-[var(--color-primary)]   focus:outline-none focus-within:ring-0 focus-within:ring-0"
 
           aria-label={props.label}
@@ -281,22 +281,22 @@ function DigitInput(props: {
         <h3 className="text-base mb-4">
           Selecione os números e digite os dígitos do resultado:
         </h3>
-        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
+        <div className="w-full  [-webkit-overflow-scrolling:touch] ">
           <fieldset>
             <legend className="sr-only">Operação</legend>
 
             <div
               ref={rowRef}
-              className="relative grid grid-cols-[repeat(5,160px)_auto] sm:grid-cols-[repeat(5,76px)_auto]
-              grid-rows-2 gap-0.5 sm:gap-1 items-center justify-center
-              min-w-max px-2 py-4"
+              className="relative grid grid-cols-[repeat(5,80px)_auto] sm:grid-cols-[repeat(5,80px)_auto]
+              gap-x-0.5 sm:gap-x-2 gap-y-4 items-center justify-center
+              min-w-max auto-rows-min"
               aria-label="Operação de multiplicação"
             >
               <div
                 ref={arrowRef}
                 aria-hidden="true"
                 className="pointer-events-none absolute top-0 transition-opacity duration-300"
-                style={{ opacity: 0, transform: "translateX(-50%)" }}
+                style={{ opacity: 0, transform: "translateX(-50%) translateY(-100%)" }}
               >
                 <span className="text-3xl">⬇️</span>
               </div>
