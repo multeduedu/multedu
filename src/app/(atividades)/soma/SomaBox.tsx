@@ -22,7 +22,7 @@ export default function SomaBox({
   }, [value.c, value.d, value.u])
 
   return (<>
-    <section className="w-72 rounded-2xl border-2 bg-white p-4 shadow">
+    <section className="w-72 rounded-2xl border-2 bg-[var(--color-background)] text-[var(--color-text-primary)] p-4 shadow">
       <div className="flex justify-center gap-3 mb-4">
         {(["c", "d", "u"] as const).map(k => (
           <div key={k} className="flex flex-col items-center">
@@ -32,7 +32,7 @@ export default function SomaBox({
             <select
               value={value[k]}
               onChange={e =>
-                onChange({ ...value, Number(e.target.value) })
+                onChange({ ...value, [k] : Number(e.target.value) })
               }
               className="rounded-md border p-1"
             >
