@@ -8,14 +8,22 @@ O **MULTEDU** transforma o cálculo mental rápido em uma experiência cativante
 
 ## ✨ Novidades da Versão (Branch: develop)
 
-Esta versão traz a fundação tecnológica da plataforma totalmente integrada:
+Esta versão traz a fundação tecnológica da plataforma totalmente integrada e **deployed em produção**:
 
-- **Sessão do Aluno**: Identificação real do estudante via Supabase Auth .
+- **Sessão do Aluno**: Identificação real do estudante via Supabase Auth.
 - **Gamificação (XP)**: Sistema de experiência dinâmico onde cada atividade iniciada ou concluída soma pontos ao perfil do aluno.
 - **Infraestrutura Supabase**: Persistência de dados na tabela `profiles` (Nome, XP, Nível Atual).
-- **Segurança de Dados (OpSec)**: Implementação de Row Level Security (RLS) para garantir que cada aluno acesse apenas seu próprio progresso
+- **Segurança de Dados (OpSec)**: Implementação de Row Level Security (RLS) para garantir que cada aluno acesse apenas seu próprio progresso.
 - **Avatares Personalizados**: Integração com DiceBear para geração de robôs dinâmicos baseados no perfil do usuário.
 - **♿ Acessibilidade WCAG 2.1 AA**: Sistema completo de acessibilidade com suporte a deficiências visuais, auditivas e neurodiferentes.
+
+### 🌐 Deploy & Integrações Ativas
+
+- **Vercel**: Plataforma deployada e online com DNS configurado.
+- **Resend**: Integração de email funcionando perfeitamente.
+  - **Cadastro**: Enviando e-mail de boas-vindas aos novos usuários. ✅
+  - **Contato**: Enviando mensagens de contato para o administrador. ✅
+- **DNS/Vercel**: Domínio verificado e totalmente operacional. ✅
 
 ## ♿ Acessibilidade e Recursos Inclusivos
 
