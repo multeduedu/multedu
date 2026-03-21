@@ -1,51 +1,86 @@
-# MULTEDU - Plataforma de Ensino de Matemática para Crianças
+# 🚀 MULTEDU - Plataforma de Ensino de Matemática para Crianças
 
-Bem-vindo ao **MULTEDU**, a plataforma inovadora que ensina matemática para crianças utilizando a metodologia de **Trachtenberg** de uma forma lúdica e interativa. Nossa missão é tornar o aprendizado de matemática divertido e eficaz, usando dicas, vídeos explicativos e exercícios práticos que incentivam o desenvolvimento cognitivo e a paixão pela matemática.
+Bem-vindo ao **MULTEDU**, a plataforma inovadora que ensina matemática para crianças utilizando a metodologia de **Trachtenberg** de uma forma lúdica, interativa e gamificada. 
 
-## O que é o MULTEDU?
+## 🌟 O que é o MULTEDU?
 
-O **MULTEDU** é uma plataforma web criada para ensinar conceitos matemáticos fundamentais às crianças com base na famosa **Método de Trachtenberg**. Esse método de cálculo mental rápido e eficiente é transformado em uma experiência divertida e cativante, com foco no desenvolvimento das habilidades de multiplicação, adição, subtração e divisão de forma intuitiva e criativa.
+O **MULTEDU** transforma o cálculo mental rápido em uma experiência cativante. Focamos no desenvolvimento de habilidades matemáticas intuitivas, utilizando uma interface moderna e um sistema de progressão que incentiva o aluno a aprender praticando.
 
-### Características da Plataforma
+## ✨ Novidades da Versão (Branch: develop)
 
-- **Metodologia de Trachtenberg**: Utiliza técnicas rápidas e simples de cálculo mental que são ensinadas de forma lúdica e divertida.
-  
-- **Aprendizado Interativo**: Jogos, quizzes, e desafios que fazem o aprendizado mais interessante e prático.
-  
-- **Vídeos Explicativos**: Aulas em vídeo com explicações claras e visuais que tornam conceitos complexos fáceis de entender.
-  
-- **Dicas e Truques**: Dicas práticas para melhorar as habilidades matemáticas das crianças, apresentadas de maneira divertida.
+Esta versão traz a fundação tecnológica da plataforma totalmente integrada:
 
-- **Interface Amigável**: Design colorido e fácil de navegar, projetado especialmente para crianças, tornando o aprendizado mais acessível.
+- **Sessão do Aluno**: Identificação real do estudante via Supabase Auth .
+- **Gamificação (XP)**: Sistema de experiência dinâmico onde cada atividade iniciada ou concluída soma pontos ao perfil do aluno.
+- **Infraestrutura Supabase**: Persistência de dados na tabela `profiles` (Nome, XP, Nível Atual).
+- **Segurança de Dados (OpSec)**: Implementação de Row Level Security (RLS) para garantir que cada aluno acesse apenas seu próprio progresso
+- **Avatares Personalizados**: Integração com DiceBear para geração de robôs dinâmicos baseados no perfil do usuário.
+- **♿ Acessibilidade WCAG 2.1 AA**: Sistema completo de acessibilidade com suporte a deficiências visuais, auditivas e neurodiferentes.
 
-## Como Funciona?
+## ♿ Acessibilidade e Recursos Inclusivos
 
-### 1. **Cadastro e Perfil**
+O MULTEDU é desenvolvido com foco em **inclusão digital** e atende aos padrões **WCAG 2.1 AA**:
 
-Os alunos começam criando um perfil na plataforma, onde podem acompanhar seu progresso, receber recomendações de conteúdos e fazer exercícios baseados no seu nível de aprendizado.
+### 🔤 Escalas de Texto
+- **Aumentar/Diminuir**: 3 níveis de zoom (87.5% a 112.5%)
+- **Atalho**: `Alt + Shift + ↑` (aumentar) | `Alt + Shift + ↓` (diminuir) | `Alt + Shift + 0` (normal)
+- **Persistência**: Preferência salva em `localStorage`
 
-### 2. **Módulos de Ensino**
+### 🌞 Modo Contraste Alto
+- **Cores de Alto Contraste**: Melhora legibilidade para usuários com baixa visão
+- **Modo Claro e Escuro**: Suporte a preferências do sistema
+- **Atalho**: `Alt + Shift + C`
+- **Persistência**: Preferência salva automaticamente
 
-A plataforma é dividida em módulos, cada um focado em uma área específica da matemática. Cada módulo contém:
+### 📖 Modo Dislexia-Amigável
+- **Fonte OpenDyslexic**: Fonte otimizada para pessoas com dislexia
+- **Espaçamento Aumentado**:
+  - Letra: 0.05em (aumentado)
+  - Linha: 1.8 (mais espaço entre linhas)
+  - Palavras: 0.15em (maior distância)
+- **Fundo Sepia**: #fef6e4 (reduz fadiga ocular)
+- **Atalho**: `Alt + Shift + D`
+- **Persistência**: Preferência salva automaticamente
 
-- **Teoria e Exemplos**: Explicações claras sobre os conceitos da metodologia de Trachtenberg.
-- **Atividades Interativas**: Exercícios que ajudam a fixar o conteúdo e praticar os cálculos.
-- **Vídeos Didáticos**: Aulas visuais que detalham os passos da metodologia.
-  
-### 3. **Feedback e Recompensas**
+### 🤟 Intérprete de Libras (VLibras)
+- **API Oficial Gov.br**: Integração com tradução em Língua Brasileira de Sinais
+- **Widget Automático**: Carregamento transparente na página
+- **Atalho**: `Alt + Shift + L`
+- **Real-time**: Tradução automática do conteúdo
 
-O sistema oferece feedback imediato durante os exercícios, ajudando a corrigir erros e reforçar os acertos. Além disso, recompensas como medalhas e pontos são conquistadas à medida que o aluno avança, tornando o aprendizado mais motivador.
+### ⌨️ Atalhos Globais
+| Atalho | Ação |
+|--------|------|
+| `Alt + Shift + ↑` | Aumentar texto |
+| `Alt + Shift + ↓` | Diminuir texto |
+| `Alt + Shift + 0` | Resetar texto |
+| `Alt + Shift + C` | Alternar contraste alto |
+| `Alt + Shift + D` | Modo dislexia-amigável |
+| `Alt + Shift + L` | Abrir intérprete Libras |
 
-### 4. **Acompanhamento dos Pais e Educadores**
+### 📊 Barra de Acessibilidade
+Localizada no topo de todas as páginas, com botões intuitivos para:
+- **A − / A / A +** - Controle de tamanho do texto
+- **◐ Contraste** - Modo alto contraste
+- **ⓓ Dislexia** - Modo dislexia-amigável
+- **📖 Libras** - Intérprete de Libras
+- **⌨️ Atalhos** - Tabela de atalhos rápidos
 
-Pais e educadores têm a opção de criar contas para acompanhar o progresso do aluno. A plataforma oferece relatórios detalhados sobre o desempenho, permitindo que os adultos se envolvam no processo de aprendizagem.
+## 🛠️ Tecnologias Utilizadas
 
-## Benefícios do MULTEDU
+- **Frontend**: Next.js 15+ (App Router), Tailwind CSS e TypeScript.
+- **Backend/Banco de Dados**: Supabase (PostgreSQL) com políticas de RLS.
+- **Estado/Server Actions**: Gerenciamento de autenticação e progresso via Server Actions nativas do Next.js.
 
-- **Desenvolvimento Cognitivo**: Ao praticar os cálculos mentais de forma divertida, as crianças desenvolvem habilidades matemáticas mais rápidas e precisas.
-  
-- **Estimula a Curiosidade**: O uso de jogos e atividades interativas mantém as crianças engajadas e curiosas para aprender mais.
+## 🚀 Como Funciona?
 
-- **Método Eficaz**: A metodologia de Trachtenberg é uma das mais eficazes para ensinar cálculos rápidos, sendo ideal para crianças de todas as idades.
+### 1. Cadastro e Perfil Real
+Diferente de versões anteriores, o aluno agora cria uma conta real. Ao se cadastrar, um perfil é gerado automaticamente no banco de dados com 0 XP e o nível inicial "Regra do 11" .
 
-- **Acessibilidade**: A plataforma pode ser acessada de qualquer dispositivo com conexão à internet, permitindo que o aprendizado aconteça em qualquer lugar e a qualquer hora.
+### 2. Jornada de Aprendizado
+O aluno navega pelo Dashboard dinâmico que exibe seu nome real e seu robô personalizado. Ao clicar em "Iniciar" em uma atividade como a **Multiplicação por 11**, o sistema registra o engajamento no servidor.
+
+### 3. Sistema de Recompensas
+O feedback é imediato: o XP acumulado é refletido na Sidebar, permitindo que o aluno visualize sua evolução em tempo real através da integração entre o Client e o Supabase.
+
+---

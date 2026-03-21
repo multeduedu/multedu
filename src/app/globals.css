@@ -1,55 +1,245 @@
 @import "tailwindcss";
 
-@theme {
-
-  --color-primary: #eab359;
-  --color-primary-hover: #daa959;
-   --color-primary-transparent: rgba(234, 179, 89, 0.25);
-  --color-dark: #000000;
-  --color-dark-hover: #3d3d3d;
-  --color-navbar-bg: #0000009a;
-  --color-text-white: #ffffff;
-  --color-footer-bg: #ffffff;
-  --color-container-bg: #ffffff68;
-  --color-toggler-bg: #00000015;
-  --color-title-bg: #f0f0f0;
-  --color-btn-dark-hover: rgb(51, 49, 49);
-}
-
 :root {
+  --color-background: #f5f5f5;
+  --color-background-secondary: #000000;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-card-hover: #fdfafa;
+  --color-border: #e5e5e5;
+
+  --color-navbar: rgba(0, 0, 0, 0.75);
+  --color-overlay-dark: rgba(0, 0, 0, 0.75);
+
+  --color-button-dark: #000000;
+  --color-button-dark-hover: #111111;
+
+
+  --color-sidebar: #ffffff;
+  --color-sidebar-text: #111111;
+
+  --color-text-primary: #111111;
+  --color-text-secondary: #555555;
+
   --color-primary: #eab359;
   --color-primary-hover: #daa959;
-  --color-primary-transparent: rgba(234, 179, 89, 0.8);
-  --color-dark: #000000;
-  --color-dark-hover: #3d3d3d;
-  --color-navbar-bg: #0000009a;
-  --color-text-white: #ffffff;
-  --color-footer-bg: #ffffff;
-  --color-container-bg: #ffffff68;
-  --color-toggler-bg: #00000015;
-  --color-title-bg: #f0f0f0;
-  --color-btn-dark-hover: rgb(51, 49, 49);
 }
 
-/* ===================== */
-/* DARK MODE */
-/* ===================== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #0a0a0a;
-    --color-foreground: #ededed;
-  }
-  
-  @theme {
-    --color-background: #0a0a0a;
-    --color-foreground: #ededed;
-  }
+.dark {
+  --color-background: #0f0f0f;
+  --color-surface: #181818;
+  --color-card: #1f1f1f;
+  --color-card-hover: #252525;
+  --color-border: #2a2a2a;
+
+  --color-sidebar: #111111;
+  --color-sidebar-text: #ededed;
+
+  --color-text-primary: #ededed;
+  --color-text-secondary: #aaaaaa;
+
+  --color-primary: #eab359;
+  --color-primary-hover: #f2c777;
 }
 
-/* ===================== */
-/* BODY GLOBAL */
-/* ===================== */
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: var(--font-size-base, 1rem);
+}
+
+/* Escalas de Tamanho de Fonte */
+:root {
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+}
+
+html.text-scale-small {
+  font-size: 87.5%;
+}
+
+html.text-scale-normal {
+  font-size: 100%;
+}
+
+html.text-scale-large {
+  font-size: 112.5%;
+}
+
+/* Modo de Contraste Alto */
+html.contrast-high {
+  --color-background: #ffffff;
+  --color-background-secondary: #000000;
+  --color-surface: #ffffff;
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+  --color-border: #000000;
+  --color-button-dark: #000000;
+  --color-button-dark-hover: #111111;
+  --color-primary: #0000ff;
+  --color-primary-hover: #0000cc;
+}
+
+html.dark.contrast-high {
+  --color-background: #000000;
+  --color-surface: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-border: #cccccc;
+  --color-button-dark: #ffffff;
+  --color-button-dark-hover: #cccccc;
+  --color-primary: #ffff00;
+  --color-primary-hover: #ffff99;
+}
+
+/* Atalhos de Teclado - Visibilidade melhorada para acessibilidade */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+html.contrast-high button:focus-visible,
+html.contrast-high input:focus-visible,
+html.contrast-high select:focus-visible,
+html.contrast-high textarea:focus-visible,
+html.contrast-high a:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* ========================================
+   MODO DISLEXIA AMIGÁVEL
+   ======================================== */
+
+/* Modo Dislexia-Friendly */
+html.dyslexia-friendly {
+  /* Usa fonte Open Dyslexic - IMPORTANTE: usar !important para sobrescrever Tailwind */
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+
+  /* Espaçamento aumentado - aplicar globalmente */
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+
+  /* Fundo sepia (mais confortável para leitura) */
+  --color-background: #fef6e4;
+  --color-surface: #fffbf0;
+  --color-card: #fffbf0;
+  --color-card-hover: #fff8e7;
+  --color-text-primary: #2d2d2d;
+  --color-text-secondary: #555555;
+}
+
+/* Aplicar a todos os elementos quando dislexia está ativa */
+html.dyslexia-friendly body {
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+}
+
+html.dyslexia-friendly * {
+  font-family: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+  word-spacing: inherit !important;
+}
+
+/* Dark mode com dyslexia */
+html.dyslexia-friendly.dark {
+  /* Mantém fonte Open Dyslexic */
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+
+  /* Espaçamento aumentado - aplicar globalmente */
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+
+  /* Fundo escuro mas confortável */
+  --color-background: #2a2416;
+  --color-surface: #3a3228;
+  --color-card: #3a3228;
+  --color-card-hover: #4a4238;
+  --color-text-primary: #e8dcc8;
+  --color-text-secondary: #b8a890;
+}
+
+/* Contraste alto + Dislexia */
+html.dyslexia-friendly.contrast-high {
+  --color-background: #ffffff;
+  --color-surface: #fffbf0;
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+}
+
+html.dyslexia-friendly.dark.contrast-high {
+  --color-background: #000000;
+  --color-surface: #1a1310;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e8dcc8;
+}
+
+/* ========================================
+   FIM MODO DISLEXIA AMIGÁVEL
+   ======================================== */
+
+/* Atalhos de Teclado - Visibilidade melhorada para acessibilidade */
+@keyframes coin-float {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) rotate(180deg) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-80px) rotate(540deg) scale(1.1);
+  }
+  100% {
+    transform: translateY(-120px) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(20px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-10px) scale(0.95);
+  }
+}
+
+.animate-coin-float {
+  animation: coin-float 1.5s ease-out forwards;
+}
+
+.animate-fade-up {
+  animation: fade-up 2s ease-out forwards;
 }
