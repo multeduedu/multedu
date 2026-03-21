@@ -3,6 +3,7 @@ import { Indie_Flower } from "next/font/google"
 import ThemeToggle from "@/components/ui/ThemeToggle"
 import MultiplicadorX6 from "./MultiplicadorX6"
 import BackButton from "@/components/ui/BackButton"
+import styles from "./page.module.css"
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
@@ -34,14 +35,8 @@ export default function Page() {
 
       <main id="conteudo" className="mx-auto max-w-6xl px-2 sm:px-4 pb-10 pt-6">
         <h1
-          className={`${indie.className} text-center font-bold leading-tight
+          className={`${indie.className} ${styles.gradientTitle} text-center font-bold leading-tight
           text-3xl sm:text-4xl lg:text-5xl`}
-          style={{
-            backgroundImage: "linear-gradient(to right, #ff8c42, #ff6b35)",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-            textShadow: "1px 1px 2px var(--color-primary)",
-          }}
         >
           Multiplicação por 6 – Metodologia Trachtenberg
         </h1>

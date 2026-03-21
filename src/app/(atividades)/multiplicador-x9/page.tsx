@@ -2,20 +2,20 @@ import type { Metadata } from "next"
 import { Indie_Flower } from "next/font/google"
 import BackButton from "@/components/ui/BackButton"
 import ThemeToggle from "@/components/ui/ThemeToggle"
-import MultiplicadorX2 from "./MultiplicadorX2"
+import MultiplicadorX9 from "./MultiplicadorX9"
 import styles from "./page.module.css"
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
 export const metadata: Metadata = {
-  title: "Multiplicação por 2 (Trachtenberg) | Treino",
+  title: "Multiplicação por 9 (Trachtenberg) | Treino",
   description:
-    "Treine multiplicação por 2 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
+    "Treine multiplicação por 9 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Multiplicação por 2 (Trachtenberg) | Treino",
+    title: "Multiplicação por 9 (Trachtenberg) | Treino",
     description:
-      "Treine multiplicação por 2 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
+      "Treine multiplicação por 9 usando a metodologia Trachtenberg. Selecione dígitos, preencha o resultado e confira.",
     type: "website",
   },
 }
@@ -38,22 +38,22 @@ export default function Page() {
           className={`${indie.className} ${styles.gradientTitle} text-center font-bold leading-tight
           text-3xl sm:text-4xl lg:text-5xl`}
         >
-          Multiplicação por 2 - Metodologia Trachtenberg
+          Multiplicação por 9 - Metodologia Trachtenberg
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 mt-10">
           <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6">
-            <MultiplicadorX2 />
+            <MultiplicadorX9 />
           </div>
 
           <aside className="space-y-4">
             <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-4">
               <h2 className="font-bold text-lg mb-3">Vídeo de apoio</h2>
-              <div className="relative w-full overflow-hidden rounded-lg aspect-video">
+            <div className="relative w-full overflow-hidden rounded-lg aspect-video">
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
-                  src="https://www.youtube.com/embed/XPylUHjQgxg"
-                  title="Multiplicação por 2 - Metodologia Trachtenberg"
+                  src="https://www.youtube.com/embed/UpXQoi_9kCs"
+                  title="Multiplicação por 9 - Metodologia Trachtenberg"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
@@ -65,13 +65,13 @@ export default function Page() {
               <h3 className="font-bold text-base mb-3">Regras do Método</h3>
               <div className="space-y-2 text-sm text-[var(--color-text-secondary)]">
                 <p>
-                  <strong>Simples:</strong> Simplesmente dobre cada dígito do número original.
+                  <strong>1º Dígito:</strong> Subtraia de 10.
                 </p>
                 <p>
-                  <strong>Carry:</strong> Se o resultado for 10 ou mais, coloque o dígito da unidade na resposta e some +1 ao próximo dígito.
+                  <strong>2º-4º Dígitos:</strong> Subtraia de 9 e adicione o vizinho à direita.
                 </p>
                 <p>
-                  <strong>Exemplo:</strong> 234 × 2 = 468
+                  <strong>5º Dígito:</strong> Subtraia 1 do vizinho à direita.
                 </p>
               </div>
             </div>

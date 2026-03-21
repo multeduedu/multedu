@@ -3,6 +3,7 @@ import { Indie_Flower } from "next/font/google"
 import BackButton from "@/components/ui/BackButton"
 import ThemeToggle from "@/components/ui/ThemeToggle"
 import MultiplicadorX8 from "./MultiplicadorX8"
+import styles from "./page.module.css"
 
 const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
 
@@ -34,15 +35,8 @@ export default function Page() {
 
       <main id="conteudo" className="mx-auto max-w-6xl px-2 sm:px-4 pb-10 pt-6">
         <h1
-          className={`${indie.className} text-center font-bold leading-tight
+          className={`${indie.className} ${styles.gradientTitle} text-center font-bold leading-tight
           text-3xl sm:text-4xl lg:text-5xl`}
-          style={{
-            backgroundImage: "linear-gradient(to right, #ff7f50, #ff6347)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
         >
           Multiplicação por 8 - Metodologia Trachtenberg
         </h1>
@@ -55,7 +49,7 @@ export default function Page() {
           <aside className="space-y-4">
             <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-4">
               <h2 className="font-bold text-lg mb-3">Vídeo de apoio</h2>
-              <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: "16 / 9" }}>
+              <div className="relative w-full overflow-hidden rounded-lg aspect-video">
                 <iframe
                   className="absolute top-0 left-0 w-full h-full"
                   src="https://www.youtube.com/embed/Mlfwvv-kFu4"
