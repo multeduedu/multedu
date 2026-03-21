@@ -163,3 +163,32 @@ export async function addCoins(amount: number) {
   
   return { success: true, newCoins };
 }
+export async function enviarEmailContato(nome: string, email: string, assunto: string, mensagem: string) {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'MultEdu Contato <contato@multedu.com.br>',
+      to: ['multeduedu@gmail.com'], 
+      subject: `[CONTATO SITE] ${assunto}`,
+      replyTo: email, 
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+          <h2 style="color: #fbbf24;">Nova mensagem recebida!</h2>
+          <p><strong>Nome:</strong> ${nome}</p>
+          <p><strong>E-mail:</strong> ${email}</p>
+          <p><strong>Assunto:</strong> ${assunto}</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p><strong>Mensagem:</strong></p>
+          <p style="white-space: pre-wrap; background: #f9f9f9; padding: 15px; border-radius: 5px;">${mensagem}</p>
+        </div>
+      `
+    });
+
+    if (error) {
+      return { error: error.message };
+    }
+
+    return { success: true };
+  } catch (err) {
+    return { error: "Erro interno no servidor de e-mail." };
+  }
+}
