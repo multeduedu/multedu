@@ -38,45 +38,38 @@ export default function AccessibilityHotkeys() {
     if (!accessibility) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Verifica se Alt + Shift está pressionado
       if (!e.altKey || !e.shiftKey) return
 
       switch (e.key) {
         case 'ArrowUp':
-          // Alt + Shift + ↑ = Aumentar texto
           e.preventDefault()
           setTextScale(accessibility.textScale === 'large' ? 'large' : accessibility.textScale === 'normal' ? 'large' : 'normal')
           break
 
         case 'ArrowDown':
-          // Alt + Shift + ↓ = Diminuir texto
           e.preventDefault()
           setTextScale(accessibility.textScale === 'small' ? 'small' : accessibility.textScale === 'normal' ? 'small' : 'normal')
           break
 
         case '0':
-          // Alt + Shift + 0 = Redefiniir texto
           e.preventDefault()
           setTextScale('normal')
           break
 
         case 'c':
         case 'C':
-          // Alt + Shift + C = Alternar contraste
           e.preventDefault()
           toggleContrast()
           break
 
         case 'l':
         case 'L':
-          // Alt + Shift + L = VLibras
           e.preventDefault()
           handleLibrasShortcut()
           break
 
         case 'd':
         case 'D':
-          // Alt + Shift + D = Modo Dislexia
           e.preventDefault()
           toggleDyslexia()
           break
