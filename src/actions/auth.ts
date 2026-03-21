@@ -3,6 +3,10 @@
 import { createServerClient } from '@supabase/ssr'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
+import { Resend } from 'resend' 
+
+// 2. Inicialização do Resend
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 async function createSupabaseServerClient() {
   const cookieStore = await cookies()
@@ -61,6 +65,27 @@ export async function signUp(formData: FormData) {
       ])
 
     if (profileError) return { error: profileError.message }
+
+    // 3. COMANDO DE ENVIO DO E-MAIL
+    try {
+      await resend.emails.send({
+        from: 'MultEdu <contato@multedu.com.br>',
+        to: [email],
+        subject: 'Bem-vindo ao MultEdu!',
+        html: `
+          <div style="font-family: sans-serif; color: #333;">
+            <h2>Olá, ${nome}!</h2>
+            <p>Sua conta no <strong>MultEdu</strong> foi criada com sucesso.</p>
+            <p>Agora você já pode acessar a plataforma e começar seus estudos de matemática!</p>
+            <br />
+            <a href="https://multedu.com.br/login" style="background: #fbbf24; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Fazer Login</a>
+          </div>
+        `
+      });
+    } catch (mailError) {
+      console.error("Erro ao enviar e-mail:", mailError);
+      
+    }
   }
 
   redirect('/login')

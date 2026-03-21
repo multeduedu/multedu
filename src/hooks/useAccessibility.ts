@@ -21,7 +21,6 @@ export function useAccessibility() {
   const [accessibility, setAccessibility] = useState<AccessibilityState | null>(null)
 
   useEffect(() => {
-    // Carrega configurações salvas
     const saved = localStorage.getItem('accessibility')
     const state = saved ? JSON.parse(saved) : DEFAULT_STATE
     setAccessibility(state)
@@ -31,7 +30,6 @@ export function useAccessibility() {
   useEffect(() => {
     if (accessibility === null) return
 
-    // Salva e aplica novas configurações
     localStorage.setItem('accessibility', JSON.stringify(accessibility))
     applyAccessibilitySettings(accessibility)
   }, [accessibility])
@@ -73,22 +71,18 @@ export function useAccessibility() {
 function applyAccessibilitySettings(state: AccessibilityState) {
   const html = document.documentElement
 
-  // Aplica classe de escala de texto
   html.classList.remove('text-scale-small', 'text-scale-normal', 'text-scale-large')
   html.classList.add(`text-scale-${state.textScale}`)
 
-  // Aplica classe de contraste
   html.classList.remove('contrast-normal', 'contrast-high')
   html.classList.add(`contrast-${state.contrast}`)
 
-  // Aplica modo dyslexia-friendly
   if (state.dyslexiaFriendly) {
     html.classList.add('dyslexia-friendly')
   } else {
     html.classList.remove('dyslexia-friendly')
   }
 
-  // Define CSS variables para tamanhos de fonte
   const scales = {
     small: {
       xs: '0.625rem',

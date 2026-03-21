@@ -86,12 +86,9 @@ export default function AccessibilityBar() {
 
   return (
     <>
-      {/* Barra de Acessibilidade - Estilo Prefeitura */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="flex items-center justify-center gap-1 px-4 py-2 flex-wrap">
-          {/* Grupo: Tamanho do Texto */}
           <div className="flex items-center gap-0.5 bg-gray-50 rounded-sm p-1">
-            {/* Texto Menor */}
             <button
               onClick={() => setTextScale('small')}
               title="Texto Menor (Alt+Shift+↓)"
@@ -110,7 +107,6 @@ export default function AccessibilityBar() {
               A −
             </button>
 
-            {/* Texto Normal */}
             <button
               onClick={() => setTextScale('normal')}
               title="Texto Normal (Alt+Shift+0)"
@@ -129,7 +125,6 @@ export default function AccessibilityBar() {
               A
             </button>
 
-            {/* Texto Maior */}
             <button
               onClick={() => setTextScale('large')}
               title="Texto Maior (Alt+Shift+↑)"
@@ -149,10 +144,8 @@ export default function AccessibilityBar() {
             </button>
           </div>
 
-          {/* Separador */}
           <div className="h-6 border-l border-gray-300 mx-1" />
 
-          {/* Contraste */}
           <button
             onClick={toggleContrast}
             title="Contraste Alto (Alt+Shift+C)"
@@ -171,10 +164,8 @@ export default function AccessibilityBar() {
             ◐ Contraste
           </button>
 
-          {/* Separador */}
           <div className="h-6 border-l border-gray-300 mx-1" />
 
-          {/* Modo Dislexia */}
           <button
             onClick={toggleDyslexia}
             title="Modo Dislexia Amigável (Alt+Shift+D)"
@@ -193,10 +184,8 @@ export default function AccessibilityBar() {
             ⓓ Dislexia
           </button>
 
-          {/* Separador */}
           <div className="h-6 border-l border-gray-300 mx-1" />
 
-          {/* Libras */}
           <button
             onClick={handleLibras}
             title="Libras VLibras (Alt+Shift+L)"
@@ -211,10 +200,8 @@ export default function AccessibilityBar() {
             📖 Libras
           </button>
 
-          {/* Separador */}
           <div className="h-6 border-l border-gray-300 mx-1" />
 
-          {/* Atalhos */}
           <button
             onClick={handleShortcuts}
             title="Ver atalhos de acessibilidade"
@@ -231,7 +218,6 @@ export default function AccessibilityBar() {
         </div>
       </div>
 
-      {/* Padding para não sobrepor conteúdo */}
       <div className="h-14" />
     </>
   )
