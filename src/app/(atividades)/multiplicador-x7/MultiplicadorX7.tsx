@@ -9,15 +9,25 @@ import { CoinAnimation } from "@/components/ui/CoinAnimation"
 type DigitIndex = 1 | 2 | 3 | 4 | 5
 
 const HELP_TEXT: Record<DigitIndex, string> = {
-  1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
-  2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
-  3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-  4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-  5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa (que será a última, à esquerda).",
+  1: "Dobrar o 1° dígito. Se for ímpar, adicione +5 ao resultado.",
+  2: "Dobrar o 2° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  3: "Dobrar o 3° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  4: "Dobrar o 4° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  5: "Metade do vizinho à direita. Se o resultado for maior que 9, some +1 ao próximo dígito.",
 }
 
 function onlyOneDigit(v: string) {
   return v.replace(/\D/g, "").slice(0, 1)
+}
+
+function normalizeNumberString(str: string): string {
+  const trimmed = str.replace(/^0+/, "") || "0"
+  return trimmed
+}
+
+// Metade do vizinho (arredondado para baixo)
+function getHalfOfDigit(digit: number): number {
+  return Math.floor(digit / 2)
 }
 
 const swalBase = {
@@ -32,7 +42,7 @@ const swalBase = {
   },
 } as const
 
-export default function MultiplicadorX11() {
+export default function MultiplicadorX7() {
   const clickSound = useSound("/sounds/click-button.mp3")
   const actionSound = useSound("/sounds/button-305770.mp3")
 
@@ -100,176 +110,123 @@ export default function MultiplicadorX11() {
     })
   }
 
-  function setInput(pos: number, value: string) {
-    const cleaned = onlyOneDigit(value)
+  function updateInput(pos: number, value: string) {
     setInputs((prev) => {
       const next = [...prev]
-      next[pos] = cleaned
+      next[pos] = onlyOneDigit(value)
       return next
     })
   }
 
-  function getNumeroOriginal(): string {
-    return selects.join("")
+  function getNumbers(): number[] {
+    const digits = [...selects].reverse()
+    return digits.map((d, idx) => parseInt(d, 10) * Math.pow(10, idx))
   }
 
-  function getNumeroDigitado(): string {
-    return inputs.join("")
+  function getMultiplicationResult(): string {
+    const numbers = getNumbers()
+    const total = numbers.reduce((a, b) => a + b, 0)
+    return String(total * 7)
   }
 
-  function normalizeNumberString(n: string) {
-    const stripped = n.replace(/^0+/, "")
-    return stripped.length ? stripped : "0"
-  }
+  function showArrowForDigit(digitIndex: DigitIndex) {
+    if (!arrowRef.current) return
 
-  function showArrowForDigit(digit: DigitIndex) {
-    const arrow = arrowRef.current
+    arrowRef.current.style.opacity = "1"
 
-    if (!arrow) return
-
-    arrow.style.opacity = "1"
-
-    window.setTimeout(() => {
-      arrow.style.opacity = "0"
+    setTimeout(() => {
+      if (arrowRef.current) arrowRef.current.style.opacity = "0"
     }, 4500)
   }
 
-  async function mostrarAjuda(digit: DigitIndex) {
+  function handleHelp(digitIndex: DigitIndex) {
     clickSound.play()
-    setRadio(digit)
-
-    await Swal.fire({
+    showArrowForDigit(digitIndex)
+    Swal.fire({
       ...swalBase,
-      title: `Ajuda: ${digit}º dígito do resultado`,
-      text: HELP_TEXT[digit],
+      title: `Ajuda: ${digitIndex}° Dígito`,
+      html: HELP_TEXT[digitIndex],
       icon: "info",
       confirmButtonText: "Entendi!",
     })
-
-    showArrowForDigit(digit)
   }
 
-  async function conferir() {
-    if (isProcessing) {
+  function handleRadioChange(digitIndex: DigitIndex) {
+    setRadio(digitIndex)
+    clickSound.play()
+    showArrowForDigit(digitIndex)
+  }
+
+  async function handleSubmit() {
+    clickSound.play()
+    setIsProcessing(true)
+
+    const hasEmptyInput = inputs.every((val) => val === "")
+    if (hasEmptyInput) {
+      Swal.fire({
+        ...swalBase,
+        title: "⚠️ Aviso",
+        html: "Por favor, preencha pelo menos um campo de resposta.",
+        icon: "warning",
+      })
+      setIsProcessing(false)
       return
     }
 
-    setIsProcessing(true)
-    
-    try {
+    const userAnswer = inputs.join("")
+    const correctAnswer = getMultiplicationResult()
+
+    const userAnswerNormalized = normalizeNumberString(userAnswer)
+    const correctAnswerNormalized = normalizeNumberString(correctAnswer)
+
+    const questionKey = `x7_${selects.join("")}`
+
+    if (userAnswerNormalized === correctAnswerNormalized) {
       actionSound.play()
 
-      const numeroOriginal = getNumeroOriginal()
-      const numeroDigitado = getNumeroDigitado()
-
-      if (!normalizeNumberString(numeroDigitado) || normalizeNumberString(numeroDigitado) === "0") {
-        Swal.fire({
-          ...swalBase,
-          title: "⚠️ Aviso",
-          text: "Digite sua resposta nos campos abaixo.",
-          icon: "warning",
-          confirmButtonText: "Ok",
-        })
-        return
+      if (!solvedQuestions.has(questionKey)) {
+        setSolvedQuestions((prev) => new Set([...prev, questionKey]))
+        setShowCoinAnimation(true)
+        await addCoins(10)
       }
 
-      const numeroConvertido = Number(numeroOriginal)
-      if (Number.isNaN(numeroConvertido)) {
-        Swal.fire({
-          ...swalBase,
-          title: "Erro",
-          text: "Valor inválido nos seletores. Certifique-se de que são números.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        })
-        return
-      }
-
-      const resultadoCorreto = String(numeroConvertido * 11)
-
-      const a = normalizeNumberString(numeroDigitado)
-      const b = normalizeNumberString(resultadoCorreto)
-
-      const questionKey = `${numeroOriginal}_${resultadoCorreto}`
-
-      if (a === b) {
-        if (solvedQuestions.has(questionKey)) {
-          Swal.fire({
-            ...swalBase,
-            title: "✅ Acertou!",
-            text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-            icon: "success",
-            confirmButtonText: "Boa!",
-          })
-        } else {
-          try {
-            await addCoins(10)
-            setSolvedQuestions(prev => new Set([...prev, questionKey]))
-            
-            setShowCoinAnimation(true)
-            
-            Swal.fire({
-              ...swalBase,
-              title: "✅ Acertou!",
-              html: `
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
-                  <div style="font-size: 18px;">A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}</div>
-                  <div style="display: flex; align-items: center; gap: 8px; background: linear-gradient(to right, #fef3c7, #fde68a); padding: 8px 16px; border-radius: 20px; border: 1px solid #fbbf24; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
-                      <span style="font-size: 14px; font-weight: bold; color: #78350f;">$</span>
-                    </div>
-                    <span style="font-size: 18px; font-weight: bold; color: #a16207;">+10 moedas!</span>
-                  </div>
-                </div>
-              `,
-              icon: "success",
-              confirmButtonText: "Boa!",
-            })
-            
-          } catch (error) {
-            console.error("Erro ao adicionar moedas:", error)
-            Swal.fire({
-              ...swalBase,
-              title: "✅ Acertou!",
-              text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-              icon: "success",
-              confirmButtonText: "Boa!",
-            })
-          }
-        }
-      } else {
-        Swal.fire({
-          ...swalBase,
-          title: "❌ Errou!",
-          text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-          icon: "error",
-          confirmButtonText: "Entendi",
-        })
-      }
-    } finally {
-      setIsProcessing(false)
+      Swal.fire({
+        ...swalBase,
+        title: "✅ Acertou!",
+        html: `A multiplicação de ${normalizeNumberString(selects.join(""))} × 7 é: <strong>${correctAnswer}</strong>`,
+        icon: "success",
+      })
+    } else {
+      Swal.fire({
+        ...swalBase,
+        title: "❌ Errou!",
+        html: `Sua resposta (<strong>${userAnswer}</strong>) está incorreta.<br>O resultado correto de <strong>${normalizeNumberString(selects.join(""))}</strong> × 7 é: <strong>${correctAnswer}</strong>`,
+        icon: "error",
+      })
     }
+
+    setIsProcessing(false)
   }
 
-  function limpar() {
-    actionSound.play()
-
+  function handleClear() {
+    clickSound.play()
     setSelects(["0", "0", "0", "0", "0"])
     setInputs(["", "", "", "", ""])
     setRadio(null)
-
+    if (arrowRef.current) arrowRef.current.style.display = "none"
     Swal.fire({
       ...swalBase,
       title: "🧹 Limpo!",
-      text: "Todos os valores foram limpos",
+      html: "Todos os valores foram limpos.",
       icon: "info",
-      confirmButtonText: "Ok",
     })
   }
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="sr-only">Treino de multiplicação por 11</h2>
+      <h2 className="sr-only">Treino de multiplicação por 7</h2>
+
+      {showCoinAnimation && <CoinAnimation amount={10} />}
 
       <div className="w-full">
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
@@ -282,7 +239,7 @@ export default function MultiplicadorX11() {
               <button
                 key={n}
                 type="button"
-                onClick={() => mostrarAjuda(n as DigitIndex)}
+                onClick={() => handleHelp(n as DigitIndex)}
                 className="shrink-0 cursor-pointer rounded-lg px-1.5 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-base font-bold
                 bg-[var(--color-button-dark)] text-white
                 hover:bg-[var(--color-button-dark-hover)]
@@ -354,79 +311,77 @@ export default function MultiplicadorX11() {
               </select>
             ))}
 
-            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 11">
-              ×11
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 7">
+              ×7
             </span>
           </div>
         </div>
 
-        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
-          <fieldset>
-            <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
+        <fieldset>
+          <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
 
             <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2">
-            <DigitInput
-              label="5º dígito do resultado"
-              placeholder="5º"
-              value={inputs[0]}
-              onChange={(v) => setInput(0, v)}
-              onSound={() => clickSound.play()}
-            />
+              <DigitInput
+                label="5º dígito do resultado"
+                placeholder="5º"
+                value={inputs[0]}
+                onChange={(v) => updateInput(0, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="4º dígito do resultado"
-              placeholder="4º"
-              checked={radio === 4}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(4)
-              }}
-              value={inputs[1]}
-              onChange={(v) => setInput(1, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="4º dígito do resultado"
+                placeholder="4º"
+                checked={radio === 4}
+                onRadio={() => {
+                  clickSound.play()
+                  handleRadioChange(4)
+                }}
+                value={inputs[1]}
+                onChange={(v) => updateInput(1, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="3º dígito do resultado"
-              placeholder="3º"
-              checked={radio === 3}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(3)
-              }}
-              value={inputs[2]}
-              onChange={(v) => setInput(2, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="3º dígito do resultado"
+                placeholder="3º"
+                checked={radio === 3}
+                onRadio={() => {
+                  clickSound.play()
+                  handleRadioChange(3)
+                }}
+                value={inputs[2]}
+                onChange={(v) => updateInput(2, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="2º dígito do resultado"
-              placeholder="2º"
-              checked={radio === 2}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(2)
-              }}
-              value={inputs[3]}
-              onChange={(v) => setInput(3, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="2º dígito do resultado"
+                placeholder="2º"
+                checked={radio === 2}
+                onRadio={() => {
+                  clickSound.play()
+                  handleRadioChange(2)
+                }}
+                value={inputs[3]}
+                onChange={(v) => updateInput(3, v)}
+                onSound={() => clickSound.play()}
+              />
 
               <DigitInput
                 label="1º dígito do resultado"
                 placeholder="1º"
                 value={inputs[4]}
-                onChange={(v) => setInput(4, v)}
+                onChange={(v) => updateInput(4, v)}
                 onSound={() => clickSound.play()}
               />
             </div>
           </fieldset>
-        </div>
 
         <div className="flex flex-col sm:flex-row items-stretch justify-center gap-3">
           <button
             type="button"
-            onClick={conferir}
+            onClick={handleSubmit}
             disabled={isProcessing}
             className={`cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
             ${isProcessing 
@@ -440,29 +395,17 @@ export default function MultiplicadorX11() {
 
           <button
             type="button"
-            onClick={limpar}
-            className="cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
+            onClick={handleClear}
+            className={`cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
             bg-[var(--color-surface)] text-[var(--color-text-primary)]
             border border-[var(--color-border)]
             hover:bg-[var(--color-card)]
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]`}
           >
             Limpar
           </button>
         </div>
-
-        <div className="mt-5 text-center text-sm text-[var(--color-text-secondary)]">
-          <span className="font-semibold">Número atual:</span>{" "}
-          <span className="font-mono">{getNumeroOriginal()}</span>
-        </div>
       </div>
-      
-      {showCoinAnimation && (
-        <CoinAnimation 
-          amount={10} 
-          onComplete={() => setShowCoinAnimation(false)} 
-        />
-      )}
     </div>
   )
 }
