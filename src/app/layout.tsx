@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; 
 import "./globals.css";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { LockManagerMonitor } from "@/components/LockManagerMonitor";
+import AccessibilityHotkeys from "@/components/AccessibilityHotkeys";
+import AccessibilityBar from "@/components/AccessibilityBar";
+import VLibrasWidget from "@/components/VLibrasWidget";
+import FontLoader from "@/components/FontLoader";
 
 const poppins = Poppins({
   variable: "--font-sans",
@@ -37,7 +43,14 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${poppins.variable} font-sans antialiased`}>
-        {children}
+        <FontLoader />
+        <ErrorBoundary>
+          <VLibrasWidget />
+          <AccessibilityBar />
+          <AccessibilityHotkeys />
+          <LockManagerMonitor />
+          {children}
+        </ErrorBoundary>
       </body>
     </html>
   );

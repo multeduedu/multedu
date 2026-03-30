@@ -9,11 +9,11 @@ import { CoinAnimation } from "@/components/ui/CoinAnimation"
 type DigitIndex = 1 | 2 | 3 | 4 | 5
 
 const HELP_TEXT: Record<DigitIndex, string> = {
-  1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
-  2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
-  3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-  4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-  5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa (que será a última, à esquerda).",
+  1: "Mantenha o 1° dígito se par. Se for ímpar, adicione +5.",
+  2: "Some o 2° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  3: "Some o 3° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  4: "Some o 4° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
+  5: "Some o 5° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5. Se o total for maior que 9, some +1 ao próximo dígito.",
 }
 
 function onlyOneDigit(v: string) {
@@ -32,7 +32,7 @@ const swalBase = {
   },
 } as const
 
-export default function MultiplicadorX11() {
+export default function MultiplicadorX6() {
   const clickSound = useSound("/sounds/click-button.mp3")
   const actionSound = useSound("/sounds/button-305770.mp3")
 
@@ -185,7 +185,7 @@ export default function MultiplicadorX11() {
         return
       }
 
-      const resultadoCorreto = String(numeroConvertido * 11)
+      const resultadoCorreto = String(numeroConvertido * 6)
 
       const a = normalizeNumberString(numeroDigitado)
       const b = normalizeNumberString(resultadoCorreto)
@@ -197,7 +197,7 @@ export default function MultiplicadorX11() {
           Swal.fire({
             ...swalBase,
             title: "✅ Acertou!",
-            text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+            text: `A multiplicação de ${numeroOriginal} × 6 é: ${resultadoCorreto}`,
             icon: "success",
             confirmButtonText: "Boa!",
           })
@@ -213,7 +213,7 @@ export default function MultiplicadorX11() {
               title: "✅ Acertou!",
               html: `
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
-                  <div style="font-size: 18px;">A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}</div>
+                  <div style="font-size: 18px;">A multiplicação de ${numeroOriginal} × 6 é: ${resultadoCorreto}</div>
                   <div style="display: flex; align-items: center; gap: 8px; background: linear-gradient(to right, #fef3c7, #fde68a); padding: 8px 16px; border-radius: 20px; border: 1px solid #fbbf24; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                     <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
                       <span style="font-size: 14px; font-weight: bold; color: #78350f;">$</span>
@@ -231,7 +231,7 @@ export default function MultiplicadorX11() {
             Swal.fire({
               ...swalBase,
               title: "✅ Acertou!",
-              text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+              text: `A multiplicação de ${numeroOriginal} × 6 é: ${resultadoCorreto}`,
               icon: "success",
               confirmButtonText: "Boa!",
             })
@@ -241,7 +241,7 @@ export default function MultiplicadorX11() {
         Swal.fire({
           ...swalBase,
           title: "❌ Errou!",
-          text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+          text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 6 é: ${resultadoCorreto}`,
           icon: "error",
           confirmButtonText: "Entendi",
         })
@@ -269,7 +269,7 @@ export default function MultiplicadorX11() {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="sr-only">Treino de multiplicação por 11</h2>
+      <h2 className="sr-only">Treino de multiplicação por 6</h2>
 
       <div className="w-full">
         <h3 className="text-center font-bold text-lg sm:text-xl mb-4">
@@ -354,8 +354,8 @@ export default function MultiplicadorX11() {
               </select>
             ))}
 
-            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 11">
-              ×11
+            <span className="ml-0.5 font-bold text-sm sm:text-xl" aria-label="multiplicado por 6">
+              ×6
             </span>
           </div>
         </div>
@@ -365,52 +365,52 @@ export default function MultiplicadorX11() {
             <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
 
             <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2">
-            <DigitInput
-              label="5º dígito do resultado"
-              placeholder="5º"
-              value={inputs[0]}
-              onChange={(v) => setInput(0, v)}
-              onSound={() => clickSound.play()}
-            />
+              <DigitInput
+                label="5º dígito do resultado"
+                placeholder="5º"
+                value={inputs[0]}
+                onChange={(v) => setInput(0, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="4º dígito do resultado"
-              placeholder="4º"
-              checked={radio === 4}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(4)
-              }}
-              value={inputs[1]}
-              onChange={(v) => setInput(1, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="4º dígito do resultado"
+                placeholder="4º"
+                checked={radio === 4}
+                onRadio={() => {
+                  clickSound.play()
+                  setRadio(4)
+                }}
+                value={inputs[1]}
+                onChange={(v) => setInput(1, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="3º dígito do resultado"
-              placeholder="3º"
-              checked={radio === 3}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(3)
-              }}
-              value={inputs[2]}
-              onChange={(v) => setInput(2, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="3º dígito do resultado"
+                placeholder="3º"
+                checked={radio === 3}
+                onRadio={() => {
+                  clickSound.play()
+                  setRadio(3)
+                }}
+                value={inputs[2]}
+                onChange={(v) => setInput(2, v)}
+                onSound={() => clickSound.play()}
+              />
 
-            <RadioDigitInput
-              label="2º dígito do resultado"
-              placeholder="2º"
-              checked={radio === 2}
-              onRadio={() => {
-                clickSound.play()
-                setRadio(2)
-              }}
-              value={inputs[3]}
-              onChange={(v) => setInput(3, v)}
-              onSound={() => clickSound.play()}
-            />
+              <RadioDigitInput
+                label="2º dígito do resultado"
+                placeholder="2º"
+                checked={radio === 2}
+                onRadio={() => {
+                  clickSound.play()
+                  setRadio(2)
+                }}
+                value={inputs[3]}
+                onChange={(v) => setInput(3, v)}
+                onSound={() => clickSound.play()}
+              />
 
               <DigitInput
                 label="1º dígito do resultado"

@@ -88,9 +88,12 @@ function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onC
               Olá, {firstName}! 👋
             </h2>
             
-            <div className="mt-2 flex items-center justify-center gap-1 bg-[var(--color-primary)]/10 px-3 py-1 rounded-full border border-[var(--color-primary)]/20">
-              <span className="text-xs font-bold text-[var(--color-primary)]">
-                {user?.xp ?? 0} XP
+            <div className="mt-2 flex items-center justify-center gap-2 bg-gradient-to-r from-yellow-100 to-amber-100 dark:from-yellow-900/20 dark:to-amber-900/20 px-3 py-2 rounded-full border border-yellow-300 dark:border-yellow-600/30 shadow-sm">
+              <div className="flex items-center justify-center w-5 h-5 bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-500 rounded-full shadow-inner">
+                <span className="text-xs font-bold text-yellow-900 select-none">$</span>
+              </div>
+              <span className="text-sm font-bold text-yellow-700 dark:text-yellow-300">
+                {user?.xp ?? 0}
               </span>
             </div>
           </div>

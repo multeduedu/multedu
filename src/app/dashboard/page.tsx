@@ -1,65 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState } from "react"
 import Sidebar from "../../components/sections/dashboard/SideBar"
 import ActivityCard from "../../components/sections/dashboard/ActivityCard"
 import { activities } from "@/data/activities"
-import { User } from "@/types/user"
 import { FiMenu } from "react-icons/fi"
-import { supabase } from "@/lib/supabase"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function DashboardPage() {
-  const router = useRouter()
   const [filter, setFilter] = useState("all")
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-
-        if (!user) {
-          router.replace("/login");
-          return;
-        }
-
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('nome, xp')
-          .eq('id', user.id)
-          .single();
-
-        setUser({
-          id: user.id,
-          name: profile?.nome || user.email?.split('@')[0] || 'Usuário',
-          email: user.email || "",
-          xp: profile?.xp || 0,
-          user_metadata: user.user_metadata
-        });
-        
-        if (profile?.nome) {
-          const firstName = profile.nome.trim().split(/\s+/)[0];
-          document.title = `MultEdu | ${firstName}`;
-        }
-      } catch (error) {
-        console.error('Erro ao carregar usuário:', error);
-        setUser({
-          id: 'temp',
-          name: 'Usuário',
-          email: '',
-          xp: 0,
-          user_metadata: {}
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkUser();
-  }, [router]);
+  const { user, loading, error } = useAuth()
 
   if (loading) {
     return (
@@ -67,6 +18,60 @@ export default function DashboardPage() {
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--color-primary)]"></div>
       </div>
     )
+  }
+
+  if (error) {
+    const isLockManagerError = error.includes('Navigator LockManager lock') || 
+                              error.includes('timed out waiting') ||
+                              error.includes('conectividade')
+    
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-[var(--color-background)]">
+        <div className="text-center p-6 max-w-md">
+          <div className="text-6xl mb-4">{isLockManagerError ? '🔄' : '⚠️'}</div>
+          <h2 className="text-xl font-bold mb-4 text-[var(--color-text)]">
+            {isLockManagerError ? 'Problema de Conectividade' : 'Erro de Autenticação'}
+          </h2>
+          <p className="text-[var(--color-text-secondary)] mb-6">
+            {isLockManagerError 
+              ? 'Detectamos um problema de conectividade temporário. Tente novamente.'
+              : error
+            }
+          </p>
+          <div className="space-y-3">
+            <button 
+              onClick={() => window.location.reload()}
+              className="w-full px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+            >
+              Tentar Novamente
+            </button>
+            {isLockManagerError && (
+              <button 
+                onClick={() => {
+                  localStorage.clear()
+                  sessionStorage.clear()
+                  window.location.href = '/login'
+                }}
+                className="w-full px-4 py-2 border border-[var(--color-border)] text-[var(--color-text)] rounded-lg hover:bg-[var(--color-background-secondary)] transition-colors"
+              >
+                Limpar Cache e Fazer Login
+              </button>
+            )}
+          </div>
+          {isLockManagerError && (
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <p className="text-sm text-blue-600 dark:text-blue-400">
+                💡 Este erro é temporário e geralmente resolve com uma nova tentativa
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null // O hook já deve ter redirecionado para login
   }
 
   const filteredActivities =

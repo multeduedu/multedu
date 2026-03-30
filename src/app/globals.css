@@ -48,4 +48,179 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: var(--font-size-base, 1rem);
+}
+
+:root {
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+}
+
+html.text-scale-small {
+  font-size: 87.5%;
+}
+
+html.text-scale-normal {
+  font-size: 100%;
+}
+
+html.text-scale-large {
+  font-size: 112.5%;
+}
+
+html.contrast-high {
+  --color-background: #ffffff;
+  --color-background-secondary: #000000;
+  --color-surface: #ffffff;
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+  --color-border: #000000;
+  --color-button-dark: #000000;
+  --color-button-dark-hover: #111111;
+  --color-primary: #0000ff;
+  --color-primary-hover: #0000cc;
+}
+
+html.dark.contrast-high {
+  --color-background: #000000;
+  --color-surface: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-border: #cccccc;
+  --color-button-dark: #ffffff;
+  --color-button-dark-hover: #cccccc;
+  --color-primary: #ffff00;
+  --color-primary-hover: #ffff99;
+}
+
+/* Atalhos de Teclado - Visibilidade melhorada para acessibilidade */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+html.contrast-high button:focus-visible,
+html.contrast-high input:focus-visible,
+html.contrast-high select:focus-visible,
+html.contrast-high textarea:focus-visible,
+html.contrast-high a:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+html.dyslexia-friendly {
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+
+  --color-background: #fef6e4;
+  --color-surface: #fffbf0;
+  --color-card: #fffbf0;
+  --color-card-hover: #fff8e7;
+  --color-text-primary: #2d2d2d;
+  --color-text-secondary: #555555;
+}
+
+html.dyslexia-friendly body {
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+}
+
+html.dyslexia-friendly * {
+  font-family: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+  word-spacing: inherit !important;
+}
+
+/* Dark mode com dyslexia */
+html.dyslexia-friendly.dark {
+  font-family: 'Open Dyslexic', 'Comic Sans MS', cursive, sans-serif !important;
+
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+  word-spacing: 0.15em !important;
+
+  --color-background: #2a2416;
+  --color-surface: #3a3228;
+  --color-card: #3a3228;
+  --color-card-hover: #4a4238;
+  --color-text-primary: #e8dcc8;
+  --color-text-secondary: #b8a890;
+}
+
+/* Contraste alto + Dislexia */
+html.dyslexia-friendly.contrast-high {
+  --color-background: #ffffff;
+  --color-surface: #fffbf0;
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+}
+
+html.dyslexia-friendly.dark.contrast-high {
+  --color-background: #000000;
+  --color-surface: #1a1310;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #e8dcc8;
+}
+
+@keyframes coin-float {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) rotate(180deg) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-80px) rotate(540deg) scale(1.1);
+  }
+  100% {
+    transform: translateY(-120px) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(20px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-10px) scale(0.95);
+  }
+}
+
+.animate-coin-float {
+  animation: coin-float 1.5s ease-out forwards;
+}
+
+.animate-fade-up {
+  animation: fade-up 2s ease-out forwards;
 }
