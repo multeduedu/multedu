@@ -5,12 +5,14 @@ import {
   FiPhone,
   FiMail,
   FiMapPin,
+  FiInstagram,
+  FiMessageCircle,
+  FiLinkedin,
+  FiGithub,
   FiSend,
 } from "react-icons/fi";
 import VoltarHomeButton from "@/components/ui/VoltarHome";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-// IMPORTANTE: Importamos a action que faz o envio real
-import { enviarEmailContato } from "@/actions/auth"; 
 
 interface FormData {
   nome: string;
@@ -37,7 +39,6 @@ export default function ContatoPage() {
   const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [serverError, setServerError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -74,16 +75,16 @@ export default function ContatoPage() {
     if (!formData.mensagem.trim()) {
       newErrors.mensagem = "Escreva sua mensagem.";
     } else if (formData.mensagem.length < 10) {
-      newErrors.mensagem = "A mensagem deve ter no mínimo 10 caracteres.";
+      newErrors.mensagem =
+        "A mensagem deve ter no mínimo 10 caracteres.";
     }
 
     return newErrors;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSuccessMessage("");
-    setServerError("");
 
     const validationErrors = validate();
     setErrors(validationErrors);
@@ -91,115 +92,191 @@ export default function ContatoPage() {
     if (Object.keys(validationErrors).length === 0) {
       setIsSubmitting(true);
 
-      try {
-        // CHAMADA REAL PARA O RESEND VIA ACTION
-        const result = await enviarEmailContato(
-          formData.nome,
-          formData.email,
-          formData.assunto,
-          formData.mensagem
-        );
-
-        if (result.success) {
-          setSuccessMessage("Sua mensagem foi enviada com sucesso! Verifique seu e-mail.");
-          setFormData({
-            nome: "",
-            email: "",
-            assunto: "",
-            mensagem: "",
-          });
-        } else {
-          setServerError(result.error || "Erro ao enviar mensagem.");
-        }
-      } catch (err) {
-        setServerError("Falha na conexão com o servidor.");
-      } finally {
+      setTimeout(() => {
         setIsSubmitting(false);
-      }
+        setSuccessMessage("Sua mensagem foi enviada com sucesso!");
+        setFormData({
+          nome: "",
+          email: "",
+          assunto: "",
+          mensagem: "",
+        });
+      }, 1000);
     }
   };
 
   return (
-    <main className="min-h-screen w-full bg-[var(--color-background)] text-[var(--color-text-primary)] transition-colors duration-300 relative">
+    <main
+      className="
+        min-h-screen w-full
+        bg-[var(--color-background)]
+        text-[var(--color-text-primary)]
+        transition-colors
+        duration-300
+        relative
+      "
+    >
       <div className="absolute top-6 right-6">
         <ThemeToggle />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-20">
-        <VoltarHomeButton href="/">Voltar para Home</VoltarHomeButton>
+
+        <VoltarHomeButton href="/">
+          Voltar para Home
+        </VoltarHomeButton>
 
         <header className="max-w-3xl mx-auto text-center mb-20">
           <span className="text-[var(--color-primary)] font-bold text-xs tracking-widest uppercase mb-3 block">
             Contato
           </span>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Vamos conversar?</h1>
+
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            Vamos conversar?
+          </h1>
+
           <p className="text-[var(--color-text-secondary)] text-lg leading-relaxed">
-            Entre em contato conosco. Estamos prontos para responder suas dúvidas.
+            Entre em contato conosco. Estamos prontos para atender você e responder
+            <br className="hidden md:block" /> todas as suas dúvidas.
           </p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Informações de Contato */}
+
           <section className="flex flex-col gap-4">
             {[
               { icon: <FiPhone size={20} />, title: "Telefone", value: "+55 (11) 99999-9999" },
               { icon: <FiMail size={20} />, title: "E-mail", value: "multeduedu@gmail.com" },
               { icon: <FiMapPin size={20} />, title: "Endereço", value: "São Paulo, SP - Brasil" }
             ].map((item, index) => (
-              <div key={index} className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg p-5 flex items-center gap-4 shadow-sm">
+              <div
+                key={index}
+                className="
+                  bg-[var(--color-card)]
+                  border border-[var(--color-border)]
+                  rounded-lg p-5
+                  flex items-center gap-4
+                  shadow-sm
+                  transition-colors
+                "
+              >
                 <div className="bg-[var(--color-input)] p-3 rounded-md text-[var(--color-primary)]">
                   {item.icon}
                 </div>
                 <div>
-                  <h2 className="text-xs text-[var(--color-text-secondary)] font-semibold mb-1 uppercase tracking-wide">{item.title}</h2>
-                  <p className="font-medium">{item.value}</p>
+                  <h2 className="text-xs text-[var(--color-text-secondary)] font-semibold mb-1 uppercase tracking-wide">
+                    {item.title}
+                  </h2>
+                  <p className="font-medium">
+                    {item.value}
+                  </p>
                 </div>
               </div>
             ))}
           </section>
 
-          {/* Formulário de Envio */}
-          <section className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl p-8 shadow-sm">
-            <h2 className="text-xl font-bold mb-6">Envie uma mensagem</h2>
+          <section
+            className="
+              bg-[var(--color-card)]
+              border border-[var(--color-border)]
+              rounded-xl
+              p-8
+              shadow-sm
+              transition-colors
+            "
+          >
+            <h2 className="text-xl font-bold mb-6">
+              Envie uma mensagem
+            </h2>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+
               {["nome", "email", "assunto"].map((field) => (
                 <div key={field} className="flex flex-col gap-1">
-                  <label className="text-sm text-[var(--color-text-secondary)] capitalize">{field}</label>
+                  <label className="text-sm text-[var(--color-text-secondary)] capitalize">
+                    {field}
+                  </label>
                   <input
                     name={field}
                     type={field === "email" ? "email" : "text"}
                     value={formData[field as keyof FormData]}
                     onChange={handleChange}
-                    className={`bg-[var(--color-input)] text-[var(--color-text-primary)] border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors[field as keyof Errors] ? "border-red-500" : "border-[var(--color-border)]"}`}
+                    className={`
+                      bg-[var(--color-input)]
+                      text-[var(--color-text-primary)]
+                      border rounded-md px-3 py-2 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+                      ${
+                        errors[field as keyof Errors]
+                          ? "border-red-500"
+                          : "border-[var(--color-border)]"
+                      }
+                    `}
                   />
-                  {errors[field as keyof Errors] && <span className="text-xs text-red-500">{errors[field as keyof Errors]}</span>}
+                  {errors[field as keyof Errors] && (
+                    <span className="text-xs text-red-500">
+                      {errors[field as keyof Errors]}
+                    </span>
+                  )}
                 </div>
               ))}
 
               <div className="flex flex-col gap-1">
-                <label className="text-sm text-[var(--color-text-secondary)]">Mensagem</label>
+                <label className="text-sm text-[var(--color-text-secondary)]">
+                  Mensagem
+                </label>
                 <textarea
                   name="mensagem"
                   rows={5}
                   value={formData.mensagem}
                   onChange={handleChange}
-                  className={`bg-[var(--color-input)] text-[var(--color-text-primary)] border rounded-md px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] ${errors.mensagem ? "border-red-500" : "border-[var(--color-border)]"}`}
+                  className={`
+                    bg-[var(--color-input)]
+                    text-[var(--color-text-primary)]
+                    border rounded-md px-3 py-2 text-sm resize-none
+                    focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]
+                    ${
+                      errors.mensagem
+                        ? "border-red-500"
+                        : "border-[var(--color-border)]"
+                    }
+                  `}
                 />
-                {errors.mensagem && <span className="text-xs text-red-500">{errors.mensagem}</span>}
+                {errors.mensagem && (
+                  <span className="text-xs text-red-500">
+                    {errors.mensagem}
+                  </span>
+                )}
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-70 text-white font-medium py-2.5 px-6 rounded-md text-sm transition-colors flex items-center justify-center gap-2 w-full md:w-auto cursor-pointer"
+                className="
+                  mt-3
+                  bg-[var(--color-primary)]
+                  hover:bg-[var(--color-primary-hover)]
+                  disabled:opacity-70
+                  text-white
+                  font-medium
+                  py-2.5 px-6
+                  rounded-md
+                  text-sm
+                  transition-colors
+                  flex items-center justify-center gap-2
+                  w-full md:w-auto
+                  cursor-pointer
+                "
               >
                 {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                 {!isSubmitting && <FiSend size={16} />}
               </button>
 
-              {successMessage && <p className="mt-4 text-sm text-green-500 font-medium bg-green-50 p-3 rounded-md border border-green-200">{successMessage}</p>}
-              {serverError && <p className="mt-4 text-sm text-red-500 font-medium bg-red-50 p-3 rounded-md border border-red-200">{serverError}</p>}
+              {successMessage && (
+                <p className="mt-4 text-sm text-green-500 font-medium">
+                  {successMessage}
+                </p>
+              )}
             </form>
           </section>
         </div>

@@ -3,8 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import Swal from "sweetalert2"
 import { useSound } from "@/hooks/useSound"
-import { addCoins } from "@/actions/auth"
-import { CoinAnimation } from "@/components/ui/CoinAnimation"
 
 type DigitIndex = 1 | 2 | 3 | 4 | 5
 
@@ -36,12 +34,9 @@ export default function MultiplicadorX11() {
   const clickSound = useSound("/sounds/click-button.mp3")
   const actionSound = useSound("/sounds/button-305770.mp3")
 
-  const [selects, setSelects] = useState<string[]>(["0", "0", "0", "0", "0"])
-  const [inputs, setInputs] = useState<string[]>(["", "", "", "", ""])
+  const [selects, setSelects] = useState<string[]>(["0", "0", "0", "0", "0"]) // [s5,s4,s3,s2,s1]
+  const [inputs, setInputs] = useState<string[]>(["", "", "", "", ""]) // [i5,i4,i3,i2,i1]
   const [radio, setRadio] = useState<DigitIndex | null>(null)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [solvedQuestions, setSolvedQuestions] = useState<Set<string>>(new Set())
-  const [showCoinAnimation, setShowCoinAnimation] = useState(false)
 
   const rowRef = useRef<HTMLDivElement | null>(null)
   const arrowRef = useRef<HTMLDivElement | null>(null)
@@ -62,35 +57,6 @@ export default function MultiplicadorX11() {
       return next
     })
   }, [])
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (isProcessing) {
-        event.preventDefault()
-        event.returnValue = ''
-      }
-    }
-
-    const handleUnload = () => {}
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    window.addEventListener('unload', handleUnload)
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      window.removeEventListener('unload', handleUnload)
-    }
-  }, [isProcessing])
-
-  useEffect(() => {
-    if (showCoinAnimation) {
-      const timer = setTimeout(() => {
-        setShowCoinAnimation(false)
-      }, 3000)
-      
-      return () => clearTimeout(timer)
-    }
-  }, [showCoinAnimation])
 
   function setSelect(pos: number, value: string) {
     setSelects((prev) => {
@@ -123,10 +89,26 @@ export default function MultiplicadorX11() {
   }
 
   function showArrowForDigit(digit: DigitIndex) {
+    const map: Record<DigitIndex, string> = {
+      1: "select1",
+      2: "select2",
+      3: "select3",
+      4: "select4",
+      5: "select5",
+    }
+
+    const targetId = map[digit]
+    const target = selectRefs.current[targetId]
+    const row = rowRef.current
     const arrow = arrowRef.current
 
-    if (!arrow) return
+    if (!target || !row || !arrow) return
 
+    const targetRect = target.getBoundingClientRect()
+    const rowRect = row.getBoundingClientRect()
+
+    const left = targetRect.left - rowRect.left + targetRect.width / 2
+    arrow.style.left = `${left}px`
     arrow.style.opacity = "1"
 
     window.setTimeout(() => {
@@ -149,105 +131,56 @@ export default function MultiplicadorX11() {
     showArrowForDigit(digit)
   }
 
-  async function conferir() {
-    if (isProcessing) {
+  function conferir() {
+    actionSound.play()
+
+    const numeroOriginal = getNumeroOriginal()
+    const numeroDigitado = getNumeroDigitado()
+
+    if (!normalizeNumberString(numeroDigitado) || normalizeNumberString(numeroDigitado) === "0") {
+      Swal.fire({
+        ...swalBase,
+        title: "⚠️ Aviso",
+        text: "Digite sua resposta nos campos abaixo.",
+        icon: "warning",
+        confirmButtonText: "Ok",
+      })
       return
     }
 
-    setIsProcessing(true)
-    
-    try {
-      actionSound.play()
+    const numeroConvertido = Number(numeroOriginal)
+    if (Number.isNaN(numeroConvertido)) {
+      Swal.fire({
+        ...swalBase,
+        title: "Erro",
+        text: "Valor inválido nos seletores. Certifique-se de que são números.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      })
+      return
+    }
 
-      const numeroOriginal = getNumeroOriginal()
-      const numeroDigitado = getNumeroDigitado()
+    const resultadoCorreto = String(numeroConvertido * 11)
 
-      if (!normalizeNumberString(numeroDigitado) || normalizeNumberString(numeroDigitado) === "0") {
-        Swal.fire({
-          ...swalBase,
-          title: "⚠️ Aviso",
-          text: "Digite sua resposta nos campos abaixo.",
-          icon: "warning",
-          confirmButtonText: "Ok",
-        })
-        return
-      }
+    const a = normalizeNumberString(numeroDigitado)
+    const b = normalizeNumberString(resultadoCorreto)
 
-      const numeroConvertido = Number(numeroOriginal)
-      if (Number.isNaN(numeroConvertido)) {
-        Swal.fire({
-          ...swalBase,
-          title: "Erro",
-          text: "Valor inválido nos seletores. Certifique-se de que são números.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        })
-        return
-      }
-
-      const resultadoCorreto = String(numeroConvertido * 11)
-
-      const a = normalizeNumberString(numeroDigitado)
-      const b = normalizeNumberString(resultadoCorreto)
-
-      const questionKey = `${numeroOriginal}_${resultadoCorreto}`
-
-      if (a === b) {
-        if (solvedQuestions.has(questionKey)) {
-          Swal.fire({
-            ...swalBase,
-            title: "✅ Acertou!",
-            text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-            icon: "success",
-            confirmButtonText: "Boa!",
-          })
-        } else {
-          try {
-            await addCoins(10)
-            setSolvedQuestions(prev => new Set([...prev, questionKey]))
-            
-            setShowCoinAnimation(true)
-            
-            Swal.fire({
-              ...swalBase,
-              title: "✅ Acertou!",
-              html: `
-                <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
-                  <div style="font-size: 18px;">A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}</div>
-                  <div style="display: flex; align-items: center; gap: 8px; background: linear-gradient(to right, #fef3c7, #fde68a); padding: 8px 16px; border-radius: 20px; border: 1px solid #fbbf24; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706); border-radius: 50%; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
-                      <span style="font-size: 14px; font-weight: bold; color: #78350f;">$</span>
-                    </div>
-                    <span style="font-size: 18px; font-weight: bold; color: #a16207;">+10 moedas!</span>
-                  </div>
-                </div>
-              `,
-              icon: "success",
-              confirmButtonText: "Boa!",
-            })
-            
-          } catch (error) {
-            console.error("Erro ao adicionar moedas:", error)
-            Swal.fire({
-              ...swalBase,
-              title: "✅ Acertou!",
-              text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-              icon: "success",
-              confirmButtonText: "Boa!",
-            })
-          }
-        }
-      } else {
-        Swal.fire({
-          ...swalBase,
-          title: "❌ Errou!",
-          text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
-          icon: "error",
-          confirmButtonText: "Entendi",
-        })
-      }
-    } finally {
-      setIsProcessing(false)
+    if (a === b) {
+      Swal.fire({
+        ...swalBase,
+        title: "✅ Acertou!",
+        text: `A multiplicação de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+        icon: "success",
+        confirmButtonText: "Boa!",
+      })
+    } else {
+      Swal.fire({
+        ...swalBase,
+        title: "❌ Errou!",
+        text: `Sua resposta (${numeroDigitado}) está incorreta.\nO resultado correto de ${numeroOriginal} × 11 é: ${resultadoCorreto}`,
+        icon: "error",
+        confirmButtonText: "Entendi",
+      })
     }
   }
 
@@ -304,10 +237,10 @@ export default function MultiplicadorX11() {
             <div
               ref={arrowRef}
               aria-hidden="true"
-              className="pointer-events-none absolute -left-12 top-2 z-50 text-3xl transition-opacity duration-300"
-              style={{ opacity: 0 }}
+              className="pointer-events-none absolute top-2 transition-opacity duration-300"
+              style={{ opacity: 0, transform: "translateX(-50%)" }}
             >
-              ⬅️
+              <span className="text-3xl">⬇️</span>
             </div>
 
             <select
@@ -427,15 +360,11 @@ export default function MultiplicadorX11() {
           <button
             type="button"
             onClick={conferir}
-            disabled={isProcessing}
-            className={`cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
-            ${isProcessing 
-              ? 'bg-gray-400 cursor-not-allowed' 
-              : 'bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]'
-            } text-white
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]`}
+            className="cursor-pointer inline-flex items-center justify-center rounded-xl px-5 py-3 font-bold
+            bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]
+            focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
           >
-            {isProcessing ? 'Processando...' : 'Conferir'}
+            Conferir
           </button>
 
           <button
@@ -456,13 +385,6 @@ export default function MultiplicadorX11() {
           <span className="font-mono">{getNumeroOriginal()}</span>
         </div>
       </div>
-      
-      {showCoinAnimation && (
-        <CoinAnimation 
-          amount={10} 
-          onComplete={() => setShowCoinAnimation(false)} 
-        />
-      )}
     </div>
   )
 }

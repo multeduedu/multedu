@@ -1,8 +1,0 @@
-.gradientTitle {
-  background-image: linear-gradient(to right, #ff8c42, #ff6b35);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  text-shadow: 1px 1px 2px var(--color-primary);
-}

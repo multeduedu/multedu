@@ -1,22 +1,12 @@
 import type { Metadata } from "next"
-import { Indie_Flower } from "next/font/google"
+import SomaBox from "./SomaBox"
+import SomaResultado from "./SomaResultado"
 import ThemeToggle from "@/components/ui/ThemeToggle"
-import Soma from "./Soma"
 import BackButton from "@/components/ui/BackButton"
 
-const indie = Indie_Flower({ subsets: ["latin"], weight: "400" })
-
 export const metadata: Metadata = {
-  title: "Soma (CDU) | Treino de Adição",
-  description:
-    "Pratique soma com números de 3 dígitos (Centena, Dezena, Unidade). Selecione os valores, forme os números e calcule o resultado total.",
-  robots: { index: true, follow: true },
-  openGraph: {
-    title: "Soma (CDU) | Treino de Adição",
-    description:
-      "Pratique soma com números de 3 dígitos (Centena, Dezena, Unidade). Selecione os valores, forme os números e calcule o resultado total.",
-    type: "website",
-  },
+  title: "Praticando Soma | CDU",
+  description: "Pratique soma com centenas, dezenas e unidades",
 }
 
 export default function Page() {
@@ -31,35 +21,15 @@ export default function Page() {
           </div>
         </div>
       </header>
+      <main className="mx-auto max-w-6xl p-6">
+        <h1 className="text-center text-3xl font-bold mb-4">Praticando Soma</h1>
 
-      <main id="conteudo" className="mx-auto max-w-6xl px-2 sm:px-4 pb-10 pt-6">
-        <h1
-          className={`${indie.className} text-center font-bold leading-tight
-          text-3xl sm:text-4xl lg:text-5xl`}
-          style={{
-            backgroundImage: "linear-gradient(to right, #4CAF50, #45a049)",
-            WebkitBackgroundClip: "text",
-            color: "transparent",
-            textShadow: "1px 1px 2px var(--color-primary)",
-          }}
-        >
-          Praticando Soma – Centena, Dezena e Unidade
-        </h1>
-
-        <p className="mt-4 text-center text-[var(--color-text-secondary)]">
-          Escolha os valores, forme os números e calcule o resultado total da soma.
+        <p className="mx-auto max-w-xl text-center text-slate-600 mb-8">
+          Escolha centena, dezena e unidade, confira os números formados e resolva a soma.
         </p>
 
-        <div className="mt-8">
-          <section
-            className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]
-            shadow-sm p-3 sm:p-6 mx-auto w-full"
-            aria-label="Treino de soma"
-          >
-            <Soma />
-          </section>
-        </div>
+        <SomaResultado />
       </main>
-    </div>
+      </div>
   )
 }

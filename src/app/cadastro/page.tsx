@@ -34,16 +34,15 @@ export default function CadastroPage() {
 
     const result = await signUp(formData);
 
-    if (result?.error) {
-      return { error: result.error };
+    if (result.success) {
+      setIsSuccess(true);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+      return { error: null };
     }
 
-    // Se chegou até aqui, o cadastro foi bem-sucedido
-    setIsSuccess(true);
-    setTimeout(() => {
-      window.location.href = "/login";
-    }, 2000);
-    return { error: null };
+    return { error: result.error || "Erro ao tentar cadastrar." };
   }
 
   return (
