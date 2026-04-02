@@ -25,7 +25,6 @@ function normalizeNumberString(str: string): string {
   return trimmed
 }
 
-// Metade do vizinho (arredondado para baixo)
 function getHalfOfDigit(digit: number): number {
   return Math.floor(digit / 2)
 }

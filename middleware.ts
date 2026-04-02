@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
-// Cache para evitar múltiplas verificações simultâneas
 const authCache = new Map<string, { result: boolean; timestamp: number }>()
-const CACHE_DURATION = 30000 // 30 segundos
+const CACHE_DURATION = 30000
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -15,7 +14,6 @@ export async function middleware(req: NextRequest) {
     },
   })
 
-  // Verificar cache primeiro para rotas protegidas
   const now = Date.now()
   const cached = authCache.get(cacheKey)
   if (cached && (now - cached.timestamp) < CACHE_DURATION) {
@@ -30,7 +28,6 @@ export async function middleware(req: NextRequest) {
     return response
   }
 
-  // Criar cliente Supabase para middleware com timeout aumentado
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -60,7 +57,7 @@ export async function middleware(req: NextRequest) {
       
       const isAuthenticated = !error && !!user
       
-      // Atualizar cache
+
       authCache.set(cacheKey, { result: isAuthenticated, timestamp: now })
       
       if (!isAuthenticated) {
@@ -71,13 +68,12 @@ export async function middleware(req: NextRequest) {
     } catch (error) {
       console.error('Erro no middleware de autenticação:', error)
       
-      // Se for erro de LockManager, não redirecionar imediatamente
+
       const errorMessage = (error as Error).message
       if (errorMessage.includes('Navigator LockManager lock') || 
           errorMessage.includes('timed out waiting') ||
           errorMessage.includes('Timeout na verificação')) {
         console.warn('Timeout/LockManager error no middleware, permitindo acesso')
-        // Permitir acesso mas não fazer cache do resultado
         return response
       }
       
@@ -86,7 +82,6 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Redirecionar usuários autenticados da página de login
   if (pathname === '/login') {
     try {
       const { data: { user } } = await Promise.race([
@@ -98,7 +93,6 @@ export async function middleware(req: NextRequest) {
       
       const isAuthenticated = !!user
       
-      // Atualizar cache
       authCache.set(cacheKey, { result: isAuthenticated, timestamp: now })
       
       if (isAuthenticated) {
@@ -106,13 +100,12 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(dashboardUrl)
       }
     } catch (error) {
-      // Se houver erro na verificação, permite acesso ao login
+
       console.warn('Erro ao verificar usuário logado no middleware:', error)
     }
   }
   
-  // Limpar cache periodicamente (a cada 5 minutos)
-  if (Math.random() < 0.01) { // 1% de chance a cada request
+  if (Math.random() < 0.01) {
     const expiredKeys = Array.from(authCache.entries())
       .filter(([_, value]) => (now - value.timestamp) > CACHE_DURATION * 10)
       .map(([key]) => key)

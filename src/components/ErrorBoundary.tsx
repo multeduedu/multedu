@@ -28,7 +28,6 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: any) {
     console.error('ErrorBoundary capturou erro:', error, errorInfo)
     
-    // Se for erro de LockManager, tentar recarregar após delay
     if (error.message.includes('Navigator LockManager lock') || 
         error.message.includes('timed out waiting')) {
       setTimeout(() => {
@@ -93,7 +92,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-// Hook para usar ErrorBoundary de forma mais simples
 export const withErrorBoundary = (Component: React.ComponentType<any>, fallback?: ReactNode) => {
   return function WrappedComponent(props: any) {
     return (

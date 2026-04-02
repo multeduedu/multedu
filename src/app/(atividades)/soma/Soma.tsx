@@ -84,7 +84,7 @@ export default function Soma() {
       
       next[index] = box
       
-      // Atualizar ícone de feedback se o campo de número formado mudou
+
       if (field === "formedNumber") {
         checkFormedNumber(index, next[index])
       }

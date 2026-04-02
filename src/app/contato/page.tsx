@@ -9,7 +9,6 @@ import {
 } from "react-icons/fi";
 import VoltarHomeButton from "@/components/ui/VoltarHome";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-// IMPORTANTE: Importamos a action que faz o envio real
 import { enviarEmailContato } from "@/actions/auth"; 
 
 interface FormData {
@@ -92,7 +91,6 @@ export default function ContatoPage() {
       setIsSubmitting(true);
 
       try {
-        // CHAMADA REAL PARA O RESEND VIA ACTION
         const result = await enviarEmailContato(
           formData.nome,
           formData.email,

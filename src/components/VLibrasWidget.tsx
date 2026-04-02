@@ -12,12 +12,10 @@ declare global {
 
 export default function VLibrasWidget() {
   useEffect(() => {
-    // Carrega o script do VLibras do governo
     const script = document.createElement('script')
     script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js'
     script.async = true
     script.onload = () => {
-      // Inicializa o VLibras após o script carregar
       if (window.VLibras) {
         new window.VLibras.Widget('https://vlibras.gov.br/app', {
           option: {
@@ -42,7 +40,6 @@ export default function VLibrasWidget() {
     document.body.appendChild(script)
 
     return () => {
-      // Cleanup
       const existingScript = document.querySelector('script[src="https://vlibras.gov.br/app/vlibras-plugin.js"]')
       if (existingScript) {
         existingScript.remove()
@@ -52,7 +49,3 @@ export default function VLibrasWidget() {
 
   return null
 }
-
-// Dica: Você também pode acessar o VLibras globalmente fazendo:
-// window.VLibras.Widget(...)
-// O widget será renderizado automaticamente no canto inferior direito da página

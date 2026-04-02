@@ -38,7 +38,6 @@ export default function CadastroPage() {
       return { error: result.error };
     }
 
-    // Se chegou até aqui, o cadastro foi bem-sucedido
     setIsSuccess(true);
     setTimeout(() => {
       window.location.href = "/login";
