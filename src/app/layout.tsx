@@ -46,7 +46,7 @@ export default function RootLayout({
         <FontLoader />
         
         {/* Wrapper para VLibras - Estrutura correta que o script procura */}
-        <div vw="true" className="enabled" style={{ position: 'fixed', zIndex: 9998 }}>
+        <div {...({ vw: "true" } as any)} className="enabled" style={{ position: 'fixed', zIndex: 9998 }}>
           <div id="vw-plugin-wrapper" className="access-button" />
         </div>
         
