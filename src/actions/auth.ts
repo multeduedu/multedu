@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { Resend } from 'resend' 
 
-// 2. Inicialização do Resend
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 async function createSupabaseServerClient() {
@@ -66,7 +65,6 @@ export async function signUp(formData: FormData) {
 
     if (profileError) return { error: profileError.message }
 
-    // 3. COMANDO DE ENVIO DO E-MAIL
     try {
       await resend.emails.send({
         from: 'MultEdu <contato@multedu.com.br>',

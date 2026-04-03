@@ -44,6 +44,12 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${poppins.variable} font-sans antialiased`}>
         <FontLoader />
+        
+        {/* Wrapper para VLibras - Estrutura correta que o script procura */}
+        <div vw="true" className="enabled" style={{ position: 'fixed', zIndex: 9998 }}>
+          <div id="vw-plugin-wrapper" className="access-button" />
+        </div>
+        
         <ErrorBoundary>
           <VLibrasWidget />
           <AccessibilityBar />

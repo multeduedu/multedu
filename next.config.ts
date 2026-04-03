@@ -14,13 +14,10 @@ const nextConfig: NextConfig = {
     ],
   },
   
-  // Configurações para melhorar performance e reduzir problemas de concorrência
   experimental: {
-    // Permite otimizações de reutilização de componentes
     optimizePackageImports: ['@supabase/ssr', '@supabase/supabase-js']
   },
   
-  // Headers de segurança e cache
   async headers() {
     return [
       {

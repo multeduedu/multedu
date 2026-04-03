@@ -13,7 +13,6 @@ let pendingOperations: Array<{ resolve: any; reject: any }> = []
 
 export const supabase = (() => {
   if (typeof window === 'undefined') {
-    // No lado servidor, sempre cria uma nova instância
     return createBrowserClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: false
@@ -34,13 +33,11 @@ export const supabase = (() => {
     })
     isInitializing = false
     
-    // Resolver operações pendentes
     pendingOperations.forEach(({ resolve }) => resolve(supabaseInstance))
     pendingOperations = []
   }
   
   if (!supabaseInstance && isInitializing) {
-    // Se ainda está inicializando, retorna uma promise que resolve quando pronto
     return new Promise((resolve, reject) => {
       pendingOperations.push({ resolve, reject })
     }) as any
@@ -63,19 +60,16 @@ export const retryWithBackoff = async <T>(
     } catch (error) {
       lastError = error as Error
       
-      // Se for o último attempt, lança o erro
       if (attempt === maxRetries) {
         throw lastError
       }
 
-      // Se for erro de LockManager timeout, tenta novamente
-      if (lastError.message.includes('Navigator LockManager lock') || 
+      if (lastError.message.includes('Navigator LockManager lock') ||  
           lastError.message.includes('timed out waiting')) {
         const delay = baseDelay * Math.pow(2, attempt)
         console.warn(`Tentativa ${attempt + 1} falhou, tentando novamente em ${delay}ms...`)
         await new Promise(resolve => setTimeout(resolve, delay))
       } else {
-        // Para outros erros, não faz retry
         throw lastError
       }
     }
@@ -84,11 +78,9 @@ export const retryWithBackoff = async <T>(
   throw lastError!
 }
 
-// Cache para evitar múltiplas chamadas simultâneas
 let cachedUserPromise: Promise<any> | null = null
 let cacheTimeout: NodeJS.Timeout | null = null
 
-// Função debounce para evitar múltiplas chamadas
 const debounce = (func: Function, delay: number) => {
   let timeoutId: NodeJS.Timeout
   return (...args: any[]) => {
@@ -97,7 +89,6 @@ const debounce = (func: Function, delay: number) => {
   }
 }
 
-// Função wrapper para getUser com retry e cache
 export const getUserWithRetry = (forceRefresh = false) => {
   if (!forceRefresh && cachedUserPromise) {
     return cachedUserPromise
@@ -110,19 +101,17 @@ export const getUserWithRetry = (forceRefresh = false) => {
     } catch (error) {
       const errorMessage = (error as Error).message
       
-      // Se for erro de LockManager, aguarda um pouco antes de tentar novamente
-      if (errorMessage.includes('Navigator LockManager lock') || 
+      if (errorMessage.includes('Navigator LockManager lock') ||  
           errorMessage.includes('timed out waiting')) {
         console.warn('LockManager timeout detectado, aguardando antes de retry...')
         await new Promise(resolve => setTimeout(resolve, 2000))
-        throw error // Vai fazer o retry através do retryWithBackoff
+        throw error
       }
       
       throw error
     }
-  }, 3, 2000) // 3 tentativas com delay de 2 segundos
+  }, 3, 2000)
 
-  // Limpar cache após 5 segundos para evitar dados desatualizados
   if (cacheTimeout) clearTimeout(cacheTimeout)
   cacheTimeout = setTimeout(() => {
     cachedUserPromise = null
@@ -131,7 +120,6 @@ export const getUserWithRetry = (forceRefresh = false) => {
   return cachedUserPromise
 }
 
-// Função para limpar cache manualmente
 export const clearUserCache = () => {
   cachedUserPromise = null
   if (cacheTimeout) {

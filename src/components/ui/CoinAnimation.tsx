@@ -11,16 +11,14 @@ export function CoinAnimation({ amount, onComplete }: CoinAnimationProps) {
   const [coins, setCoins] = useState<Array<{ id: number; x: number; delay: number }>>([])
 
   useEffect(() => {
-    // Criar moedas com posições e delays aleatórios
     const newCoins = Array.from({ length: Math.min(amount / 2, 5) }, (_, i) => ({
       id: i,
-      x: Math.random() * 80 + 10, // Entre 10% e 90%
-      delay: i * 100, // Escalonamento de 100ms
+      x: Math.random() * 80 + 10,
+      delay: i * 100,
     }))
     
     setCoins(newCoins)
 
-    // Limpar após a animação
     const timeout = setTimeout(() => {
       setCoins([])
       onComplete?.()

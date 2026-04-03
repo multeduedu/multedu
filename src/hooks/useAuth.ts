@@ -15,14 +15,12 @@ export const useAuth = () => {
   const isLoadingRef = useRef(false)
 
   const loadUser = useCallback(async (retryCount = 0, forceRefresh = false) => {
-    // Evitar múltiplas chamadas simultâneas
     if (isLoadingRef.current && !forceRefresh) {
       return null
     }
     
     isLoadingRef.current = true
     
-    // Cancelar requisição anterior se existir
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
@@ -83,10 +81,8 @@ export const useAuth = () => {
           retryCount < 3) {
         console.warn(`Erro de LockManager, tentativa ${retryCount + 1} de 4...`)
         
-        // Limpar cache antes de tentar novamente
         clearUserCache()
         
-        // Aguardar um tempo progressivamente maior
         const delay = Math.min(1000 * Math.pow(2, retryCount), 8000)
         await new Promise(resolve => setTimeout(resolve, delay))
         
@@ -122,7 +118,6 @@ export const useAuth = () => {
     try {
       setLoading(true)
       
-      // Limpar cache antes de fazer logout
       clearUserCache()
       
       const client = await Promise.resolve(supabase)
@@ -145,15 +140,14 @@ export const useAuth = () => {
 
   const refreshUser = useCallback(() => {
     setLoading(true)
-    clearUserCache() // Limpar cache para forçar nova busca
-    return loadUser(0, true) // forceRefresh = true
+    clearUserCache()
+    return loadUser(0, true)
   }, [loadUser])
 
   useEffect(() => {
     loadUser()
   }, [loadUser])
 
-  // Listener para mudanças de autenticação
   useEffect(() => {
     let subscription: any = null
     
@@ -161,7 +155,6 @@ export const useAuth = () => {
       try {
         const client = await Promise.resolve(supabase)
         
-        // Configurar listener de forma mais robusta
         const authListener = client.auth.onAuthStateChange(
           async (event: string, session: any) => {
             console.log('Auth state change:', event)
@@ -181,7 +174,6 @@ export const useAuth = () => {
           }
         )
         
-        // Verificar se authListener tem a propriedade data e subscription
         if (authListener && authListener.data && authListener.data.subscription) {
           subscription = authListener.data.subscription
         } else {
@@ -201,7 +193,6 @@ export const useAuth = () => {
             subscription.unsubscribe()
             console.log('Auth listener desconectado com sucesso')
           } else if (typeof subscription === 'function') {
-            // Alguns casos onde o subscription é uma função de cleanup
             subscription()
             console.log('Auth listener cleanup executado')
           } else {
@@ -212,7 +203,6 @@ export const useAuth = () => {
         }
       }
       
-      // Cancelar operação pendente se existir
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }

@@ -198,6 +198,42 @@ html.dyslexia-friendly.dark.contrast-high {
   }
 }
 
+/* ===== VLibras Global Styles ===== */
+
+/* Wrapper externo [vw="true"] */
+[vw="true"],
+.enabled {
+  position: fixed !important;
+  bottom: 2rem !important;
+  right: 2rem !important;
+  z-index: 9998 !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Elemento interno #vw-plugin-wrapper */
+#vw-plugin-wrapper,
+.access-button {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+}
+
+/* Plugin criado pelo VLibras */
+.vlibras-plugin {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 9998 !important;
+}
+
+/* ===== Fim VLibras Styles ===== */
+
 @keyframes fade-up {
   0% {
     opacity: 0;

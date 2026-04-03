@@ -5,14 +5,12 @@ import { lockManagerDiagnostics } from '@/utils/lockManagerDiagnostics'
 
 export function LockManagerMonitor() {
   useEffect(() => {
-    // Só executar em desenvolvimento ou quando necessário
     if (process.env.NODE_ENV === 'development' || 
         localStorage.getItem('multedu-debug-locks') === 'true') {
       
       console.log('🔧 Inicializando monitoramento de LockManager...')
       lockManagerDiagnostics.startLockMonitoring()
       
-      // Executar diagnóstico inicial após 2 segundos
       setTimeout(() => {
         lockManagerDiagnostics.runDiagnostics()
       }, 2000)
@@ -23,7 +21,7 @@ export function LockManagerMonitor() {
         if (hasMultipleTabs) {
           console.warn('⚠️ Múltiplas abas detectadas - isto pode causar problemas de LockManager')
         }
-      }, 30000) // Verificar a cada 30 segundos
+      }, 30000)
       
       return () => clearInterval(interval)
     }
@@ -36,7 +34,6 @@ export function LockManagerMonitor() {
           event.error?.message?.includes('timed out waiting')) {
         console.error('🚨 Erro de LockManager detectado:', event.error)
         
-        // Executar diagnóstico automático
         setTimeout(() => {
           lockManagerDiagnostics.runDiagnostics()
         }, 1000)
@@ -48,7 +45,6 @@ export function LockManagerMonitor() {
           event.reason?.message?.includes('timed out waiting')) {
         console.error('🚨 Promise rejection de LockManager:', event.reason)
         
-        // Executar diagnóstico automático
         setTimeout(() => {
           lockManagerDiagnostics.runDiagnostics()
         }, 1000)
@@ -64,11 +60,5 @@ export function LockManagerMonitor() {
     }
   }, [])
 
-  return null // Este componente não renderiza nada
+  return null
 }
-
-// Comandos para usar no console do browser em caso de problemas:
-// lockManagerDiagnostics.runDiagnostics() - executa diagnóstico completo
-// lockManagerDiagnostics.clearSupabaseData() - limpa todos os dados do Supabase
-// emergencyReset() - reset completo + redirecionamento para login
-// localStorage.setItem('multedu-debug-locks', 'true') - habilita debug em produção
