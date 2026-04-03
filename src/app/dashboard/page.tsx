@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Sidebar from "../../components/sections/dashboard/SideBar"
 import ActivityCard from "../../components/sections/dashboard/ActivityCard"
+import { MultiplicadoresGrid } from "@/components/sections/dashboard/MultiplicadoresGrid"
 import { activities } from "@/data/activities"
 import { FiMenu } from "react-icons/fi"
 import { useAuth } from "@/hooks/useAuth"
@@ -79,6 +80,12 @@ export default function DashboardPage() {
       ? activities
       : activities.filter((a) => a.type === filter)
 
+  // Separar multiplicadores das outras atividades para usar novo componente
+  const otherActivities = filteredActivities.filter(
+    (a) => a.type !== "multiplicacao"
+  )
+  const showMultiplicadores = filter === "all" || filter === "multiplicacao"
+
   return (
     <div className="h-screen flex overflow-hidden">
       <Sidebar
@@ -89,8 +96,8 @@ export default function DashboardPage() {
         onClose={() => setSidebarOpen(false)}
       />
 
-      <main className="flex-1 overflow-y-auto p-6 flex flex-col items-center">
-        <header className="w-full max-w-6xl flex justify-between items-center mb-8">
+      <main className="flex-1 overflow-y-auto p-6 flex flex-col">
+        <header className="w-full max-w-6xl flex justify-between items-center mb-8 mx-auto">
           <div className="flex items-center gap-4">
             <button
               className="lg:hidden p-2 rounded-md bg-[var(--color-primary)] text-white"
@@ -103,11 +110,32 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
-          {filteredActivities.map((activity) => (
-            <ActivityCard key={activity.id} activity={activity} />
-          ))}
-        </section>
+        <div className="w-full max-w-6xl mx-auto">
+          {/* Seção Multiplicadores com novo grid */}
+          {showMultiplicadores && (
+            <div className="mb-12">
+              <MultiplicadoresGrid />
+            </div>
+          )}
+
+          {/* Seção de outras atividades */}
+          {otherActivities.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">
+                {filter === "soma"
+                  ? "Soma"
+                  : filter === "subtracao"
+                    ? "Subtração"
+                    : "Outras Atividades"}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {otherActivities.map((activity) => (
+                  <ActivityCard key={activity.id} activity={activity} />
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
       </main>
     </div>
   )

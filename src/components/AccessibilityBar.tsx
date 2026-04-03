@@ -86,7 +86,7 @@ export default function AccessibilityBar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      <div className="fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-gray-200 shadow-sm">
         <div className="flex items-center justify-center gap-1 px-4 py-2 flex-wrap">
           <div className="flex items-center gap-0.5 bg-gray-50 rounded-sm p-1">
             <button
