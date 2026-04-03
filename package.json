@@ -17,6 +17,7 @@
     "react-icons": "^5.5.0",
     "react-youtube": "^10.1.0",
     "resend": "^6.9.4",
+
     "sweetalert2": "^11.26.24"
   },
   "devDependencies": {
