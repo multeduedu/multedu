@@ -12,6 +12,7 @@ export default function FloatingAccessibilityButton() {
   if (!accessibility) return null
 
   const handleLibras = () => {
+    setIsOpen(false)
     Swal.fire({
       title: '📖 Intérprete de Libras',
       html: `
@@ -52,6 +53,7 @@ export default function FloatingAccessibilityButton() {
   }
 
   const handleShortcuts = () => {
+    setIsOpen(false)
     Swal.fire({
       title: '⌨️ Atalhos de Acessibilidade',
       html: `
@@ -125,7 +127,7 @@ export default function FloatingAccessibilityButton() {
 
       {/* Menu Flutuante */}
       {isOpen && (
-        <div className="fixed bottom-24 left-6 z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-3 w-60 max-h-96 overflow-y-auto">
+        <div className="fixed bottom-24 left-6 z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto">
           {/* Texto aumentar/diminuir */}
           <div className="mb-3">
             <p className="text-xs font-semibold text-gray-700 mb-2">Tamanho do Texto</p>
