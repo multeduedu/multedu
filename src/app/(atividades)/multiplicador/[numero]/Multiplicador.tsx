@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 import { useSound } from "@/hooks/useSound";
 import { CoinAnimation } from "@/components/ui/CoinAnimation";
 import { addCoins } from "@/actions/auth";
@@ -69,7 +69,7 @@ function DigitInput(props: {
           inputMode="numeric"
           pattern="[0-9]*"
           maxLength={1}
-          className="cursor-text h-9 sm:h-14 w-8 my-1 text-center text-lg sm:text-2xl font-extrabold border-b-3 bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-100 focus-within:border-[var(--color-primary)] focus:outline-none"
+          className="cursor-text h-8 sm:h-11 md:h-14 w-7 sm:w-8 md:w-9 my-1 text-center text-sm sm:text-lg md:text-2xl font-extrabold border-b-3 bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:bg-gray-100 focus-within:border-[var(--color-primary)] focus:outline-none"
           aria-label={props.label}
         />
       </div>
@@ -81,7 +81,8 @@ export default function Multiplicador({ dadosMult }: Props) {
   const clickSound = useSound("/sounds/click-button.mp3");
   const actionSound = useSound("/sounds/button-305770.mp3");
 
-  const [selects, setSelects] = useState<string[]>(["0", "0", "0", "0", "0"]);
+  // AJUSTE: Iniciando com strings vazias para mostrar o placeholder
+  const [selects, setSelects] = useState<string[]>(["0", "", "", "", ""]);
   const [inputs, setInputs] = useState<string[]>(["", "", "", "", ""]);
   const [radio, setRadio] = useState<DigitIndex | null>(null);
   const [helpDigit, setHelpDigit] = useState<DigitIndex | null>(null);
@@ -94,14 +95,6 @@ export default function Multiplicador({ dadosMult }: Props) {
   const selectRefs = useRef<Record<string, HTMLSelectElement | null>>({});
 
   const digits = useMemo(() => Array.from({ length: 10 }, (_, i) => String(i)), []);
-
-  useEffect(() => {
-    setSelects((prev) => {
-      const next = [...prev];
-      next[0] = "0";
-      return next;
-    });
-  }, []);
 
   function setSelect(pos: number, value: string) {
     setSelects((prev) => {
@@ -120,12 +113,50 @@ export default function Multiplicador({ dadosMult }: Props) {
     });
   }
 
-  function getNumeroOriginal() { return selects.join(""); }
-  function getNumeroDigitado() { return inputs.join(""); }
+  // LÓGICA DE CÁLCULO REVISADA
+  function conferir() {
+    actionSound.play();
+    
+    // 1. Pega os números dos selects (ex: 0, 1, 2, 3, 4 -> "01234")
+    // Note que os selects estão mapeados: [0] é o fixo, [1,2,3,4] são os editáveis
+    // A ordem correta para o cálculo é inverter a ordem visual se necessário
+    const numBase = selects.join(""); 
+    
+    // 2. Pega o que o usuário digitou (ordem visual: 5º, 4º, 3º, 2º, 1º)
+    const numDigitado = inputs.join("");
 
-  function normalizeNumberString(n: string) {
-    const stripped = n.replace(/^0+/, "");
-    return stripped.length ? stripped : "0";
+    if (!numDigitado || numDigitado.trim() === "") {
+      Swal.fire({ ...swalBase, title: "⚠️ Aviso", text: "Digite sua resposta.", icon: "warning" });
+      return;
+    }
+
+    const valorOriginal = Number(numBase);
+    const multiplicador = Number(dadosMult.multiplicador);
+    const resultadoEsperado = valorOriginal * multiplicador;
+
+    // Normalização para comparação (remove zeros à esquerda)
+    const digitadoNormalizado = Number(numDigitado).toString();
+    const esperadoNormalizado = resultadoEsperado.toString();
+
+    if (digitadoNormalizado === esperadoNormalizado) {
+      setShowCoinAnimation(true);
+      addCoins(10).catch(console.error);
+      Swal.fire({ ...swalBase, title: "✅ Acertou!", icon: "success", text: `Parabéns! ${valorOriginal} × ${multiplicador} = ${resultadoEsperado}` });
+    } else {
+      Swal.fire({ ...swalBase, title: "❌ Errou!", icon: "error", text: `O resultado correto de ${valorOriginal} × ${multiplicador} é ${resultadoEsperado}` });
+    }
+  }
+
+  function limpar() {
+    actionSound.play();
+    setSelects(["0", "", "", "", ""]);
+    setInputs(["", "", "", "", ""]);
+    setRadio(null);
+    Swal.fire({ ...swalBase, title: "🧹 Limpo!", icon: "info" });
+  }
+
+  function pegarNumAleatorio() {
+    setSelects(["0", ...Array(4).fill(0).map(() => String(Math.floor(Math.random() * 10)))]);
   }
 
   function showArrowForDigit(digit: DigitIndex) {
@@ -147,36 +178,6 @@ export default function Multiplicador({ dadosMult }: Props) {
     showArrowForDigit(digit);
   }
 
-  function conferir() {
-    actionSound.play();
-    const numeroOriginal = getNumeroOriginal();
-    const numeroDigitado = getNumeroDigitado();
-    if (!normalizeNumberString(numeroDigitado) || normalizeNumberString(numeroDigitado) === "0") {
-      Swal.fire({ ...swalBase, title: "⚠️ Aviso", text: "Digite sua resposta.", icon: "warning" });
-      return;
-    }
-    const resultadoCorreto = String(Number(numeroOriginal) * Number(dadosMult.multiplicador));
-    if (normalizeNumberString(numeroDigitado) === normalizeNumberString(resultadoCorreto)) {
-      setShowCoinAnimation(true);
-      addCoins(10).catch(console.error);
-      Swal.fire({ ...swalBase, title: "✅ Acertou!", icon: "success", text: `O resultado é ${resultadoCorreto}` });
-    } else {
-      Swal.fire({ ...swalBase, title: "❌ Errou!", icon: "error", text: `O correto era ${resultadoCorreto}` });
-    }
-  }
-
-  function limpar() {
-    actionSound.play();
-    setSelects(["0", "0", "0", "0", "0"]);
-    setInputs(["", "", "", "", ""]);
-    setRadio(null);
-    Swal.fire({ ...swalBase, title: "🧹 Limpo!", icon: "info" });
-  }
-
-  function pegarNumAleatorio() {
-    setSelects(prev => ["0", ...Array(4).fill(0).map(() => String(Math.floor(Math.random() * 10)))]);
-  }
-
   return (
     <div className="flex flex-col items-center gap-6 relative">
       {showCoinAnimation && <CoinAnimation amount={10} onComplete={() => setShowCoinAnimation(false)} />}
@@ -189,27 +190,49 @@ export default function Multiplicador({ dadosMult }: Props) {
         </div>
         {videoOpen && (
           <div className="w-full bg-black p-2">
-            <YouTube videoId={dadosMult.videoUrl} opts={{ width: "100%", height: "360" }} iframeClassName="w-full aspect-video" />
+            <YouTube videoId={dadosMult.videoUrl} opts={{ width: "100%", height: typeof window !== 'undefined' && window.innerWidth < 640 ? "240" : "360", playerVars: { autoplay: 1 } }} iframeClassName="w-full aspect-video" />
           </div>
         )}
       </div>
 
       {/* Operação */}
       <div className="w-full flex flex-col gap-2">
-        <h3 className="text-base font-semibold">Selecione os números e resolva:</h3>
-        <div className="w-full overflow-x-auto p-4">
-          <div ref={rowRef} className="relative grid grid-cols-[repeat(5,80px)_auto] gap-2 items-center justify-center min-w-max">
+        <h3 className="text-xs sm:text-sm md:text-base font-semibold px-2 sm:px-0">Selecione os números e resolva:</h3>
+        <div className="w-full overflow-x-auto p-2 sm:p-3 md:p-4">
+          <div ref={rowRef} className="relative grid grid-cols-[repeat(5,minmax(60px,1fr))_auto] gap-1 sm:gap-2 items-center justify-center min-w-max">
             <div ref={arrowRef} className="pointer-events-none absolute top-0 transition-opacity opacity-0 -translate-x-1/2 -translate-y-full"><span className="text-3xl">⬇️</span></div>
-            <select disabled value={selects[0]} className="h-11 rounded-lg text-center font-bold bg-[var(--color-border)] opacity-60"><option value="0">0</option></select>
+            
+            {/* O dígito 0 é fixo à esquerda (o vizinho fantasma do Trachtenberg) */}
+            <select disabled value={selects[0]} className="h-8 sm:h-10 md:h-11 rounded-lg text-center font-bold text-xs sm:text-sm bg-[var(--color-border)] opacity-60"><option value="0">0</option></select>
+            
+            {/* Números que o usuário escolhe (posições 4, 3, 2, 1 do array) */}
             {[4, 3, 2, 1].map((idx) => (
-              <select key={idx} ref={(el) => { selectRefs.current[`select${5-idx}`] = el; }} value={selects[idx]} onChange={(e) => setSelect(idx, e.target.value)} className="h-11 rounded-lg text-center font-bold bg-[var(--color-primary)] text-white border border-[var(--color-border)]">
+              <select 
+                key={idx} 
+                ref={(el) => { selectRefs.current[`select${5-idx}`] = el; }} 
+                value={selects[idx]} 
+                onChange={(e) => setSelect(idx, e.target.value)} 
+                className="h-8 sm:h-10 md:h-11 rounded-lg text-center font-bold text-xs sm:text-sm bg-[var(--color-primary)] text-white border border-[var(--color-border)]"
+              >
+                <option value="">-</option>
                 {digits.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             ))}
-            <span className="font-bold text-xl">× {dadosMult.multiplicador}</span>
+            
+            <span className="font-bold text-sm sm:text-base md:text-xl">× {dadosMult.multiplicador}</span>
             <div className="col-span-full border-b-3 border-[var(--color-border)]"></div>
+            
+            {/* Inputs de resposta (5º ao 1º dígito) */}
             {[0, 1, 2, 3, 4].map((i) => (
-              <DigitInput key={i} label={`${5-i}º dígito`} placeholder={`${5-i}º`} value={inputs[i]} onChange={(v) => setInput(i, v)} onFocus={() => mostrarAjuda((5-i) as DigitIndex)} radio={i > 0 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined} />
+              <DigitInput 
+                key={i} 
+                label={`${5-i}º dígito`} 
+                placeholder={`${5-i}º`} 
+                value={inputs[i]} 
+                onChange={(v) => setInput(i, v)} 
+                onFocus={() => mostrarAjuda((5-i) as DigitIndex)} 
+                radio={i > 0 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined} 
+              />
             ))}
           </div>
         </div>
@@ -225,19 +248,19 @@ export default function Multiplicador({ dadosMult }: Props) {
           <div className="flex flex-col border-t border-[var(--color-border)]">
             <div className="flex bg-[var(--color-surface)]">
               {[5, 4, 3, 2, 1].map((d) => (
-                <button key={d} onClick={() => setHelpDigit(d as DigitIndex)} className={`flex-1 py-2 text-sm font-bold border-r border-[var(--color-border)] ${helpDigit === d ? "bg-[var(--color-primary)] text-white" : ""}`}>{d}º</button>
+                <button key={d} onClick={() => setHelpDigit(d as DigitIndex)} className={`flex-1 py-1 sm:py-2 text-xs sm:text-sm font-bold border-r border-[var(--color-border)] ${helpDigit === d ? "bg-[var(--color-primary)] text-white" : ""}`}>{d}º</button>
               ))}
             </div>
-            <div className="p-4 min-h-[100px]">{helpDigit ? dadosMult.helpText[helpDigit] : "Selecione um dígito para ajuda."}</div>
+            <div className="p-3 sm:p-4 min-h-[80px] sm:min-h-[100px] text-xs sm:text-sm">{helpDigit ? dadosMult.helpText[helpDigit] : "Selecione um dígito para ajuda."}</div>
           </div>
         )}
       </div>
 
       {/* Botões */}
       <div className="flex flex-col sm:flex-row gap-3 w-full">
-        <button onClick={conferir} className="flex-1 rounded-xl py-3 font-bold bg-[var(--color-primary)] text-white">Conferir</button>
-        <button onClick={limpar} className="flex-1 rounded-xl py-3 font-bold border border-[var(--color-border)]">Limpar</button>
-        <button onClick={pegarNumAleatorio} className="flex-1 rounded-xl py-3 font-bold border border-[var(--color-border)]">Aleatório</button>
+        <button onClick={conferir} className="flex-1 rounded-xl py-3 font-bold bg-[var(--color-primary)] text-white transition-colors hover:bg-[var(--color-primary-hover)]">Conferir</button>
+        <button onClick={limpar} className="flex-1 rounded-xl py-3 font-bold border border-[var(--color-border)] hover:bg-gray-50">Limpar</button>
+        <button onClick={pegarNumAleatorio} className="flex-1 rounded-xl py-3 font-bold border border-[var(--color-border)] hover:bg-gray-50">Aleatório</button>
       </div>
     </div>
   );

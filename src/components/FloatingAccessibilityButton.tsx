@@ -3,14 +3,16 @@
 import { useAccessibility } from '@/hooks/useAccessibility'
 import Swal from 'sweetalert2'
 import { useState } from 'react'
+import { FiChevronUp } from 'react-icons/fi'
 
-export default function AccessibilityBar() {
+export default function FloatingAccessibilityButton() {
   const { accessibility, setTextScale, setContrast, toggleContrast, toggleDyslexia } = useAccessibility()
   const [isOpen, setIsOpen] = useState(false)
 
   if (!accessibility) return null
 
   const handleLibras = () => {
+    setIsOpen(false)
     Swal.fire({
       title: '📖 Intérprete de Libras',
       html: `
@@ -37,7 +39,6 @@ export default function AccessibilityBar() {
       width: '280px',
       maxHeight: '45vh',
       padding: '6px',
-      scrollbarPaddingEnd: '0px',
       didOpen: (modal) => {
         modal.style.overflowY = 'visible'
         const htmlContent = modal.querySelector('.swal2-html-container')
@@ -52,6 +53,7 @@ export default function AccessibilityBar() {
   }
 
   const handleShortcuts = () => {
+    setIsOpen(false)
     Swal.fire({
       title: '⌨️ Atalhos de Acessibilidade',
       html: `
@@ -98,7 +100,6 @@ export default function AccessibilityBar() {
       width: '300px',
       maxHeight: '50vh',
       padding: '6px',
-      scrollbarPaddingEnd: '0px',
       didOpen: (modal) => {
         modal.style.overflowY = 'visible'
         const htmlContent = modal.querySelector('.swal2-html-container')
@@ -114,137 +115,119 @@ export default function AccessibilityBar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[9999] bg-white border-b border-gray-200 shadow-sm">
-        <div className="flex items-center justify-center gap-1 px-4 py-2 flex-wrap">
-          <div className="flex items-center gap-0.5 bg-gray-50 rounded-sm p-1">
-            <button
-              onClick={() => setTextScale('small')}
-              title="Texto Menor (Alt+Shift+↓)"
-              className={`
-                px-2 py-1.5 transition-all duration-200 text-xs font-medium
-                ${
+      {/* Botão Flutuante */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-6 left-6 z-[9998] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center"
+        aria-label="Abrir menu de acessibilidade"
+        title="Acessibilidade"
+      >
+        <span className="text-2xl">♿</span>
+      </button>
+
+      {/* Menu Flutuante */}
+      {isOpen && (
+        <div className="fixed bottom-24 left-6 z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto">
+          {/* Texto aumentar/diminuir */}
+          <div className="mb-3">
+            <p className="text-xs font-semibold text-gray-700 mb-2">Tamanho do Texto</p>
+            <div className="flex gap-1 bg-gray-50 rounded p-1">
+              <button
+                onClick={() => setTextScale('small')}
+                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'small'
-                    ? 'bg-blue-500 text-white shadow-sm'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
-                }
-                border border-gray-200 hover:border-gray-300
-                rounded-sm cursor-pointer
-              `}
-              aria-label="Diminuir tamanho do texto"
-            >
-              A −
-            </button>
-
-            <button
-              onClick={() => setTextScale('normal')}
-              title="Texto Normal (Alt+Shift+0)"
-              className={`
-                px-2 py-1.5 transition-all duration-200 text-xs font-medium
-                ${
+                }`}
+              >
+                A −
+              </button>
+              <button
+                onClick={() => setTextScale('normal')}
+                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'normal'
-                    ? 'bg-blue-500 text-white shadow-sm'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
-                }
-                border border-gray-200 hover:border-gray-300
-                rounded-sm cursor-pointer
-              `}
-              aria-label="Redefiniir tamanho do texto"
-            >
-              A
-            </button>
-
-            <button
-              onClick={() => setTextScale('large')}
-              title="Texto Maior (Alt+Shift+↑)"
-              className={`
-                px-2 py-1.5 transition-all duration-200 text-xs font-medium text-lg
-                ${
+                }`}
+              >
+                A
+              </button>
+              <button
+                onClick={() => setTextScale('large')}
+                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'large'
-                    ? 'bg-blue-500 text-white shadow-sm'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
-                }
-                border border-gray-200 hover:border-gray-300
-                rounded-sm cursor-pointer
-              `}
-              aria-label="Aumentar tamanho do texto"
-            >
-              A +
-            </button>
+                }`}
+              >
+                A +
+              </button>
+            </div>
           </div>
 
-          <div className="h-6 border-l border-gray-300 mx-1" />
+          {/* Separador */}
+          <div className="border-t border-gray-200 my-2" />
 
+          {/* Contraste */}
           <button
             onClick={toggleContrast}
-            title="Contraste Alto (Alt+Shift+C)"
-            className={`
-              px-2 py-1.5 transition-all duration-200 text-xs font-medium
-              ${
-                accessibility.contrast === 'high'
-                  ? 'bg-blue-500 text-white shadow-sm'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
-              }
-              border border-gray-200 hover:border-gray-300
-              rounded-sm cursor-pointer
-            `}
-            aria-label={`Contraste: ${accessibility.contrast === 'high' ? 'Alto (ativado)' : 'Normal (desativado)'}`}
+            className={`w-full px-2 py-2 text-xs font-medium rounded mb-2 transition-all text-left ${
+              accessibility.contrast === 'high'
+                ? 'bg-blue-500 text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            }`}
           >
-            ◐ Contraste
+            ◐ Contraste Alto
           </button>
 
-          <div className="h-6 border-l border-gray-300 mx-1" />
-
+          {/* Dislexia */}
           <button
             onClick={toggleDyslexia}
-            title="Modo Dislexia Amigável (Alt+Shift+D)"
-            className={`
-              px-2 py-1.5 transition-all duration-200 text-xs font-medium
-              ${
-                accessibility.dyslexiaFriendly
-                  ? 'bg-purple-500 text-white shadow-sm'
-                  : 'bg-white text-gray-600 hover:bg-gray-100'
-              }
-              border border-gray-200 hover:border-gray-300
-              rounded-sm cursor-pointer
-            `}
-            aria-label={`Dislexia: ${accessibility.dyslexiaFriendly ? 'Ativado' : 'Desativado'}`}
+            className={`w-full px-2 py-2 text-xs font-medium rounded mb-2 transition-all text-left ${
+              accessibility.dyslexiaFriendly
+                ? 'bg-purple-500 text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            }`}
           >
-            ⓓ Dislexia
+            ⓓ Modo Dislexia
           </button>
 
-          <div className="h-6 border-l border-gray-300 mx-1" />
+          {/* Separador */}
+          <div className="border-t border-gray-200 my-2" />
 
+          {/* Libras */}
           <button
             onClick={handleLibras}
-            title="Libras VLibras (Alt+Shift+L)"
-            className="
-              px-2 py-1.5 transition-all duration-200 text-xs font-medium
-              bg-white text-gray-600 hover:bg-gray-100
-              border border-gray-200 hover:border-gray-300
-              rounded-sm cursor-pointer
-            "
-            aria-label="Acessar intérprete de Libras - VLibras"
+            className="w-full px-2 py-2 text-xs font-medium rounded mb-2 bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
           >
             📖 Libras
           </button>
 
-          <div className="h-6 border-l border-gray-300 mx-1" />
-
+          {/* Atalhos */}
           <button
             onClick={handleShortcuts}
-            title="Ver atalhos de acessibilidade"
-            className="
-              px-2 py-1.5 transition-all duration-200 text-xs font-medium
-              bg-white text-gray-600 hover:bg-gray-100
-              border border-gray-200 hover:border-gray-300
-              rounded-sm cursor-pointer
-            "
-            aria-label="Ver atalhos de acessibilidade"
+            className="w-full px-2 py-2 text-xs font-medium rounded bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
           >
             ⌨️ Atalhos
           </button>
+
+          {/* Fechar */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="w-full mt-2 px-2 py-1.5 text-xs font-medium rounded bg-gray-200 text-gray-800 hover:bg-gray-300 transition-all"
+          >
+            Fechar
+          </button>
         </div>
-      </div>
+      )}
+
+      {/* Overlay para fechar menu */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[9997]"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
     </>
   )
 }
