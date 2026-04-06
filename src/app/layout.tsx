@@ -4,7 +4,7 @@ import "./globals.css";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LockManagerMonitor } from "@/components/LockManagerMonitor";
 import AccessibilityHotkeys from "@/components/AccessibilityHotkeys";
-import AccessibilityBar from "@/components/AccessibilityBar";
+import FloatingAccessibilityButton from "@/components/FloatingAccessibilityButton";
 import VLibrasWidget from "@/components/VLibrasWidget";
 import FontLoader from "@/components/FontLoader";
 
@@ -52,7 +52,7 @@ export default function RootLayout({
         
         <ErrorBoundary>
           <VLibrasWidget />
-          <AccessibilityBar />
+          <FloatingAccessibilityButton />
           <AccessibilityHotkeys />
           <LockManagerMonitor />
           {children}

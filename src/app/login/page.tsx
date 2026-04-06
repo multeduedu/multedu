@@ -27,22 +27,22 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="h-screen w-screen flex overflow-hidden font-sans relative">
+    <main className="min-h-screen w-screen flex font-sans relative">
       <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
 
-      <section aria-hidden="true" className="hidden md:block w-1/2 h-full">
+      <section aria-hidden="true" className="hidden md:flex md:w-1/2 min-h-screen">
         <img src="/login.avif" alt="" className="w-full h-full object-cover" />
       </section>
 
       <section className="
-        w-full md:w-1/2 h-full
+        w-full md:w-1/2 min-h-screen
         flex items-center justify-center
         bg-[var(--color-background)]
         text-[var(--color-text-primary)]
         transition-colors
-        relative px-6
+        relative px-6 py-8
       ">
         <Link
           href="/"
