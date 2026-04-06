@@ -87,7 +87,7 @@ export default function DashboardPage() {
   const showMultiplicadores = filter === "all" || filter === "multiplicacao"
 
   return (
-    <div className="h-screen flex overflow-hidden">
+    <div className="min-h-screen flex overflow-y-auto">
       <Sidebar
         user={user}
         filter={filter}
