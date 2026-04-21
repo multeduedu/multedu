@@ -117,13 +117,11 @@ export default function Multiplicador({ dadosMult }: Props) {
   function conferir() {
     actionSound.play();
     
-    // 1. Pega os números dos selects (ex: 0, 1, 2, 3, 4 -> "01234")
-    // Note que os selects estão mapeados: [0] é o fixo, [1,2,3,4] são os editáveis
-    // A ordem correta para o cálculo é inverter a ordem visual se necessário
+    // 1. Pega os números dos selects em ordem correta (0, 1, 2, 3, 4)
     const numBase = selects.join(""); 
     
-    // 2. Pega o que o usuário digitou (ordem visual: 5º, 4º, 3º, 2º, 1º)
-    const numDigitado = inputs.join("");
+    // 2. Pega o que o usuário digitou (inputs[4], inputs[3], inputs[2], inputs[1], inputs[0])
+    const numDigitado = [inputs[4], inputs[3], inputs[2], inputs[1], inputs[0]].join("");
 
     if (!numDigitado || numDigitado.trim() === "") {
       Swal.fire({ ...swalBase, title: "⚠️ Aviso", text: "Digite sua resposta.", icon: "warning" });
@@ -156,7 +154,8 @@ export default function Multiplicador({ dadosMult }: Props) {
   }
 
   function pegarNumAleatorio() {
-    setSelects(["0", ...Array(4).fill(0).map(() => String(Math.floor(Math.random() * 10)))]);
+    const randomDigits = Array(4).fill(0).map(() => String(Math.floor(Math.random() * 10)));
+    setSelects(["0", ...randomDigits]);
   }
 
   function showArrowForDigit(digit: DigitIndex) {
@@ -205,8 +204,8 @@ export default function Multiplicador({ dadosMult }: Props) {
             {/* O dígito 0 é fixo à esquerda (o vizinho fantasma do Trachtenberg) */}
             <select disabled value={selects[0]} className="h-8 sm:h-10 md:h-11 rounded-lg text-center font-bold text-xs sm:text-sm bg-[var(--color-border)] opacity-60"><option value="0">0</option></select>
             
-            {/* Números que o usuário escolhe (posições 4, 3, 2, 1 do array) */}
-            {[4, 3, 2, 1].map((idx) => (
+            {/* Números que o usuário escolhe (posições 1, 2, 3, 4 do array) */}
+            {[1, 2, 3, 4].map((idx) => (
               <select 
                 key={idx} 
                 ref={(el) => { selectRefs.current[`select${5-idx}`] = el; }} 
@@ -222,8 +221,8 @@ export default function Multiplicador({ dadosMult }: Props) {
             <span className="font-bold text-sm sm:text-base md:text-xl">× {dadosMult.multiplicador}</span>
             <div className="col-span-full border-b-3 border-[var(--color-border)]"></div>
             
-            {/* Inputs de resposta (5º ao 1º dígito) */}
-            {[0, 1, 2, 3, 4].map((i) => (
+            {/* Inputs de resposta (1º ao 5º dígito) */}
+            {[4, 3, 2, 1, 0].map((i) => (
               <DigitInput 
                 key={i} 
                 label={`${5-i}º dígito`} 
@@ -231,7 +230,7 @@ export default function Multiplicador({ dadosMult }: Props) {
                 value={inputs[i]} 
                 onChange={(v) => setInput(i, v)} 
                 onFocus={() => mostrarAjuda((5-i) as DigitIndex)} 
-                radio={i > 0 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined} 
+                radio={i < 4 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined} 
               />
             ))}
           </div>

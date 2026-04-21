@@ -28,24 +28,23 @@ export default function AccessibilityBar() {
       `,
       icon: 'info',
       confirmButtonText: 'Entendi',
-      confirmButtonColor: 'var(--color-primary)',
+      confirmButtonColor: '#ff7f50', // Usei a cor primária do projeto
       customClass: {
         container: 'swal2-custom',
         popup: 'rounded-2xl',
         confirmButton: 'rounded-lg',
       },
       width: '280px',
-      maxHeight: '45vh',
       padding: '6px',
-      scrollbarPaddingEnd: '0px',
       didOpen: (modal) => {
-        modal.style.overflowY = 'visible'
-        const htmlContent = modal.querySelector('.swal2-html-container')
+        // Ajuste de altura via CSS direto para evitar erro de tipo
+        modal.style.maxHeight = '80vh'
+        modal.style.overflowY = 'auto'
+        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement
         if (htmlContent) {
           htmlContent.style.maxHeight = '30vh'
           htmlContent.style.overflowY = 'auto'
           htmlContent.style.overflowX = 'hidden'
-          htmlContent.style.paddingRight = '4px'
         }
       }
     })
@@ -55,7 +54,7 @@ export default function AccessibilityBar() {
     Swal.fire({
       title: '⌨️ Atalhos de Acessibilidade',
       html: `
-        <div style="text-align: left; font-size: clamp(12px, 3.5vw, 14px); max-height: 400px; overflow-y: auto;">
+        <div style="text-align: left; font-size: clamp(12px, 3.5vw, 14px);">
           <table style="width: 100%; border-collapse: collapse; font-size: clamp(11px, 3vw, 13px);">
             <tr style="border-bottom: 1px solid #ddd;">
               <td style="padding: clamp(6px, 2vw, 8px); font-weight: bold;">Atalho</td>
@@ -71,7 +70,7 @@ export default function AccessibilityBar() {
             </tr>
             <tr style="border-bottom: 1px solid #ddd;">
               <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + 0</strong></td>
-              <td style="padding: clamp(6px, 2vw, 8px);">Redefiniir Texto</td>
+              <td style="padding: clamp(6px, 2vw, 8px);">Redefinir Texto</td>
             </tr>
             <tr style="border-bottom: 1px solid #ddd;">
               <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + C</strong></td>
@@ -96,17 +95,15 @@ export default function AccessibilityBar() {
         confirmButton: 'rounded-lg',
       },
       width: '300px',
-      maxHeight: '50vh',
       padding: '6px',
-      scrollbarPaddingEnd: '0px',
       didOpen: (modal) => {
-        modal.style.overflowY = 'visible'
-        const htmlContent = modal.querySelector('.swal2-html-container')
+        modal.style.maxHeight = '80vh'
+        modal.style.overflowY = 'auto'
+        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement
         if (htmlContent) {
           htmlContent.style.maxHeight = '35vh'
           htmlContent.style.overflowY = 'auto'
           htmlContent.style.overflowX = 'hidden'
-          htmlContent.style.paddingRight = '4px'
         }
       }
     })
@@ -148,7 +145,7 @@ export default function AccessibilityBar() {
                 border border-gray-200 hover:border-gray-300
                 rounded-sm cursor-pointer
               `}
-              aria-label="Redefiniir tamanho do texto"
+              aria-label="Redefinir tamanho do texto"
             >
               A
             </button>
@@ -248,3 +245,5 @@ export default function AccessibilityBar() {
     </>
   )
 }
+
+

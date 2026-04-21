@@ -90,8 +90,8 @@ export default function MultiplicadorX3() {
     setIsProcessing(true)
 
     try {
-      const all = `${selects[5]}${selects[4]}${selects[3]}${selects[2]}${selects[1]}`
-      const answer = `${inputs[5]}${inputs[4]}${inputs[3]}${inputs[2]}${inputs[1]}`
+      const all = `${selects[1]}${selects[2]}${selects[3]}${selects[4]}${selects[5]}`
+      const answer = `${inputs[1]}${inputs[2]}${inputs[3]}${inputs[4]}${inputs[5]}`
 
       if (!answer || answer.split('').every((c: string) => c === '')) {
         Swal.fire({
@@ -238,7 +238,7 @@ export default function MultiplicadorX3() {
               ⬅️
             </div>
 
-            {[5, 4, 3, 2, 1].map((digit) => (
+            {[1, 2, 3, 4, 5].map((digit) => (
               <select
                 key={digit}
                 value={selects[digit as DigitIndex]}

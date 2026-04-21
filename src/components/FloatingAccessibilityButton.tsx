@@ -37,11 +37,10 @@ export default function FloatingAccessibilityButton() {
         confirmButton: 'rounded-lg',
       },
       width: '280px',
-      maxHeight: '45vh',
       padding: '6px',
       didOpen: (modal) => {
         modal.style.overflowY = 'visible'
-        const htmlContent = modal.querySelector('.swal2-html-container')
+        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement | null
         if (htmlContent) {
           htmlContent.style.maxHeight = '30vh'
           htmlContent.style.overflowY = 'auto'
@@ -98,11 +97,10 @@ export default function FloatingAccessibilityButton() {
         confirmButton: 'rounded-lg',
       },
       width: '300px',
-      maxHeight: '50vh',
       padding: '6px',
       didOpen: (modal) => {
         modal.style.overflowY = 'visible'
-        const htmlContent = modal.querySelector('.swal2-html-container')
+        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement | null
         if (htmlContent) {
           htmlContent.style.maxHeight = '35vh'
           htmlContent.style.overflowY = 'auto'

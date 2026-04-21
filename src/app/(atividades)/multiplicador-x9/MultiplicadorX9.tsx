@@ -266,10 +266,10 @@ export default function MultiplicadorX9() {
             </select>
 
             {[
-              { id: "select4", idx: 1, bg: "bg-yellow-400 text-black" },
-              { id: "select3", idx: 2, bg: "bg-green-600 text-white" },
-              { id: "select2", idx: 3, bg: "bg-blue-600 text-white" },
-              { id: "select1", idx: 4, bg: "bg-cyan-500 text-white" },
+              { id: "select1", idx: 1, bg: "bg-cyan-500 text-white" },
+              { id: "select2", idx: 2, bg: "bg-blue-600 text-white" },
+              { id: "select3", idx: 3, bg: "bg-green-600 text-white" },
+              { id: "select4", idx: 4, bg: "bg-yellow-400 text-black" },
             ].map((s) => (
               <select
                 key={s.id}
