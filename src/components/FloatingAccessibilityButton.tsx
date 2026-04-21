@@ -2,12 +2,152 @@
 
 import { useAccessibility } from '@/hooks/useAccessibility'
 import Swal from 'sweetalert2'
-import { useState } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { FiChevronUp } from 'react-icons/fi'
+
+interface Position {
+  x: number
+  y: number
+}
 
 export default function FloatingAccessibilityButton() {
   const { accessibility, setTextScale, setContrast, toggleContrast, toggleDyslexia } = useAccessibility()
   const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const dragStateRef = useRef({ 
+    startX: 0, 
+    startY: 0, 
+    initialX: 0, 
+    initialY: 0,
+    hasMoved: false 
+  })
+
+  // Recuperar posição salva do localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedPosition = localStorage.getItem('a11y-button-position')
+      if (savedPosition) {
+        try {
+          setPosition(JSON.parse(savedPosition))
+        } catch (e) {
+          setPosition({ x: 0, y: 0 })
+        }
+      }
+    }
+  }, [])
+
+  // Salvar posição no localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (position.x !== 0 || position.y !== 0)) {
+      localStorage.setItem('a11y-button-position', JSON.stringify(position))
+    }
+  }, [position])
+
+  const handleMouseDown = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    
+    dragStateRef.current.hasMoved = false
+    dragStateRef.current.startX = e.clientX
+    dragStateRef.current.startY = e.clientY
+    dragStateRef.current.initialX = position.x
+    dragStateRef.current.initialY = position.y
+    setIsDragging(true)
+  }, [position])
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging) return
+    
+    // Calcular delta (diferença de movimento)
+    const deltaX = e.clientX - dragStateRef.current.startX
+    const deltaY = e.clientY - dragStateRef.current.startY
+    
+    // Detecta movimento real
+    if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+      dragStateRef.current.hasMoved = true
+    }
+    
+    // Nova posição = posição inicial + delta
+    const newX = dragStateRef.current.initialX + deltaX
+    const newY = dragStateRef.current.initialY - deltaY // Invertido porque Y vai de cima para baixo, mas bottom vai de baixo para cima
+    
+    // Limites da tela
+    const maxX = typeof window !== 'undefined' ? window.innerWidth - 56 : 0
+    const maxY = typeof window !== 'undefined' ? window.innerHeight - 56 : 0
+    
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY))
+    })
+  }, [isDragging])
+
+  const handleMouseUp = useCallback(() => {
+    if (!dragStateRef.current.hasMoved) {
+      // Se não houve movimento, alterna o menu
+      setIsOpen(prev => !prev)
+    }
+    setIsDragging(false)
+  }, [])
+
+  const handleTouchStart = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    
+    dragStateRef.current.hasMoved = false
+    dragStateRef.current.startX = e.touches[0].clientX
+    dragStateRef.current.startY = e.touches[0].clientY
+    dragStateRef.current.initialX = position.x
+    dragStateRef.current.initialY = position.y
+    setIsDragging(true)
+  }, [position])
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    if (!isDragging) return
+    
+    // Calcular delta (diferença de movimento)
+    const deltaX = e.touches[0].clientX - dragStateRef.current.startX
+    const deltaY = e.touches[0].clientY - dragStateRef.current.startY
+    
+    // Detecta movimento real
+    if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+      dragStateRef.current.hasMoved = true
+    }
+    
+    // Nova posição = posição inicial + delta
+    const newX = dragStateRef.current.initialX + deltaX
+    const newY = dragStateRef.current.initialY - deltaY // Invertido porque Y vai de cima para baixo, mas bottom vai de baixo para cima
+    
+    const maxX = typeof window !== 'undefined' ? window.innerWidth - 56 : 0
+    const maxY = typeof window !== 'undefined' ? window.innerHeight - 56 : 0
+    
+    setPosition({
+      x: Math.max(0, Math.min(newX, maxX)),
+      y: Math.max(0, Math.min(newY, maxY))
+    })
+  }, [isDragging])
+
+  const handleTouchEnd = useCallback(() => {
+    if (!dragStateRef.current.hasMoved) {
+      setIsOpen(prev => !prev)
+    }
+    setIsDragging(false)
+  }, [])
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.addEventListener('touchmove', handleTouchMove, { passive: false })
+      document.addEventListener('touchend', handleTouchEnd)
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+        document.removeEventListener('touchmove', handleTouchMove)
+        document.removeEventListener('touchend', handleTouchEnd)
+      }
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
 
   if (!accessibility) return null
 
@@ -113,19 +253,34 @@ export default function FloatingAccessibilityButton() {
 
   return (
     <>
-      {/* Botão Flutuante */}
+      {/* Botão Flutuante - Agora Arrastável */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 left-6 z-[9998] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center"
+        ref={buttonRef}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+        className={`fixed z-[9998] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        style={{
+          left: `${position.x}px`,
+          bottom: `${position.y}px`,
+          transform: isDragging ? 'scale(1.1)' : 'scale(1)',
+        }}
         aria-label="Abrir menu de acessibilidade"
-        title="Acessibilidade"
+        title="Acessibilidade (arraste para mover)"
       >
         <span className="text-2xl">♿</span>
       </button>
 
       {/* Menu Flutuante */}
       {isOpen && (
-        <div className="fixed bottom-24 left-6 z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto">
+        <div 
+          className="fixed z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto pointer-events-auto"
+          style={{
+            left: `${position.x}px`,
+            bottom: `${position.y + 70}px`,
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+        >
           {/* Texto aumentar/diminuir */}
           <div className="mb-3">
             <p className="text-xs font-semibold text-gray-700 mb-2">Tamanho do Texto</p>

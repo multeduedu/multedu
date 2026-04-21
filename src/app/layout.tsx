@@ -42,12 +42,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        {/* VLibras meta tag para funcionalidade correta */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body className={`${poppins.variable} font-sans antialiased`}>
         <FontLoader />
         
-        {/* Wrapper para VLibras - Estrutura correta que o script procura */}
-        <div {...({ vw: "true" } as any)} className="enabled" style={{ position: 'fixed', zIndex: 9998 }}>
-          <div id="vw-plugin-wrapper" className="access-button" />
+        {/* Wrapper para VLibras - Estrutura que o script do VLibras procura */}
+        <div {...({ vw: "true" } as any)} className="enabled">
+          <div id="vw-plugin-wrapper" className="access-button" style={{ position: 'fixed', zIndex: 9998, bottom: 0, right: 0 }} />
         </div>
         
         <ErrorBoundary>
