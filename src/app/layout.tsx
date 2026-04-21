@@ -49,10 +49,8 @@ export default function RootLayout({
       <body className={`${poppins.variable} font-sans antialiased`}>
         <FontLoader />
         
-        {/* Wrapper para VLibras - Estrutura que o script do VLibras procura */}
-        <div {...({ vw: "true" } as any)} className="enabled">
-          <div id="vw-plugin-wrapper" className="access-button" style={{ position: 'fixed', zIndex: 9998, bottom: 0, right: 0 }} />
-        </div>
+        {/* Wrapper para VLibras - Estrutura padrão que o script espera */}
+        <div {...({ "vw": "true" } as any)} className="enabled"></div>
         
         <ErrorBoundary>
           <VLibrasWidget />

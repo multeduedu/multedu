@@ -46,8 +46,6 @@ export default function FloatingAccessibilityButton() {
   }, [position])
 
   const handleMouseDown = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    
     dragStateRef.current.hasMoved = false
     dragStateRef.current.startX = e.clientX
     dragStateRef.current.startY = e.clientY
@@ -83,16 +81,17 @@ export default function FloatingAccessibilityButton() {
   }, [isDragging])
 
   const handleMouseUp = useCallback(() => {
-    if (!dragStateRef.current.hasMoved) {
-      // Se não houve movimento, alterna o menu
-      setIsOpen(prev => !prev)
+    if (!dragStateRef.current.hasMoved && !isOpen) {
+      // Abre o menu apenas se não houve movimento e menu estava fechado
+      setIsOpen(true)
+    } else if (!dragStateRef.current.hasMoved && isOpen) {
+      // Fecha o menu se não houve movimento e menu estava aberto
+      setIsOpen(false)
     }
     setIsDragging(false)
-  }, [])
+  }, [isOpen])
 
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    
     dragStateRef.current.hasMoved = false
     dragStateRef.current.startX = e.touches[0].clientX
     dragStateRef.current.startY = e.touches[0].clientY
@@ -127,11 +126,15 @@ export default function FloatingAccessibilityButton() {
   }, [isDragging])
 
   const handleTouchEnd = useCallback(() => {
-    if (!dragStateRef.current.hasMoved) {
-      setIsOpen(prev => !prev)
+    if (!dragStateRef.current.hasMoved && !isOpen) {
+      // Abre o menu apenas se não houve movimento e menu estava fechado
+      setIsOpen(true)
+    } else if (!dragStateRef.current.hasMoved && isOpen) {
+      // Fecha o menu se não houve movimento e menu estava aberto
+      setIsOpen(false)
     }
     setIsDragging(false)
-  }, [])
+  }, [isOpen])
 
   useEffect(() => {
     if (isDragging) {
