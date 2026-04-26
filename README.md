@@ -16,6 +16,7 @@ Esta versão traz a fundação tecnológica da plataforma totalmente integrada e
 - **Segurança de Dados (OpSec)**: Implementação de Row Level Security (RLS) para garantir que cada aluno acesse apenas seu próprio progresso.
 - **Avatares Personalizados**: Integração com DiceBear para geração de robôs dinâmicos baseados no perfil do usuário.
 - **♿ Acessibilidade WCAG 2.1 AA**: Sistema completo de acessibilidade com suporte a deficiências visuais, auditivas e neurodiferentes.
+- **📱 Otimização Mobile**: Layout responsivo compacto sem comprometer a lógica de cálculo - scroll eliminado em telas pequenas.
 
 ### 🌐 Deploy & Integrações Ativas
 
@@ -73,6 +74,15 @@ Localizada no topo de todas as páginas, com botões intuitivos para:
 - **ⓓ Dislexia** - Modo dislexia-amigável
 - **📖 Libras** - Intérprete de Libras
 - **⌨️ Atalhos** - Tabela de atalhos rápidos
+
+## 📱 Responsividade e Otimização Mobile
+
+O MULTEDU foi otimizado para funcionar perfeitamente em dispositivos móveis:
+
+- **Breakpoints Tailwind**: Adaptação automática para `sm` (640px), `md` (768px) e `lg` (1024px)
+- **Compactação Vertical**: Layout reduzido no mobile com gaps e padding mínimos, mas sem scroll desnecessário
+- **Telas de até 320px**: Suporte completo com inputs compactos e vídeos responsivos
+- **Lógica Preservada**: Zero impacto no algoritmo de Trachtenberg - apenas ajustes visuais
 
 ## 🛠️ Tecnologias Utilizadas
 
