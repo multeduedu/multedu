@@ -272,7 +272,7 @@ export default function FloatingAccessibilityButton() {
         ref={buttonRef}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`fixed z-[9999] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        className={`fixed z-[9999] w-12 sm:w-14 h-12 sm:h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
           left: `${position.x}px`,
           bottom: `${position.y}px`,
@@ -282,27 +282,27 @@ export default function FloatingAccessibilityButton() {
         aria-label="Abrir menu de acessibilidade"
         title="Acessibilidade (arraste para mover)"
       >
-        <span className="text-2xl">♿</span>
+        <span className="text-xl sm:text-2xl">♿</span>
       </button>
 
       {/* Menu Flutuante */}
       {isOpen && (
         <div
-          className="fixed z-[9999] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto pointer-events-auto"
+          className="fixed z-[9999] bg-white rounded-lg shadow-xl border border-gray-200 p-2 sm:p-4 w-64 sm:w-72 md:w-80 max-h-96 overflow-y-auto pointer-events-auto"
           style={{
             left: `${position.x}px`,
-            bottom: `${position.y + 70}px`,
+            bottom: `${position.y + 50}px`,
           }}
           onMouseDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
           {/* Texto aumentar/diminuir */}
-          <div className="mb-3">
-            <p className="text-xs font-semibold text-gray-700 mb-2">Tamanho do Texto</p>
+          <div className="mb-2 sm:mb-3">
+            <p className="text-xs font-semibold text-gray-700 mb-1 sm:mb-2">Tamanho do Texto</p>
             <div className="flex gap-1 bg-gray-50 rounded p-1">
               <button
                 onClick={() => setTextScale('small')}
-                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
+                className={`flex-1 px-1 sm:px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'small'
                     ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
@@ -312,7 +312,7 @@ export default function FloatingAccessibilityButton() {
               </button>
               <button
                 onClick={() => setTextScale('normal')}
-                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
+                className={`flex-1 px-1 sm:px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'normal'
                     ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
@@ -322,7 +322,7 @@ export default function FloatingAccessibilityButton() {
               </button>
               <button
                 onClick={() => setTextScale('large')}
-                className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-all ${
+                className={`flex-1 px-1 sm:px-2 py-1 text-xs font-medium rounded transition-all ${
                   accessibility.textScale === 'large'
                     ? 'bg-blue-500 text-white'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
@@ -334,12 +334,12 @@ export default function FloatingAccessibilityButton() {
           </div>
 
           {/* Separador */}
-          <div className="border-t border-gray-200 my-2" />
+          <div className="border-t border-gray-200 my-1 sm:my-2" />
 
           {/* Contraste */}
           <button
             onClick={toggleContrast}
-            className={`w-full px-2 py-2 text-xs font-medium rounded mb-2 transition-all text-left ${
+            className={`w-full px-2 py-1 sm:py-2 text-xs font-medium rounded mb-1 sm:mb-2 transition-all text-left ${
               accessibility.contrast === 'high'
                 ? 'bg-blue-500 text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -351,7 +351,7 @@ export default function FloatingAccessibilityButton() {
           {/* Dislexia */}
           <button
             onClick={toggleDyslexia}
-            className={`w-full px-2 py-2 text-xs font-medium rounded mb-2 transition-all text-left ${
+            className={`w-full px-2 py-1 sm:py-2 text-xs font-medium rounded mb-1 sm:mb-2 transition-all text-left ${
               accessibility.dyslexiaFriendly
                 ? 'bg-purple-500 text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
@@ -361,12 +361,12 @@ export default function FloatingAccessibilityButton() {
           </button>
 
           {/* Separador */}
-          <div className="border-t border-gray-200 my-2" />
+          <div className="border-t border-gray-200 my-1 sm:my-2" />
 
           {/* Libras */}
           <button
             onClick={handleLibras}
-            className="w-full px-2 py-2 text-xs font-medium rounded mb-2 bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
+            className="w-full px-2 py-1 sm:py-2 text-xs font-medium rounded mb-1 sm:mb-2 bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
           >
             📖 Libras
           </button>
@@ -374,7 +374,7 @@ export default function FloatingAccessibilityButton() {
           {/* Atalhos */}
           <button
             onClick={handleShortcuts}
-            className="w-full px-2 py-2 text-xs font-medium rounded bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
+            className="w-full px-2 py-1 sm:py-2 text-xs font-medium rounded bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
           >
             ⌨️ Atalhos
           </button>
