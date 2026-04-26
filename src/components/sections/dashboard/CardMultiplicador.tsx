@@ -24,9 +24,9 @@ export function CardMultiplicador({
       ariaLabel: "Número 2 em Libras: dois dedos levantados (indicador e médio)",
     },
     3: {
-      emoji: "🤟",
+      emoji: "✋",
       ariaLabel:
-        "Número 3 em Libras: gesto de amor (aproximação de três dedos levantados)",
+        "Número 3: três dedos levantados",
     },
     4: {
       emoji: "✋",
@@ -44,9 +44,9 @@ export function CardMultiplicador({
         "Número 6 em Libras: gesto de pinça (aproximação para configuração de seis)",
     },
     7: {
-      emoji: "🤙",
+      emoji: "✊",
       ariaLabel:
-        "Número 7 em Libras: gesto shaka (aproximação para configuração de sete)",
+        "Número 7: punho neutro",
     },
     8: {
       emoji: "👋",

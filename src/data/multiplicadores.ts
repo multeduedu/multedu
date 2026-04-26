@@ -10,6 +10,19 @@ export interface MultiplicadorData {
 
 export const DadosMultiplicadores: MultiplicadorData[] = [
 {
+multiplicador: 11,
+descricao: "",
+regraMetade: false,
+videoUrl: "geMzGlJzUkc",
+helpText:{
+1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
+2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
+3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
+4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
+5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa."
+}
+},
+{
 multiplicador: 2,
 descricao: "",
 regraMetade: false,
@@ -20,45 +33,6 @@ helpText:{
 3: "Dobrar o 3º valor e colocar na caixa.",
 4: "Dobrar o 4º valor e colocar na caixa.",
 5: "Dobrar o 5º valor e colocar na caixa."
-}
-},
-{
-multiplicador: 3,
-descricao: "A multiplicação por 3 é semelhante à por 8, exceto que agora pegamos a metade do vizinho e, se for ímpar, acionamos +5.",
-regraMetade: false,
-videoUrl: "9rsbrrk8gSI",
-helpText:{
-1: "Subtraia por -10 e dobre o valor e, se for ímpar, adicione +5.",
-2: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
-3: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
-4: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
-5: "No último dígito, pegue metade do vizinho e subtraia por -2."
-}
-},
-{
-multiplicador: 4,
-descricao: "A multiplicação por 4 é semeslhante à por 9, exceto que agora pegamos a metade do vizinho.",
-regraMetade: false,
-videoUrl: "9rsbrrk8gSI",
-helpText:{
-1: "Subtraia por -10 e, se ímpar, adicione +5.",
-2: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
-3: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
-4: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
-5: "No último dígito, pegue metade do vizinho e subtraia por -1."
-}
-},
-{
-multiplicador: 5,
-descricao: "Se for ímpar adicionamos 5 e mais metade do vizinho.",
-regraMetade: true,
-videoUrl: "t5Tj47vdn9Y",
-helpText:{
-1: "Se for par o número é 0, se ímpar o número é 5.",
-2: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-3: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-4: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
-5: "Se ímpar somamos +5 e adicionamos metade do vizinho."
 }
 },
 {
@@ -74,7 +48,6 @@ helpText:{
 5: "Some o 5° dígito com a metade do vizinho à direita. Se for ímpar, adicione +5."
 }
 },
-
 {
 multiplicador: 7,
 descricao: "Dobre o número e some metade do vizinho; adicione 5 se o número for ímpar.",
@@ -86,6 +59,19 @@ helpText:{
 3: "Dobrar o 3° dígito e somar metade do vizinho à direita. Se for ímpar, adicione +5.",
 4: "Dobrar o 4° dígito e somar metade do vizinho à direita. Se for ímpar, adicione +5.",
 5: "Metade do vizinho à direita. Se for ímpar, adicione +5."
+}
+},
+{
+multiplicador: 5,
+descricao: "Se for ímpar adicionamos 5 e mais metade do vizinho.",
+regraMetade: true,
+videoUrl: "t5Tj47vdn9Y",
+helpText:{
+1: "Se for par o número é 0, se ímpar o número é 5.",
+2: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+3: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+4: "Se ímpar somamos +5 e adicionamos metade do vizinho.",
+5: "Se ímpar somamos +5 e adicionamos metade do vizinho."
 }
 },
 {
@@ -115,16 +101,29 @@ helpText:{
 }
 },
 {
-multiplicador: 11,
-descricao: "",
+multiplicador: 4,
+descricao: "A multiplicação por 4 é semeslhante à por 9, exceto que agora pegamos a metade do vizinho.",
 regraMetade: false,
-videoUrl: "geMzGlJzUkc",
+videoUrl: "9rsbrrk8gSI",
 helpText:{
-1: "Mantenha o primeiro valor (da direita) e coloque na caixa.",
-2: "Somar o 1º valor (da direita) ao 2º valor e coloque na caixa. Se a soma for 10 ou mais, guarde a dezena e coloque apenas a unidade.",
-3: "Somar o 2º valor ao 3º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-4: "Somar o 3º valor ao 4º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, guarde a nova dezena.",
-5: "Somar o 4º valor ao 5º valor e coloque na caixa. Some a dezena guardada (se houver). Se o total for 10 ou mais, coloque a dezena na próxima casa."
+1: "Subtraia por -10 e, se ímpar, adicione +5.",
+2: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+3: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+4: "Subtraia por -9 e adicione a metade do vizinho e, se ímpar, adicione +5.",
+5: "No último dígito, pegue metade do vizinho e subtraia por -1."
+}
+},
+{
+multiplicador: 3,
+descricao: "A multiplicação por 3 é semelhante à por 8, exceto que agora pegamos a metade do vizinho e, se for ímpar, acionamos +5.",
+regraMetade: false,
+videoUrl: "9rsbrrk8gSI",
+helpText:{
+1: "Subtraia por -10 e dobre o valor e, se for ímpar, adicione +5.",
+2: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+3: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+4: "Subtraia por -9, em seguida dobre o valor e adicione metade do vizinho. Se for ímpar, adicione +5.",
+5: "No último dígito, pegue metade do vizinho e subtraia por -2."
 }
 }
 ]

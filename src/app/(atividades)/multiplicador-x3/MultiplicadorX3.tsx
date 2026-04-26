@@ -91,7 +91,8 @@ export default function MultiplicadorX3() {
 
     try {
       const all = `${selects[1]}${selects[2]}${selects[3]}${selects[4]}${selects[5]}`
-      const answer = `${inputs[1]}${inputs[2]}${inputs[3]}${inputs[4]}${inputs[5]}`
+      // Validação na ordem visual: 5º, 4º, 3º, 2º, 1º
+      const answer = `${inputs[5]}${inputs[4]}${inputs[3]}${inputs[2]}${inputs[1]}`
 
       if (!answer || answer.split('').every((c: string) => c === '')) {
         Swal.fire({
@@ -278,7 +279,8 @@ export default function MultiplicadorX3() {
         <fieldset>
           <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
 
-          <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2">
+          <div className="w-full overflow-x-auto overflow-y-visible [-webkit-overflow-scrolling:touch]">
+            <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2 pt-4 sm:pt-6">
             <DigitInput
               placeholder="5º"
               value={inputs[5]}
@@ -296,6 +298,7 @@ export default function MultiplicadorX3() {
                 placeholder={`${digit}º`}
               />
             ))}
+            </div>
           </div>
         </fieldset>
 

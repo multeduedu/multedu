@@ -120,8 +120,9 @@ export default function Multiplicador({ dadosMult }: Props) {
     // 1. Pega os números dos selects em ordem correta (0, 1, 2, 3, 4)
     const numBase = selects.join(""); 
     
-    // 2. Pega o que o usuário digitou (inputs[4], inputs[3], inputs[2], inputs[1], inputs[0])
-    const numDigitado = [inputs[4], inputs[3], inputs[2], inputs[1], inputs[0]].join("");
+    // 2. Pega o que o usuário digitou (na ordem visual: 5º, 4º, 3º, 2º, 1º)
+    // inputs já está armazenado nessa ordem: [inputs[0]=5º, inputs[1]=4º, inputs[2]=3º, inputs[3]=2º, inputs[4]=1º]
+    const numDigitado = inputs.join("");
 
     if (!numDigitado || numDigitado.trim() === "") {
       Swal.fire({ ...swalBase, title: "⚠️ Aviso", text: "Digite sua resposta.", icon: "warning" });
@@ -154,8 +155,11 @@ export default function Multiplicador({ dadosMult }: Props) {
   }
 
   function pegarNumAleatorio() {
-    const randomDigits = Array(4).fill(0).map(() => String(Math.floor(Math.random() * 10)));
-    setSelects(["0", ...randomDigits]);
+    // Gera número aleatório de 100 a 999 (3 dígitos)
+    const randomNumber = Math.floor(Math.random() * 900) + 100;
+    // Converte para string com 5 dígitos (00XXX)
+    const digits = String(randomNumber).padStart(5, '0').split('');
+    setSelects(digits);
   }
 
   function showArrowForDigit(digit: DigitIndex) {
@@ -197,9 +201,10 @@ export default function Multiplicador({ dadosMult }: Props) {
       {/* Operação */}
       <div className="w-full flex flex-col gap-2">
         <h3 className="text-xs sm:text-sm md:text-base font-semibold px-2 sm:px-0">Selecione os números e resolva:</h3>
-        <div className="w-full overflow-x-auto p-2 sm:p-3 md:p-4">
-          <div ref={rowRef} className="relative grid grid-cols-[repeat(5,minmax(60px,1fr))_auto] gap-1 sm:gap-2 items-center justify-center min-w-max">
-            <div ref={arrowRef} className="pointer-events-none absolute top-0 transition-opacity opacity-0 -translate-x-1/2 -translate-y-full"><span className="text-3xl">⬇️</span></div>
+        <div className="relative w-full">
+          <div ref={arrowRef} className="pointer-events-none absolute -top-8 left-1/2 transition-opacity opacity-0 -translate-x-1/2 z-40"><span className="text-3xl">⬇️</span></div>
+          <div className="w-full overflow-x-auto p-2 sm:p-3 md:p-4 overflow-y-visible">
+            <div ref={rowRef} className="relative grid grid-cols-[repeat(5,minmax(60px,1fr))_auto] gap-1 sm:gap-2 items-center justify-center min-w-max">
             
             {/* O dígito 0 é fixo à esquerda (o vizinho fantasma do Trachtenberg) */}
             <select disabled value={selects[0]} className="h-8 sm:h-10 md:h-11 rounded-lg text-center font-bold text-xs sm:text-sm bg-[var(--color-border)] opacity-60"><option value="0">0</option></select>
@@ -217,23 +222,24 @@ export default function Multiplicador({ dadosMult }: Props) {
                 {digits.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             ))}
-            
+
             <span className="font-bold text-sm sm:text-base md:text-xl">× {dadosMult.multiplicador}</span>
             <div className="col-span-full border-b-3 border-[var(--color-border)]"></div>
-            
-            {/* Inputs de resposta (1º ao 5º dígito) */}
-            {[4, 3, 2, 1, 0].map((i) => (
-              <DigitInput 
-                key={i} 
-                label={`${5-i}º dígito`} 
-                placeholder={`${5-i}º`} 
-                value={inputs[i]} 
-                onChange={(v) => setInput(i, v)} 
-                onFocus={() => mostrarAjuda((5-i) as DigitIndex)} 
-                radio={i < 4 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined} 
+
+            {/* Inputs de resposta (5º ao 1º dígito, da esquerda para direita) */}
+            {[0, 1, 2, 3, 4].map((i) => (
+              <DigitInput
+                key={i}
+                label={`${5-i}º dígito`}
+                placeholder={`${5-i}º`}
+                value={inputs[i]}
+                onChange={(v) => setInput(i, v)}
+                onFocus={() => mostrarAjuda((5-i) as DigitIndex)}
+                radio={i < 4 ? { checked: radio === (5-i), value: (5-i) as DigitIndex, onClick: (v) => setRadio(v as DigitIndex) } : undefined}
               />
             ))}
           </div>
+        </div>
         </div>
       </div>
 

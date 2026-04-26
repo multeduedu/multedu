@@ -360,11 +360,11 @@ export default function MultiplicadorX6() {
           </div>
         </div>
 
-        <div className="w-full overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] mb-6">
+        <div className="w-full overflow-x-auto overflow-y-visible [-webkit-overflow-scrolling:touch] mb-6">
           <fieldset>
             <legend className="sr-only">Digite o resultado (5 dígitos)</legend>
 
-            <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2">
+            <div className="flex flex-nowrap items-center justify-center gap-0.5 sm:gap-4 min-w-max px-2 py-2 pt-4 sm:pt-6">
               <DigitInput
                 label="5º dígito do resultado"
                 placeholder="5º"
