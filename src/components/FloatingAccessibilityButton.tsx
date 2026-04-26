@@ -16,12 +16,13 @@ export default function FloatingAccessibilityButton() {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const dragStateRef = useRef({ 
-    startX: 0, 
-    startY: 0, 
-    initialX: 0, 
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const dragStateRef = useRef({
+    startX: 0,
+    startY: 0,
+    initialX: 0,
     initialY: 0,
-    hasMoved: false 
+    hasMoved: false
   })
 
   // Recuperar posição salva do localStorage
@@ -84,14 +85,17 @@ export default function FloatingAccessibilityButton() {
     if (!dragStateRef.current.hasMoved && !isOpen) {
       // Abre o menu apenas se não houve movimento e menu estava fechado
       setIsOpen(true)
-    } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto
-      setIsOpen(false)
+      // Limpa timeout anterior se existir
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
     }
+    // Menu só fecha com o botão "Fechar" dentro dele
     setIsDragging(false)
   }, [isOpen])
 
   const handleTouchStart = useCallback((e: React.TouchEvent<HTMLButtonElement>) => {
+    // Previne delay de 300ms do mobile e scroll acidental
+    e.preventDefault()
+
     dragStateRef.current.hasMoved = false
     dragStateRef.current.startX = e.touches[0].clientX
     dragStateRef.current.startY = e.touches[0].clientY
@@ -129,10 +133,10 @@ export default function FloatingAccessibilityButton() {
     if (!dragStateRef.current.hasMoved && !isOpen) {
       // Abre o menu apenas se não houve movimento e menu estava fechado
       setIsOpen(true)
-    } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto
-      setIsOpen(false)
+      // Limpa timeout anterior se existir
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
     }
+    // Menu só fecha com o botão "Fechar" dentro dele
     setIsDragging(false)
   }, [isOpen])
 
@@ -142,7 +146,7 @@ export default function FloatingAccessibilityButton() {
       document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('touchmove', handleTouchMove, { passive: false })
       document.addEventListener('touchend', handleTouchEnd)
-      
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
@@ -151,6 +155,13 @@ export default function FloatingAccessibilityButton() {
       }
     }
   }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
+
+  // Cleanup timeout ao desmontar
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
+    }
+  }, [])
 
   if (!accessibility) return null
 
@@ -261,11 +272,12 @@ export default function FloatingAccessibilityButton() {
         ref={buttonRef}
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
-        className={`fixed z-[9998] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+        className={`fixed z-[9999] w-14 h-14 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-all duration-200 flex items-center justify-center select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{
           left: `${position.x}px`,
           bottom: `${position.y}px`,
           transform: isDragging ? 'scale(1.1)' : 'scale(1)',
+          touchAction: 'manipulation',
         }}
         aria-label="Abrir menu de acessibilidade"
         title="Acessibilidade (arraste para mover)"
@@ -275,8 +287,8 @@ export default function FloatingAccessibilityButton() {
 
       {/* Menu Flutuante */}
       {isOpen && (
-        <div 
-          className="fixed z-[9998] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto pointer-events-auto"
+        <div
+          className="fixed z-[9999] bg-white rounded-lg shadow-xl border border-gray-200 p-4 w-72 md:w-80 max-h-96 overflow-y-auto pointer-events-auto"
           style={{
             left: `${position.x}px`,
             bottom: `${position.y + 70}px`,
