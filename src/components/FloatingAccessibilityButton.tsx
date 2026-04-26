@@ -16,12 +16,13 @@ export default function FloatingAccessibilityButton() {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const dragStateRef = useRef({ 
-    startX: 0, 
-    startY: 0, 
-    initialX: 0, 
+  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const dragStateRef = useRef({
+    startX: 0,
+    startY: 0,
+    initialX: 0,
     initialY: 0,
-    hasMoved: false 
+    hasMoved: false
   })
 
   // Recuperar posição salva do localStorage
@@ -84,9 +85,13 @@ export default function FloatingAccessibilityButton() {
     if (!dragStateRef.current.hasMoved && !isOpen) {
       // Abre o menu apenas se não houve movimento e menu estava fechado
       setIsOpen(true)
+      // Limpa timeout anterior se existir
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
     } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto
-      setIsOpen(false)
+      // Fecha o menu se não houve movimento e menu estava aberto, com um pequeno delay
+      clickTimeoutRef.current = setTimeout(() => {
+        setIsOpen(false)
+      }, 100)
     }
     setIsDragging(false)
   }, [isOpen])
@@ -132,9 +137,13 @@ export default function FloatingAccessibilityButton() {
     if (!dragStateRef.current.hasMoved && !isOpen) {
       // Abre o menu apenas se não houve movimento e menu estava fechado
       setIsOpen(true)
+      // Limpa timeout anterior se existir
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
     } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto
-      setIsOpen(false)
+      // Fecha o menu se não houve movimento e menu estava aberto, com um pequeno delay
+      clickTimeoutRef.current = setTimeout(() => {
+        setIsOpen(false)
+      }, 100)
     }
     setIsDragging(false)
   }, [isOpen])
@@ -145,7 +154,7 @@ export default function FloatingAccessibilityButton() {
       document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('touchmove', handleTouchMove, { passive: false })
       document.addEventListener('touchend', handleTouchEnd)
-      
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
@@ -154,6 +163,13 @@ export default function FloatingAccessibilityButton() {
       }
     }
   }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd])
+
+  // Cleanup timeout ao desmontar
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
+    }
+  }, [])
 
   if (!accessibility) return null
 
