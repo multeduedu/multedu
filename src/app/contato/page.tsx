@@ -140,7 +140,7 @@ export default function ContatoPage() {
           {/* Informações de Contato */}
           <section className="flex flex-col gap-4">
             {[
-              { icon: <FiPhone size={20} />, title: "Telefone", value: "+55 (11) 99999-9999" },
+              { icon: <FiPhone size={20} />, title: "Telefone", value: "+55 (11) 93151-7128" },
               { icon: <FiMail size={20} />, title: "E-mail", value: "multeduedu@gmail.com" },
               { icon: <FiMapPin size={20} />, title: "Endereço", value: "São Paulo, SP - Brasil" }
             ].map((item, index) => (
