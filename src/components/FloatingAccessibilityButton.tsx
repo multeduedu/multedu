@@ -87,12 +87,8 @@ export default function FloatingAccessibilityButton() {
       setIsOpen(true)
       // Limpa timeout anterior se existir
       if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
-    } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto, com um pequeno delay
-      clickTimeoutRef.current = setTimeout(() => {
-        setIsOpen(false)
-      }, 100)
     }
+    // Menu só fecha com o botão "Fechar" dentro dele
     setIsDragging(false)
   }, [isOpen])
 
@@ -139,12 +135,8 @@ export default function FloatingAccessibilityButton() {
       setIsOpen(true)
       // Limpa timeout anterior se existir
       if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
-    } else if (!dragStateRef.current.hasMoved && isOpen) {
-      // Fecha o menu se não houve movimento e menu estava aberto, com um pequeno delay
-      clickTimeoutRef.current = setTimeout(() => {
-        setIsOpen(false)
-      }, 100)
     }
+    // Menu só fecha com o botão "Fechar" dentro dele
     setIsDragging(false)
   }, [isOpen])
 
