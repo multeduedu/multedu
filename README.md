@@ -26,6 +26,64 @@ Esta versão traz a fundação tecnológica da plataforma totalmente integrada e
   - **Contato**: Enviando mensagens de contato para o administrador. ✅
 - **DNS/Vercel**: Domínio verificado e totalmente operacional. ✅
 
+## 🏗️ Melhorias de Infraestrutura Implementadas
+
+Esta versão inclui **4 melhorias fundamentais** que elevam a qualidade, manutenibilidade e escalabilidade da plataforma:
+
+### 1️⃣ Logger Estruturado 📊
+- **Padrão**: Singleton com context propagation
+- **Níveis**: `debug` (dev only), `info`, `warn`, `error`
+- **Saída**: JSON estruturado com timestamp, environment e contexto
+- **Métodos**: `setContext()`, `getContext()`, `clearContext()` para rastreamento de usuário
+- **Ambiente**: Detecção automática (browser vs Node.js)
+- **Uso**: Integrado em auth.ts, useAuth.ts e todas as API routes
+
+### 2️⃣ Validação Zod Centralizada ✅
+- **Schemas**: SignUp, SignIn, AddXP, ContactForm, UpdateProfile, AccessibilityPreferences
+- **Reutilizáveis**: Campos padronizados (`emailField`, `passwordField`, `nameField`, etc.)
+- **Helpers**: `validateData()` e `isValidationSuccess()` para type-safety
+- **Constantes**: `ErrorMessages` com mensagens de erro padronizadas
+- **Aplicação**: Validação em todas as API routes (400 para dados inválidos)
+- **Tipagem**: Type extraction automática com `z.infer<typeof Schema>`
+
+### 3️⃣ React Query com Cache Strategy 🚀
+- **Timings**:
+  - Perfil: 5 minutos (atualização frequente)
+  - Atividades: 1 hora (dados estáticos)
+  - Busca por ID: 1 hora
+- **RetryConfig**: Smart retry (skip 4xx, 2x retry para 5xx)
+- **Deduplicação**: Queries automáticas entre componentes
+- **Invalidação**: Automática após mutations (signUp, addXP, updateProfile)
+- **Componente**: `QueryProvider` integrado no root layout
+
+### 4️⃣ APIs Centralizadas 🔌
+**GET /api/users/profile** - Perfil autenticado
+- Validação de autenticação (401)
+- Retorna: `{ id, nome, xp, nivel_atual, created_at }`
+
+**POST /api/users/xp** - Adicionar XP
+- Validação Zod: `xpGain` (1-100), `activity`, metadata opcional
+- Audit logging em `activity_log`
+- Retorna: `{ success, newXP, xpGain }`
+
+**GET /api/activities** - Listar atividades
+- Dados cacheados por 1 hora
+- Retorna: `{ success, data: activities[], count }`
+
+**POST /api/contact** - Formulário de contato
+- Validação Zod com name, email, subject, message
+- Integrado com Resend para envio
+- Retorna: `{ success, message }`
+
+**GET /api/health** - Health check
+- Monitoramento Vercel
+- Retorna: `{ status: 'ok'|'error', timestamp, environment }`
+
+### 🎨 Melhorias UX/UI
+- **Login**: Indicação visual melhorada com texto + ícone em Desktop e Mobile
+- **Logout**: Chama `signOut()` corretamente, força nova autenticação
+- **Build**: ✅ TypeScript sem erros (14.4s)
+
 ## ♿ Acessibilidade e Recursos Inclusivos
 
 O MULTEDU é desenvolvido com foco em **inclusão digital** e atende aos padrões **WCAG 2.1 AA**:
