@@ -165,20 +165,21 @@ export default function FloatingAccessibilityButton() {
 
   if (!accessibility) return null
 
-  const handleLibras = () => {
+  // Generic accessibility info modal
+  const handleAccessibilityInfo = () => {
     setIsOpen(false)
     Swal.fire({
-      title: '📖 Intérprete de Libras',
+      title: '📖 Acessibilidade',
       html: `
         <div style="text-align: center; padding: clamp(12px, 5vw, 20px);">
           <p style="font-size: clamp(14px, 4vw, 16px); margin-bottom: 15px;">
-            O <strong>VLibras</strong> foi carregado. Você verá um <strong>widget no canto inferior direito</strong> com o intérprete de Libras.
+            Recursos de acessibilidade estão disponíveis para ajustar a experiência do usuário.
           </p>
           <p style="font-size: clamp(12px, 3.5vw, 14px); color: #666; margin-bottom: 15px;">
-            Ele irá traduzir o conteúdo da página para Língua Brasileira de Sinais automaticamente.
+            Use o painel de acessibilidade ou os atalhos para aumentar texto, ativar contraste alto ou modo dislexia.
           </p>
           <div style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-size: clamp(11px, 3vw, 13px);">
-            <strong>💡 Dica:</strong> Clique no widget VLibras no canto direito para ativar o intérprete!
+            <strong>💡 Dica:</strong> Use os atalhos de teclado para navegação rápida.
           </div>
         </div>
       `,
@@ -190,18 +191,8 @@ export default function FloatingAccessibilityButton() {
         popup: 'rounded-2xl',
         confirmButton: 'rounded-lg',
       },
-      width: '280px',
-      padding: '6px',
-      didOpen: (modal) => {
-        modal.style.overflowY = 'visible'
-        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement | null
-        if (htmlContent) {
-          htmlContent.style.maxHeight = '30vh'
-          htmlContent.style.overflowY = 'auto'
-          htmlContent.style.overflowX = 'hidden'
-          htmlContent.style.paddingRight = '4px'
-        }
-      }
+      width: '300px',
+      padding: '8px',
     })
   }
 
@@ -234,7 +225,7 @@ export default function FloatingAccessibilityButton() {
             </tr>
             <tr style="border-bottom: 1px solid #ddd;">
               <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + L</strong></td>
-              <td style="padding: clamp(6px, 2vw, 8px);">Acessar Libras</td>
+              <td style="padding: clamp(6px, 2vw, 8px);">Abrir painel de acessibilidade</td>
             </tr>
             <tr>
               <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + D</strong></td>
@@ -363,12 +354,12 @@ export default function FloatingAccessibilityButton() {
           {/* Separador */}
           <div className="border-t border-gray-200 my-1 sm:my-2" />
 
-          {/* Libras */}
+          {/* Acessibilidade adicional */}
           <button
-            onClick={handleLibras}
+            onClick={handleAccessibilityInfo}
             className="w-full px-2 py-1 sm:py-2 text-xs font-medium rounded mb-1 sm:mb-2 bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all text-left"
           >
-            📖 Libras
+            📖 Acessibilidade
           </button>
 
           {/* Atalhos */}

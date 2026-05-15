@@ -17,11 +17,11 @@ export function CardMultiplicador({
   multiplicador,
   descricao,
 }: CardMultiplicadorProps) {
-  // Mapeamento de emojis para representação em Libras com aria-labels descritivos
+  // Mapeamento de emojis com aria-labels descritivos
   const emojiMap: Record<number, EmojiConfig> = {
     2: {
       emoji: "✌️",
-      ariaLabel: "Número 2 em Libras: dois dedos levantados (indicador e médio)",
+      ariaLabel: "Número 2: dois dedos levantados",
     },
     3: {
       emoji: "✋",
@@ -31,17 +31,17 @@ export function CardMultiplicador({
     4: {
       emoji: "✋",
       ariaLabel:
-        "Número 4 em Libras: mão aberta com quatro dedos levantados para cima",
+        "Número 4: mão aberta com quatro dedos levantados",
     },
     5: {
       emoji: "🖐️",
       ariaLabel:
-        "Número 5 em Libras: mão completamente aberta com cinco dedos espalhados",
+        "Número 5: mão completamente aberta com cinco dedos",
     },
     6: {
       emoji: "👌",
       ariaLabel:
-        "Número 6 em Libras: gesto de pinça (aproximação para configuração de seis)",
+        "Número 6: gesto de pinça",
     },
     7: {
       emoji: "✊",
@@ -51,16 +51,16 @@ export function CardMultiplicador({
     8: {
       emoji: "👋",
       ariaLabel:
-        "Número 8 em Libras: mão acenando (aproximação para configuração de oito)",
+        "Número 8: mão acenando",
     },
     9: {
       emoji: "🖖",
       ariaLabel:
-        "Número 9 em Libras: saudação Vulcana (aproximação para configuração de nove)",
+        "Número 9: saudação simbólica",
     },
     11: {
       emoji: "🙌",
-      ariaLabel: "Número 11 em Libras: duas mãos levantadas com dois dedos cada",
+      ariaLabel: "Número 11: mãos levantadas",
     },
   };
 

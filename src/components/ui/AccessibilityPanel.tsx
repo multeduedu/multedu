@@ -11,9 +11,7 @@ export default function AccessibilityPanel() {
 
   if (!accessibility) return null
 
-  const handleLibras = () => {
-    window.open('https://www.youtube.com/channel/UCP8DZ_10F0iMEz8BmKcvBqg', '_blank')
-  }
+  // Accessibility panel (no external sign-language integration)
 
   const handleShortcuts = () => {
     Swal.fire({
@@ -37,8 +35,8 @@ export default function AccessibilityPanel() {
             <p style="font-size: 0.9rem; color: #666;">Clique no botão ◐ ou pressione Alt + Shift + C</p>
           </div>
           <div>
-            <strong>Libras:</strong>
-            <p style="font-size: 0.9rem; color: #666;">Pressione Alt + Shift + L para acessar intérprete em Libras</p>
+            <strong>Acessibilidade:</strong>
+            <p style="font-size: 0.9rem; color: #666;">Pressione Alt + Shift + L para abrir o painel de acessibilidade</p>
           </div>
         </div>
       `,
@@ -129,16 +127,16 @@ export default function AccessibilityPanel() {
           </button>
 
           <button
-            onClick={handleLibras}
-            aria-label="Acessar intérprete de Libras"
+            onClick={handleShortcuts}
+            aria-label="Abrir painel de acessibilidade"
             className="flex-1 px-2 py-2 rounded-lg transition flex items-center justify-center gap-1
             bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-card-hover)]
             focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]
             cursor-pointer text-xs sm:text-sm font-semibold"
-            title="API Libras (Alt+Shift+L)"
+            title="Acessibilidade (Alt+Shift+L)"
           >
-            <span>🤟</span>
-            <span className="hidden sm:inline">Libras</span>
+            <span>📖</span>
+            <span className="hidden sm:inline">Acessibilidade</span>
           </button>
 
           <button

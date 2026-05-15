@@ -198,42 +198,6 @@ html.dyslexia-friendly.dark.contrast-high {
   }
 }
 
-/* ===== VLibras Global Styles ===== */
-
-/* Wrapper externo [vw="true"] */
-[vw="true"],
-.enabled {
-  position: fixed !important;
-  bottom: 2rem !important;
-  right: 2rem !important;
-  z-index: 9998 !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Elemento interno #vw-plugin-wrapper */
-#vw-plugin-wrapper,
-.access-button {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  min-width: 60px !important;
-  min-height: 60px !important;
-}
-
-/* Plugin criado pelo VLibras */
-.vlibras-plugin {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 9998 !important;
-}
-
-/* ===== Fim VLibras Styles ===== */
-
 @keyframes fade-up {
   0% {
     opacity: 0;
@@ -259,4 +223,67 @@ html.dyslexia-friendly.dark.contrast-high {
 
 .animate-fade-up {
   animation: fade-up 2s ease-out forwards;
+}
+
+/* Global Smooth Transitions & Accessibility */
+
+/* Smooth transitions for interactive elements */
+button,
+input,
+select,
+textarea,
+a {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Better hover feedback */
+button:not(:disabled):hover,
+input:not(:disabled):hover,
+select:not(:disabled):hover {
+  filter: brightness(0.95);
+}
+
+/* Disabled state styling */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Keyboard focus indicator */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  :root {
+    --color-border: #999999;
+  }
+  
+  button,
+  input,
+  select {
+    border-width: 2px;
+  }
 }
