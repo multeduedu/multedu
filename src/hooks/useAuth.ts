@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { supabase, getUserWithRetry, clearUserCache } from '@/lib/supabase'
 import { User as AppUser } from '@/types/user'
+import { logger } from '@/lib/logger'
 
 export const useAuth = () => {
   const router = useRouter()
@@ -29,19 +30,23 @@ export const useAuth = () => {
     
     try {
       setError(null)
+      logger.debug('Carregando dados de autenticação')
       const { data: { user }, error: authError } = await getUserWithRetry(forceRefresh)
 
       if (authError) {
-        console.error('Erro de autenticação:', authError)
+        logger.error('Erro de autenticação', authError as Error)
         setError('Erro ao carregar dados do usuário')
         router.replace('/login')
         return null
       }
 
       if (!user) {
+        logger.warn('Usuário não autenticado')
         router.replace('/login')
         return null
       }
+
+      logger.setContext({ userId: user.id })
 
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
@@ -50,7 +55,7 @@ export const useAuth = () => {
         .single()
 
       if (profileError && profileError.code !== 'PGRST116') {
-        console.error('Erro ao carregar perfil:', profileError)
+        logger.error('Erro ao carregar perfil', profileError as Error)
         setError('Erro ao carregar perfil do usuário')
       }
 
@@ -69,17 +74,18 @@ export const useAuth = () => {
         document.title = `MultEdu | ${firstName}`
       }
 
+      logger.info('Usuário carregado com sucesso', { xp: appUser.xp })
       return appUser
 
     } catch (error) {
-      console.error('Erro ao carregar usuário:', error)
+      logger.error('Erro ao carregar usuário', error as Error)
       const errorMessage = (error as Error).message
 
       // Verificar se é erro de LockManager e fazer retry limitado
       if ((errorMessage.includes('Navigator LockManager lock') || 
            errorMessage.includes('timed out waiting')) && 
           retryCount < 3) {
-        console.warn(`Erro de LockManager, tentativa ${retryCount + 1} de 4...`)
+        logger.warn(`Erro de LockManager, tentativa ${retryCount + 1} de 4`)
         
         clearUserCache()
         
@@ -93,7 +99,7 @@ export const useAuth = () => {
           errorMessage.includes('timed out waiting')) {
         setError('Problema de conectividade persistente. Tente recarregar a página.')
         // Não redirecionar imediatamente - dar chance ao usuário tentar novamente
-        console.error('Erro de LockManager persistente depois de múltiplas tentativas')
+        logger.error('Erro de LockManager persistente depois de múltiplas tentativas', error as Error)
         return null
       }
       

@@ -6,6 +6,7 @@ import { LockManagerMonitor } from "@/components/LockManagerMonitor";
 import AccessibilityHotkeys from "@/components/AccessibilityHotkeys";
 import FloatingAccessibilityButton from "@/components/FloatingAccessibilityButton";
 import FontLoader from "@/components/FontLoader";
+import { QueryProvider } from "@/components/providers/QueryProvider";
 
 const poppins = Poppins({
   variable: "--font-sans",
@@ -46,14 +47,16 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={`${poppins.variable} font-sans antialiased`}>
-        <FontLoader />
-        
-        <ErrorBoundary>
-          <FloatingAccessibilityButton />
-          <AccessibilityHotkeys />
-          <LockManagerMonitor />
-          {children}
-        </ErrorBoundary>
+        <QueryProvider>
+          <FontLoader />
+          
+          <ErrorBoundary>
+            <FloatingAccessibilityButton />
+            <AccessibilityHotkeys />
+            <LockManagerMonitor />
+            {children}
+          </ErrorBoundary>
+        </QueryProvider>
       </body>
     </html>
   );

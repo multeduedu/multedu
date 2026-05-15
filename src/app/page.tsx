@@ -49,8 +49,13 @@ export default function Home() {
           </li>
 
           <li>
-            <Link href="/login" aria-label="Entrar">
-              <FiUser className="text-[var(--color-primary)] text-2xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
+            <Link 
+              href="/login" 
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] transition-colors duration-200 font-medium"
+              aria-label="Entrar na plataforma"
+            >
+              <FiUser size={20} />
+              <span>Entrar</span>
             </Link>
           </li>
         </ul>
@@ -103,8 +108,14 @@ export default function Home() {
           </li>
 
           <li>
-            <Link href="/login" onClick={handleCloseMenu}>
-              <FiUser className="text-[var(--color-primary)] text-3xl hover:text-[var(--color-primary-hover)] transition-colors duration-200 cursor-pointer" />
+            <Link 
+              href="/login" 
+              onClick={handleCloseMenu}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)] transition-colors duration-200 font-medium w-full"
+              aria-label="Entrar na plataforma"
+            >
+              <FiUser size={20} />
+              <span>Entrar</span>
             </Link>
           </li>
         </ul>

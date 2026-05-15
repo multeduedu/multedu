@@ -3,7 +3,8 @@
 import { createServerClient } from '@supabase/ssr'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
-import { Resend } from 'resend' 
+import { Resend } from 'resend'
+import { logger } from '@/lib/logger'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -36,6 +37,8 @@ export async function signUp(formData: FormData) {
   const password = formData.get('password') as string
   const nome = formData.get('nome') as string
 
+  logger.info('Iniciando signup', { email })
+
   const supabase = await createSupabaseServerClient()
 
   const { data, error } = await supabase.auth.signUp({
@@ -49,7 +52,10 @@ export async function signUp(formData: FormData) {
     }
   })
 
-  if (error) return { error: error.message }
+  if (error) {
+    logger.error('Erro ao registrar usuário', error as Error, { email })
+    return { error: error.message }
+  }
 
   if (data.user) {
     const { error: profileError } = await supabase
@@ -63,7 +69,10 @@ export async function signUp(formData: FormData) {
         }
       ])
 
-    if (profileError) return { error: profileError.message }
+    if (profileError) {
+      logger.error('Erro ao criar perfil', profileError as Error, { userId: data.user.id })
+      return { error: profileError.message }
+    }
 
     try {
       await resend.emails.send({
@@ -80,10 +89,12 @@ export async function signUp(formData: FormData) {
           </div>
         `
       });
+      logger.info('Email de boas-vindas enviado', { email })
     } catch (mailError) {
-      console.error("Erro ao enviar e-mail:", mailError);
-      
+      logger.warn('Erro ao enviar email de boas-vindas', { email, error: String(mailError) })
     }
+
+    logger.info('Usuário registrado com sucesso', { userId: data.user.id, email })
   }
 
   redirect('/login')
@@ -93,6 +104,8 @@ export async function signIn(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
+  logger.info('Tentativa de login', { email })
+
   const supabase = await createSupabaseServerClient()
 
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -100,9 +113,13 @@ export async function signIn(formData: FormData) {
     password,
   })
 
-  if (error) return { error: "E-mail ou senha incorretos." }
+  if (error) {
+    logger.error('Falha no login', error as Error, { email })
+    return { error: "E-mail ou senha incorretos." }
+  }
 
   if (data?.user) {
+    logger.info('Login bem-sucedido', { userId: data.user.id, email })
     redirect('/dashboard')
   }
 }
@@ -119,17 +136,21 @@ export async function updateStudentRobot(robotStyle: string) {
 }
 
 export async function signOut() {
+  logger.info('Fazendo logout')
   const supabase = await createSupabaseServerClient()
   await supabase.auth.signOut()
+  logger.info('Logout realizado com sucesso')
   redirect('/login')
 }
 
 export async function addCoins(amount: number) {
   if (!amount || amount <= 0) {
+    logger.warn('Tentativa de adicionar XP inválido', { amount })
     return { error: "Valor de moedas inválido" }
   }
 
   if (amount > 100) {
+    logger.warn('Tentativa de adicionar XP acima do limite', { amount })
     return { error: "Valor de moedas muito alto" }
   }
   
@@ -138,8 +159,11 @@ export async function addCoins(amount: number) {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
+    logger.warn('Tentativa de adicionar XP sem autenticação')
     return { error: "Usuário não autenticado" }
   }
+
+  logger.setContext({ userId: user.id })
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -156,12 +180,16 @@ export async function addCoins(amount: number) {
     .eq('id', user.id);
 
   if (error) {
+    logger.error('Erro ao adicionar XP', error as Error, { amount, userId: user.id })
     return { error: error.message }
   }
   
+  logger.info('XP adicionado com sucesso', { amount, newCoins, userId: user.id })
   return { success: true, newCoins };
 }
 export async function enviarEmailContato(nome: string, email: string, assunto: string, mensagem: string) {
+  logger.info('Enviando email de contato', { nome, email, assunto })
+  
   try {
     const { data, error } = await resend.emails.send({
       from: 'MultEdu Contato <contato@multedu.com.br>',
@@ -182,11 +210,14 @@ export async function enviarEmailContato(nome: string, email: string, assunto: s
     });
 
     if (error) {
+      logger.error('Erro ao enviar email de contato', error as Error, { email })
       return { error: error.message };
     }
 
+    logger.info('Email de contato enviado com sucesso', { email })
     return { success: true };
   } catch (err) {
+    logger.error('Erro ao enviar email de contato', err as Error, { email })
     return { error: "Erro interno no servidor de e-mail." };
   }
 }

@@ -4,6 +4,7 @@ import Image from "next/image"
 import { FiLogOut, FiX } from "react-icons/fi"
 import { User } from "@/types/user"
 import ThemeToggle from "../../ui/ThemeToggle"
+import { signOut } from "@/actions/auth"
 
 type Props = {
   user: User | null
@@ -59,6 +60,10 @@ function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onC
   const firstName = user?.name ? user.name.trim().split(/\s+/)[0] : "Estudante"
   const robotStyle = user?.user_metadata?.avatar_style || 'bottts'
   const robotAvatar = `https://api.dicebear.com/7.x/${robotStyle}/svg?seed=${user?.email || 'default'}`
+
+  const handleLogout = async () => {
+    await signOut()
+  }
 
   const baseButton =
     "w-full text-left px-4 py-2 rounded-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] cursor-pointer"
@@ -120,7 +125,7 @@ function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onC
 
       <div className="flex flex-col gap-4">
         <button
-          onClick={() => window.location.href = "/"}
+          onClick={handleLogout}
           className="w-full flex items-center justify-center gap-2
           px-4 py-2 rounded-lg
           border border-[var(--color-border)]
@@ -128,6 +133,7 @@ function SidebarContent({ user, filter, setFilter }: Omit<Props, "isOpen" | "onC
           transition
           focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500
           cursor-pointer"
+          title="Fazer logout e retornar à página de login"
         >
           <FiLogOut size={18} />
           Sair
