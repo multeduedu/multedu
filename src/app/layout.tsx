@@ -5,7 +5,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { LockManagerMonitor } from "@/components/LockManagerMonitor";
 import AccessibilityHotkeys from "@/components/AccessibilityHotkeys";
 import FloatingAccessibilityButton from "@/components/FloatingAccessibilityButton";
-import VLibrasWidget from "@/components/VLibrasWidget";
 import FontLoader from "@/components/FontLoader";
 
 const poppins = Poppins({
@@ -43,17 +42,13 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        {/* VLibras meta tag para funcionalidade correta */}
+        {/* Viewport meta for responsiveness */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={`${poppins.variable} font-sans antialiased`}>
         <FontLoader />
         
-        {/* Wrapper para VLibras - Estrutura padrão que o script espera */}
-        <div {...({ "vw": "true" } as any)} className="enabled"></div>
-        
         <ErrorBoundary>
-          <VLibrasWidget />
           <FloatingAccessibilityButton />
           <AccessibilityHotkeys />
           <LockManagerMonitor />

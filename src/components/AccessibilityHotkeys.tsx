@@ -7,19 +7,19 @@ import Swal from 'sweetalert2'
 export default function AccessibilityHotkeys() {
   const { accessibility, setTextScale, toggleContrast, toggleDyslexia } = useAccessibility()
 
-  const handleLibrasShortcut = () => {
+  const handleAccessibilityShortcut = () => {
     Swal.fire({
-      title: '📖 Intérprete de Libras',
+      title: '📖 Acessibilidade',
       html: `
         <div style="text-align: center; padding: 20px;">
           <p style="font-size: 16px; margin-bottom: 15px;">
-            O <strong>VLibras</strong> foi carregado. Você verá um <strong>widget no canto inferior direito</strong> com o intérprete de Libras.
+            Recursos de acessibilidade estão disponíveis. Use o painel de acessibilidade para ajustar conforme sua necessidade.
           </p>
           <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
-            Ele irá traduzir o conteúdo da página para Língua Brasileira de Sinais automaticamente.
+            Ações disponíveis: aumentar texto, contraste alto, modo dislexia, atalhos do teclado.
           </p>
           <div style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-size: 13px;">
-            <strong>💡 Dica:</strong> Clique no widget VLibras no canto direito para ativar o intérprete!
+            <strong>💡 Dica:</strong> Use os atalhos de teclado para navegação rápida!
           </div>
         </div>
       `,
@@ -65,7 +65,7 @@ export default function AccessibilityHotkeys() {
         case 'l':
         case 'L':
           e.preventDefault()
-          handleLibrasShortcut()
+          handleAccessibilityShortcut()
           break
 
         case 'd':

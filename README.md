@@ -50,12 +50,6 @@ O MULTEDU é desenvolvido com foco em **inclusão digital** e atende aos padrõe
 - **Atalho**: `Alt + Shift + D`
 - **Persistência**: Preferência salva automaticamente
 
-### 🤟 Intérprete de Libras (VLibras)
-- **API Oficial Gov.br**: Integração com tradução em Língua Brasileira de Sinais
-- **Widget Automático**: Carregamento transparente na página
-- **Atalho**: `Alt + Shift + L`
-- **Real-time**: Tradução automática do conteúdo
-
 ### ⌨️ Atalhos Globais
 | Atalho | Ação |
 |--------|------|
@@ -64,14 +58,14 @@ O MULTEDU é desenvolvido com foco em **inclusão digital** e atende aos padrõe
 | `Alt + Shift + 0` | Resetar texto |
 | `Alt + Shift + C` | Alternar contraste alto |
 | `Alt + Shift + D` | Modo dislexia-amigável |
-| `Alt + Shift + L` | Abrir intérprete Libras |
+| `Alt + Shift + L` | Abrir painel de acessibilidade |
 
 ### 📊 Barra de Acessibilidade
 Localizada no topo de todas as páginas, com botões intuitivos para:
 - **A − / A / A +** - Controle de tamanho do texto
 - **◐ Contraste** - Modo alto contraste
 - **ⓓ Dislexia** - Modo dislexia-amigável
-- **📖 Libras** - Intérprete de Libras
+ - **📖 Acessibilidade** - Painel de acessibilidade e atalhos
 - **⌨️ Atalhos** - Tabela de atalhos rápidos
 
 ## 🛠️ Tecnologias Utilizadas

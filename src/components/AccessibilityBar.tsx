@@ -10,43 +10,32 @@ export default function AccessibilityBar() {
 
   if (!accessibility) return null
 
-  const handleLibras = () => {
+  const handleAccessibilityInfo = () => {
     Swal.fire({
-      title: '📖 Intérprete de Libras',
+      title: '📖 Acessibilidade',
       html: `
         <div style="text-align: center; padding: clamp(12px, 5vw, 20px);">
           <p style="font-size: clamp(14px, 4vw, 16px); margin-bottom: 15px;">
-            O <strong>VLibras</strong> foi carregado. Você verá um <strong>widget no canto inferior direito</strong> com o intérprete de Libras.
+            Recursos de acessibilidade estão disponíveis para ajustar a experiência do usuário.
           </p>
           <p style="font-size: clamp(12px, 3.5vw, 14px); color: #666; margin-bottom: 15px;">
-            Ele irá traduzir o conteúdo da página para Língua Brasileira de Sinais automaticamente.
+            Use o painel de acessibilidade ou os atalhos para aumentar texto, ativar contraste alto ou modo dislexia.
           </p>
           <div style="background: #f0f0f0; padding: 10px; border-radius: 8px; font-size: clamp(11px, 3vw, 13px);">
-            <strong>💡 Dica:</strong> Clique no widget VLibras no canto direito para ativar o intérprete!
+            <strong>💡 Dica:</strong> Use os atalhos de teclado para navegação rápida.
           </div>
         </div>
       `,
       icon: 'info',
       confirmButtonText: 'Entendi',
-      confirmButtonColor: '#ff7f50', // Usei a cor primária do projeto
+      confirmButtonColor: '#ff7f50',
       customClass: {
         container: 'swal2-custom',
         popup: 'rounded-2xl',
         confirmButton: 'rounded-lg',
       },
-      width: '280px',
-      padding: '6px',
-      didOpen: (modal) => {
-        // Ajuste de altura via CSS direto para evitar erro de tipo
-        modal.style.maxHeight = '80vh'
-        modal.style.overflowY = 'auto'
-        const htmlContent = modal.querySelector('.swal2-html-container') as HTMLElement
-        if (htmlContent) {
-          htmlContent.style.maxHeight = '30vh'
-          htmlContent.style.overflowY = 'auto'
-          htmlContent.style.overflowX = 'hidden'
-        }
-      }
+      width: '320px',
+      padding: '8px',
     })
   }
 
@@ -77,8 +66,8 @@ export default function AccessibilityBar() {
               <td style="padding: clamp(6px, 2vw, 8px);">Alternar Contraste</td>
             </tr>
             <tr style="border-bottom: 1px solid #ddd;">
-              <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + L</strong></td>
-              <td style="padding: clamp(6px, 2vw, 8px);">Acessar Libras</td>
+              <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"> <strong>Alt + Shift + L</strong></td>
+              <td style="padding: clamp(6px, 2vw, 8px);">Abrir painel de acessibilidade</td>
             </tr>
             <tr>
               <td style="padding: clamp(6px, 2vw, 8px); background: #f5f5f5;"><strong>Alt + Shift + D</strong></td>
@@ -212,17 +201,17 @@ export default function AccessibilityBar() {
           <div className="h-6 border-l border-gray-300 mx-1" />
 
           <button
-            onClick={handleLibras}
-            title="Libras VLibras (Alt+Shift+L)"
+            onClick={handleAccessibilityInfo}
+            title="Acessibilidade (Alt+Shift+L)"
             className="
               px-2 py-1.5 transition-all duration-200 text-xs font-medium
               bg-white text-gray-600 hover:bg-gray-100
               border border-gray-200 hover:border-gray-300
               rounded-sm cursor-pointer
             "
-            aria-label="Acessar intérprete de Libras - VLibras"
+            aria-label="Abrir painel de acessibilidade"
           >
-            📖 Libras
+            📖 Acessibilidade
           </button>
 
           <div className="h-6 border-l border-gray-300 mx-1" />
